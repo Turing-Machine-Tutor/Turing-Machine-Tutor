@@ -1,0 +1,31 @@
+﻿@page
+@model Frontend.Pages.RegisterModel
+@{
+}
+
+
+<form asp-action="Register" method="post">
+    <div>
+        <label asp-for="FirstName">First Name:</label>
+        <input asp-for="FirstName" />
+    </div>
+    <div>
+        <label asp-for="LastName">Last Name:</label>
+        <input asp-for="LastName" />
+    </div>
+    <div>
+        <label asp-for="Email">Email:</label>
+        <input asp-for="Email" />
+    </div>
+    <div>
+        <label asp-for="Password">Password:</label>
+        <input asp-for="Password" type="password" />
+    </div>
+    <div>
+        <label asp-for="ConfirmPassword">ConfirmPassword:</label>
+        <input asp-for="ConfirmPassword" type="password" />
+    </div>
+    <div>
+        <button type="submit">Register</button>
+    </div>
+</form>
