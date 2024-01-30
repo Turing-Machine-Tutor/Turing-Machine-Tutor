@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "HwLMeDZWRf2wBdl0rk3prDJS6nI+tyFYYqxm+0nl1ikKo2Jd2/sqZClUo9IzNGc7TWSZ2599PlYyI9iq1C0gSg==",
+  "success": true,
+  "projectFilePath": "C:\\Users\\DELL\\Desktop\\Turing\\Backend\\Frontend\\Frontend.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\DELL\\.nuget\\packages\\newtonsoft.json\\13.0.3\\newtonsoft.json.13.0.3.nupkg.sha512"
+  ],
+  "logs": []
+}

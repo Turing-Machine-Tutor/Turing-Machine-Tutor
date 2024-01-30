@@ -1,0 +1,170 @@
+﻿@page
+@model Frontend.Pages.RegisterModel
+@{
+    
+}
+
+<style>
+    body {
+        margin: 0;
+        padding: 0;
+        background: url("");
+        background-size: 100% 100%;
+        background-repeat:no-repeat;
+        overflow:hidden;
+        font-family: Arial, sans-serif;
+        align-items: center;
+        justify-content: center;
+        height: 100vh;
+    }
+
+    .registration-box {
+        background: rgba(255, 255, 255, 0.8);
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+        width: 50%;
+        margin:auto;
+        
+    }
+
+    h2 {
+        text-align: center;
+    }
+
+    .form-group {
+        position: relative;
+        margin-bottom: 20px;
+    }
+
+    label {
+        position: absolute;
+        top: 50%;
+        left: 0;
+        transform: translateY(-50%);
+        transition: all 0.3s ease-out;
+    }
+
+    input {
+        width: 100%;
+        padding: 10px;
+        box-sizing: border-box;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+    }
+
+        input:focus + label,
+        input:not(:placeholder-shown) + label {
+            top: -12px;
+            left: 0;
+            font-size: 12px;
+            color: #2196F3;
+        }
+
+    button {
+        width: 100%;
+        padding: 10px;
+        box-sizing: border-box;
+        border: none;
+        border-radius: 4px;
+        background-color: #2196F3;
+        color: #fff;
+        cursor: pointer;
+    }
+</style>
+
+<h2>Register</h2>
+
+<div class="registration-box">
+    <form id="registrationForm" asp-action="Register" method="post">
+        <div class="form-group">
+            <input asp-for="FirstName" required placeholder=""/>
+            <label>First Name</label>
+        </div>
+        <div class="form-group">
+            <input asp-for="LastName" required placeholder="" />
+            <label>Last Name</label>
+        </div>
+        <div class="form-group">
+            <input id="Email" asp-for="Email" type="email" required placeholder="" />
+            <label>Email</label>
+        </div>
+        <div class="form-group">
+            <input id="Password" asp-for="Password" type="password" required placeholder="" />
+            <label>Password</label>
+        </div>
+
+        <div class="form-group">
+            <input id="ConfirmPassword" asp-for="ConfirmPassword" type="password" required placeholder="" />
+            <label>Confirm Password</label>
+        </div>
+
+        @if (TempData["RegistrationMessage"] != null)
+        {
+            @if (TempData["RegistrationMessage"] == "User Successfully Registered")
+            {
+                <div class="text-center" style="color:green">
+                    @TempData["RegistrationMessage"]
+                </div>
+            }
+            else
+            {
+                <div class="text-center" style="color:red">
+                    @TempData["RegistrationMessage"]
+                </div>
+            }
+        }
+        <button type="submit">Register</button>
+    </form>
+</div>
+
+@section Scripts {
+    <script>
+         document.addEventListener('DOMContentLoaded', function () {
+            var formGroups = document.querySelectorAll('.form-group input');
+            
+            formGroups.forEach(function (input) {
+                input.addEventListener('focus', function () {
+                    input.nextElementSibling.style.top = '-12px';
+                    input.nextElementSibling.style.fontSize = '12px';
+                    input.nextElementSibling.style.color = '#2196F3';
+                });
+
+                input.addEventListener('blur', function () {
+                    if (input.value === '') {
+                        input.nextElementSibling.style.top = '50%';
+                        input.nextElementSibling.style.fontSize = 'inherit';
+                        input.nextElementSibling.style.color = 'inherit';
+                    }
+                });
+            });
+        });
+
+        // Client-side validation using JavaScript
+        document.getElementById('registrationForm').addEventListener('submit', function (event) {
+            var emailInput = document.getElementById('Email');
+            var emailRegex = /^[^\s]+[^\s]+\.[^\s]+$/;
+
+            if (!emailRegex.test(emailInput.value)) {
+                alert('Please enter a valid email address.');
+                event.preventDefault();
+                return;
+            }
+        });
+
+
+        // Client-side validation using JavaScript
+        document.getElementById('registrationForm').addEventListener('submit', function (event) {
+            var passwordInput = document.getElementById('Password').value;
+            var ConfirmPassword = document.getElementById('ConfirmPassword').value;
+
+            if (passwordInput != ConfirmPassword) {
+                alert('Password and Confirm Password do not match.');
+                event.preventDefault();
+                return;
+            }
+        });
+
+
+    </script>
+}
