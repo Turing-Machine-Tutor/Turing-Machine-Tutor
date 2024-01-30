@@ -11,11 +11,13 @@ namespace Backend.Bussiness_Layer.User_Component
 
 
         private Dictionary<string,User> users; // key is email , value is user
+        private Password_Hasher hasher;
 
         private User_Controller()
         {
 
             users = new Dictionary<string, User>();
+            hasher = new Password_Hasher();
         }
 
         private static User_Controller Instance = null;
@@ -44,12 +46,30 @@ namespace Backend.Bussiness_Layer.User_Component
 
         internal string register(string first_name, string last_name, string password, string email)
         {
-            if (!users.ContainsKey(email)) { 
-                users.Add(email,new User(first_name, last_name, password, email));
+            if (!users.ContainsKey(email)) {
+                //string hashed_password= hasher.Hash(password);
+                string hashed_password = "";
+                users.Add(email,new User(first_name, last_name, hashed_password, email));
                 return "successfully registered!";
             }
 
             throw new Exception("this email is already registered!");
+        }
+
+        internal string Login(string password, string email)
+        {
+            if (users.ContainsKey(email))
+            {
+                //string hashed_password= hasher.Hash(password);
+                string hashed_password = "";
+                if (users[email].Log_in(hashed_password))
+                {
+                    return "successfully registered!";
+                }
+            }
+
+            throw new Exception("email or password is invalid!");
+
         }
     }
 }

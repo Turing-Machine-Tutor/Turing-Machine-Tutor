@@ -8,5 +8,10 @@ namespace Backend.Bussiness_Layer.User_Component
 {
     internal class Password_Hasher
     {
+        public Password_Hasher() { }
+
+        public string Hash(string password) {
+            throw new NotImplementedException();
+        }
     }
 }

@@ -20,5 +20,9 @@ namespace Backend.Bussiness_Layer.User_Component
             this.hashed_password = password;
             this.email = email;
         }
+
+        public bool Log_in(string password) {
+            return hashed_password.Equals(password);
+        }
     }
 }

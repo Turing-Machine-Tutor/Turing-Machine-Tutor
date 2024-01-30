@@ -35,8 +35,25 @@ namespace Backend.Service_Layer
             }
         }
 
+        public Response<String> Login(string password, string email)
+        {
+            try
+            {
+                Response<string> ok = Response<string>.FromValue(this.user_Controller.Login(password, email));
 
 
-        
+                return ok;
+
+            }
+            catch (Exception e)
+            {
+
+                return Response<String>.FromError(e.Message);
+            }
+        }
+
+
+
+
     }
 }
