@@ -3,6 +3,12 @@
 @{
 }
 
+@if(TempData["TestResult"] != null)
+{
+    <script>
+        alert('@TempData["TestResult"]');
+    </script>
+}
 
 <form id="challengeForm" asp-action="Challenge" method="post">
 <div style="display: flex; justify-content: space-between; align-items: flex-start; padding: 20px;">
@@ -10,20 +16,23 @@
     <!-- Python Editor -->
     <div style="flex: 1; max-width: 70%;">
         <textarea id="pythonCode" asp-for="Code" style="width: 100%; height: 400px;"></textarea>
-    </div>
 
-    <!-- Input and Buttons -->
-    <div style="flex: 1; max-width: 25%; margin-left: 20px;">
-        <label for="inputText">Input:</label>
-        <input type="text" id="inputText" style="width: 100%; margin-bottom: 10px;">
-
-
-            <button name="test" value="test" onclick="runTest()">Run Test</button>
             <button name="validate" value="validate" onclick="validateCode()">Validate</button>
     </div>
 
-</div>
+    </div>
+    <!-- Input and Buttons -->
+    <div style="flex: 1; max-width: 25%; margin-left: 20px;">
+        <label for="inputText">Input:</label>
+        <input asp-for="TestInput" type="text" id="inputText" style="width: 100%; margin-bottom: 10px;">
+            <button name="test" value="test" onclick="runTest()">Run Test</button>
+    </div>
+
+    
+
 </form>
+
+
 <script>
     function runTest() {
         var pythonCode = document.getElementById('pythonCode').value;
@@ -45,4 +54,6 @@
         // For demonstration purposes, an alert is shown
         alert('Validating code...\nPython Code:\n' + pythonCode);
     }
+
+
 </script>

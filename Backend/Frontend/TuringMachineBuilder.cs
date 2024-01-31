@@ -55,7 +55,7 @@ namespace Frontend
 
 
                 // Remove all white spaces
-                cleanLine = cleanLine.Replace(" ", "");
+                cleanLine = cleanLine.Replace(" ", "").Replace("'","");
 
                 var parts = cleanLine.Split('=').Select(part => part.Trim()).ToArray();
 

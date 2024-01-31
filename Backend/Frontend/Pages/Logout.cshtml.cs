@@ -7,6 +7,9 @@ namespace Frontend.Pages
     {
         public RedirectToPageResult OnGet()
         {
+            // TODO
+            
+
             API.userLoggedin = false;
             TempData["LogoutMessage"] = "You have been successfully logged out.";
             return RedirectToPage("Index");

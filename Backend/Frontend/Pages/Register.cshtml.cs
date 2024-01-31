@@ -25,7 +25,7 @@ namespace Frontend.Pages
         public void OnPost()
         {
 
-
+            // TODO
 
             // user succesfuly registers to system show relevant message
             TempData["RegistrationMessage"] = "User Successfully Registered";

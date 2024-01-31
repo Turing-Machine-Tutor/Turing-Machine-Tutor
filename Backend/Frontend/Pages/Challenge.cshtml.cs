@@ -14,6 +14,9 @@ namespace Frontend.Pages
         [BindProperty]
         public string Code {  get; set; }
 
+        [BindProperty]
+        public string TestInput { get; set; }
+
         public void OnGet()
         {
             challengeId = (int)TempData["Challenge"];
@@ -53,10 +56,22 @@ namespace Frontend.Pages
 
                 TuringMachineInstance = TuringMachineBuilder.Parse(Code);
 
+                bool result = TuringMachineInstance.Run(TestInput);
+                if(result)
+                {
+                    TempData["TestResult"] = "Turing Machine accepts input: " + TestInput;
+                }
+                else
+                {
+                    TempData["TestResult"] = "Turing Machine rejects input: " + TestInput;
+                }
+
             }
             else if (validate != null)
             {
                 Console.WriteLine("Validate" + Code);
+                // backend.ValidateTuring(code);
+                // TODO
             }
         }
 
