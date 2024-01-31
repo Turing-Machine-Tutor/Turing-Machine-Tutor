@@ -5,6 +5,7 @@ using System.Net;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
+using Backend.Bussiness_Layer.Turing_machine_Builder_Component;
 using Backend.Bussiness_Layer.User_Component;
 
 namespace Backend.Service_Layer
@@ -12,11 +13,13 @@ namespace Backend.Service_Layer
     internal class Service_Controller
     {
         private User_Controller user_Controller;
+        private Turing_machine_controller turing_Machine_Controller;
 
 
         public Service_Controller()
         {
             user_Controller= User_Controller.GetInstance();
+            turing_Machine_Controller  = Turing_machine_controller.GetInstance();
         }
 
         public Response<String> Register(string first_name,string last_name,string password,string email)

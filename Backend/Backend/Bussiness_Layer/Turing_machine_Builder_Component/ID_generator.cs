@@ -1,32 +1,27 @@
-﻿using Backend.Bussiness_Layer.User_Component;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace Backend.Bussiness_Layer.Turing_machine_Builder_Component
 {
-    internal class Turing_machine_controller
+    internal class ID_generator
     {
-        private Dictionary<string, Turing_machine> turing_machines; //key is ID value is turing machine
+        private string current_id;
 
-        private Turing_machine_controller()
+        private ID_generator()
         {
-            this.turing_machines = new Dictionary<string, Turing_machine>();
-            //build in turing machines 
-            string id = ID_generator.GetInstance().Get_ID();
-            turing_machines.Add(id, new Turing_machine("turing machine that gets 2 binray numbers as input and outputs sum", new List<string> { "10" }, new List<string> { "sfs", "0" }, id));
-
+            this.current_id = "1";
             
-
         }
 
-        private static Turing_machine_controller Instance = null;
+        private static ID_generator Instance = null;
 
         //To use the lock, we need to create one variable
         private static readonly object Instancelock = new object();
-        public static Turing_machine_controller GetInstance()
+        public static ID_generator GetInstance()
         {
             //This is thread-Safe - Performing a double-lock check.    
             //As long as one thread locks the resource, no other thread can access the resource
@@ -36,7 +31,7 @@ namespace Backend.Bussiness_Layer.Turing_machine_Builder_Component
             { //Critical Section Start
                 if (Instance == null)
                 {
-                    Instance = new Turing_machine_controller();
+                    Instance = new ID_generator();
 
 
                 }
@@ -47,6 +42,18 @@ namespace Backend.Bussiness_Layer.Turing_machine_Builder_Component
             return Instance;
         }
 
+        
+        public  string Get_ID()
+        {
+            lock (Instancelock)
+            {
+                string return_me = Instance.current_id;
+                Instance.current_id=(Int32.Parse(Instance.current_id)+1).ToString();
+                return return_me;
+                
+            }
+
+        }
 
 
     }
