@@ -15,8 +15,9 @@ namespace Backend.Bussiness_Layer.Turing_machine_Builder_Component
         {
             this.turing_machines = new Dictionary<string, Turing_machine>();
             //build in turing machines 
-            string id = ID_generator.GetInstance().Get_ID();
-            turing_machines.Add(id, new Turing_machine("turing machine that gets 2 binray numbers as input and outputs sum", new List<string> { "10" }, new List<string> { "sfs", "0" }, id));
+            Turing_machine tm=new Turing_machine("turing machine that gets 2 binray numbers as input and outputs sum", new List<string> { "10" }, new List<string> { "sfs", "0" });
+            string id = tm.get_id();
+            turing_machines.Add(id, tm);
 
             
 
@@ -47,7 +48,38 @@ namespace Backend.Bussiness_Layer.Turing_machine_Builder_Component
             return Instance;
         }
 
+        internal string Validate_turing_machine(string code,string selected_turing_machine_id)
+        {
 
+            TuringMachine tm= TuringMachineBuilder.Parse(code);
+            Turing_machine selected_turing_machine = turing_machines[selected_turing_machine_id];
+            string return_me = "running " + selected_turing_machine.get_total_tests_number().ToString() + " tests:\n";
+            return_me = return_me + "passed: ";
+            int number_of_passed_tests = 0;
+            foreach (string illegal_word in selected_turing_machine.WordsNotInLanguage)
+            {
+                // check words not in lanuage, if turing mahcine accepts then the turing machine is incorrect
+                if(tm.Run(illegal_word))
+                {
+                    return_me = return_me + number_of_passed_tests.ToString() + "/" + selected_turing_machine.get_total_tests_number().ToString()+"\n";
+                    throw new Exception(return_me+"accepted a word that is not in language");
+                }
+                number_of_passed_tests++;
+            }
 
+            foreach (string legal_word in selected_turing_machine.WordsInLanguage)
+            {
+                // check words in lanuage, if turing mahcine does not accepts then the turing machine is incorrect
+                if (!tm.Run(legal_word))
+                {
+                    return_me = return_me + number_of_passed_tests.ToString() + "/" + selected_turing_machine.get_total_tests_number().ToString() + "\n";
+                    throw new Exception(return_me+"declined a word that is in language");
+                }
+                number_of_passed_tests++;
+            }
+
+            return return_me+"all tests passed";
+
+        }
     }
 }

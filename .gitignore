@@ -17,10 +17,10 @@
 [Rr]eleases/
 x64/
 x86/
-build/
 bld/
 [Bb]in/
 [Oo]bj/
+[Ll]og/
 
 # Visual Studio 2015 cache/options directory
 .vs/
@@ -138,7 +138,7 @@ publish/
 # Publish Web Output
 *.[Pp]ublish.xml
 *.azurePubxml
-# TODO: Comment the next line if you want to checkin your web deploy settings
+# TODO: Comment the next line if you want to checkin your web deploy settings 
 # but database connection strings (with potential passwords) will be unencrypted
 *.pubxml
 *.publishproj
@@ -151,6 +151,9 @@ publish/
 !**/packages/build/
 # Uncomment if necessary however generally it will be regenerated when needed
 #!**/packages/repositories.config
+# NuGet v3's project.json files produces more ignoreable files
+*.nuget.props
+*.nuget.targets
 
 # Microsoft Azure Build Output
 csx/
@@ -160,12 +163,11 @@ csx/
 ecf/
 rcf/
 
-# Microsoft Azure ApplicationInsights config file
-ApplicationInsights.config
-
-# Windows Store app package directory
+# Windows Store app package directories and files
 AppPackages/
 BundleArtifacts/
+Package.StoreAssociation.xml
+_pkginfo.txt
 
 # Visual Studio cache files
 # files ending in .cache can be ignored
@@ -183,6 +185,10 @@ ClientBin/
 *.publishsettings
 node_modules/
 orleans.codegen.cs
+
+# Since there are multiple workflows, uncomment next line to ignore bower_components 
+# (https://github.com/github/gitignore/pull/1529#issuecomment-104372622)
+#bower_components/
 
 # RIA/Silverlight projects
 Generated_Code/
@@ -229,15 +235,11 @@ _Pvt_Extensions
 
 # Paket dependency manager
 .paket/paket.exe
+paket-files/
 
 # FAKE - F# Make
 .fake/
-/.vs/slnx.sqlite
-/Market_System.Tests/obj/Debug/DesignTimeResolveAssemblyReferencesInput.cache
 
-#Ignore the logger txt files
-/logger/tests_error_logger.txt
-/logger/tests_events_logger.txt
-/logger/tests_error_logger.txt
-/logger/tests_events_logger.txt
-/Market_System/.vs/Market_System/config/applicationhost.config
+# JetBrains Rider
+.idea/
+*.sln.iml

@@ -19,11 +19,21 @@ namespace Frontend.Pages
 
         public void OnGet()
         {
+            FirstName = "";
+
         }
         public void OnPost()
         {
-            Console.Write(ConfirmPassword);
-            
+
+            // TODO
+
+            // user succesfuly registers to system show relevant message
+            TempData["RegistrationMessage"] = "User Successfully Registered";
+
+
+            FirstName = "";
+            LastName = "";
+            Email = "";
         }
     }
 }

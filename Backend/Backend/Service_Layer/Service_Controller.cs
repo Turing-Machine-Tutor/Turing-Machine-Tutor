@@ -62,6 +62,23 @@ namespace Backend.Service_Layer
             
         }
 
+        public Response<String> Validate_turing_machine(string code,string selected_turing_machine_id)
+        {
+            try
+            {
+                Response<string> ok = Response<string>.FromValue(this.turing_Machine_Controller.Validate_turing_machine(code, selected_turing_machine_id));
+
+
+                return ok;
+
+            }
+            catch (Exception e)
+            {
+
+                return Response<String>.FromError(e.Message);
+            }
+        }
+
 
 
 

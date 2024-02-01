@@ -31,7 +31,7 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-page="/TuringMachineEditor">TM</a>
                         </li>
-                        @if (ViewData["LoggedIn"] == "false")
+                        @if (API.userLoggedin == false)
                         {
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-page="/Login">Login</a>
