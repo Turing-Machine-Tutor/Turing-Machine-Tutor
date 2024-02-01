@@ -10,7 +10,7 @@ namespace Frontend.Pages
     {
         public class TuringMachineChallenge
         {
-            public string Id { get; set; }
+            public Guid Id { get; set; }
             public string Name { get; set; }
             public string Description { get; set; }
             public string InitialInput { get; set; }
@@ -18,10 +18,13 @@ namespace Frontend.Pages
 
 
         [BindProperty]
-        public Guid ChallengeId { get; set; }
+        public TuringMachineChallenge Challenge { get; set; }
 
         //public TuringMachineChallenge SelectedChallenge { get; set; }
         public List<TuringMachineChallenge> Challenges { get; set; }
+
+        private static List<TuringMachineChallenge> cs { get; set; }
+
         public void OnGet()
         {
             // Fetch challenges from your data source (e.g. backend, database)
@@ -30,9 +33,9 @@ namespace Frontend.Pages
            Response<List<Turing_machine>> Response= Backend_Connector.get_service_controller().extract_all_turing_machines();
             foreach (Turing_machine challenge in Response.Value)
             {
-                Challenges.Add(new TuringMachineChallenge { Id = challenge.get_id(), Name = challenge.get_name(), Description = challenge.Description, InitialInput = "0101" });
-
+                Challenges.Add(new TuringMachineChallenge { Id = Guid.Parse(challenge.get_id()), Name = challenge.get_name(), Description = challenge.Description, InitialInput = "0101" });
             }
+            cs = Challenges;
             /*
             Challenges = new List<TuringMachineChallenge>
             {
@@ -46,8 +49,12 @@ namespace Frontend.Pages
         public RedirectToPageResult OnPost() 
         {
             // Redirect to the SelectChallenge page with the selected challenge ID
-            API.selectedChallengeId = ChallengeId;
-            TempData["Challenge"] = ChallengeId;
+            API.selectedChallengeId = Challenge.Id;
+            TempData["Challenge"] = cs[0].Id;
+
+            
+
+            TempData["Description"] = cs[0].Description;
             return RedirectToPage("/Challenge");
         }
     }

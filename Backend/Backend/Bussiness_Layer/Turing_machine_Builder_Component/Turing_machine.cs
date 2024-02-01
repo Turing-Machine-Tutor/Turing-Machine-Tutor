@@ -25,7 +25,7 @@ namespace Backend.Bussiness_Layer.Turing_machine_Builder_Component
             this.ID = Guid.NewGuid();
         }
 
-        public string Description { get; }
+        public string Description { get { return description; } }
         public List<string> WordsInLanguage { get {  return words_in_language; } }
         public  List<string> WordsNotInLanguage { get { return words_not_in_language; } }
 

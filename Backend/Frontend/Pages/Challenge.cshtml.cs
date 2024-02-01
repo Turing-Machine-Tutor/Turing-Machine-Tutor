@@ -11,7 +11,8 @@ namespace Frontend.Pages
 
         public TuringMachine TuringMachineInstance { get; set; }
 
-
+        [BindProperty]
+        public string Description { get; set; }
         [BindProperty]
         public string Code {  get; set; }
 
@@ -21,7 +22,7 @@ namespace Frontend.Pages
         public void OnGet()
         {
             challengeId = API.selectedChallengeId;
-
+            Description = TempData["Description"].ToString();
             // challege id that the user has selected
 
             // initial code

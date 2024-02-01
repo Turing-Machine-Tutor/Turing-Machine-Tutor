@@ -96,7 +96,7 @@ namespace Backend.Bussiness_Layer.Turing_machine_Builder_Component
             int len = Tape.Count;
             try
             {
-                for (int i = 0; i < len; i++)
+                for (int i = 0; i < len*100; i++)
                 {
                     if (currentState == AcceptState)
                     {

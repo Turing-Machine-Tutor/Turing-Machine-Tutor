@@ -96,7 +96,7 @@ namespace Frontend
             int len = Tape.Count;
             try
             {
-                for (int i = 0; i < len; i++)
+                for (int i = 0; i < len*100; i++)
                 {
                     if (currentState == AcceptState)
                     {

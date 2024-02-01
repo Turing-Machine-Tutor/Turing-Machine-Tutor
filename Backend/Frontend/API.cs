@@ -6,5 +6,6 @@ namespace Frontend
     {
         public static bool userLoggedin = false;
         public static Guid selectedChallengeId;
+        
     }
 }
