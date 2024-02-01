@@ -1,3 +1,4 @@
+using Backend.Service_Layer;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.Numerics;
@@ -6,7 +7,7 @@ namespace Frontend.Pages
 {
     public class ChallengeModel : PageModel
     {
-        private int challengeId;
+        private Guid challengeId;
 
         public TuringMachine TuringMachineInstance { get; set; }
 
@@ -19,7 +20,7 @@ namespace Frontend.Pages
 
         public void OnGet()
         {
-            challengeId = (int)TempData["Challenge"];
+            challengeId = (Guid)TempData["Challenge"];
 
             // challege id that the user has selected
 
@@ -70,6 +71,15 @@ namespace Frontend.Pages
             else if (validate != null)
             {
                 Console.WriteLine("Validate" + Code);
+                Response<string> response= Backend_Connector.get_service_controller().Validate_turing_machine(Code, challengeId.ToString());
+                if(response.ErrorOccured)
+                {
+                    TempData["TestResult"] = response.ErrorMessage;
+                }
+                else
+                {
+                    TempData["TestResult"] = response.Value;
+                }
 
                 // where we can use tempdata at the very beginning to initialize the service controller?
                 // TempData["service_controller"].Validate_turing_machine(code,id)

@@ -31,7 +31,7 @@ namespace Backend.Bussiness_Layer.User_Component
             this.hashed_password = password;
             this.email = email;
             this.role = Role.student;
-            this.is_logged_in = true;
+            this.is_logged_in = false;
         }
 
         public bool IsLoggedIn()

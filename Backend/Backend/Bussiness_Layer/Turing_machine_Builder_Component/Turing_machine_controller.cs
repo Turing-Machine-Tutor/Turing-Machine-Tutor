@@ -15,7 +15,7 @@ namespace Backend.Bussiness_Layer.Turing_machine_Builder_Component
         {
             this.turing_machines = new Dictionary<string, Turing_machine>();
             //build in turing machines 
-            Turing_machine tm=new Turing_machine("turing machine that gets 2 binray numbers as input and outputs sum", new List<string> { "10" }, new List<string> { "sfs", "0" });
+            Turing_machine tm=new Turing_machine("turing machine that gets 2 binray numbers as input and outputs sum","binary sum", new List<string> { "10" }, new List<string> { "sfs", "0" });
             string id = tm.get_id();
             turing_machines.Add(id, tm);
 
@@ -80,6 +80,16 @@ namespace Backend.Bussiness_Layer.Turing_machine_Builder_Component
 
             return return_me+"all tests passed";
 
+        }
+
+        internal List<Turing_machine> extract_all_turing_machines()
+        {
+            List<Turing_machine> all_machines=new List<Turing_machine>(); 
+            foreach(KeyValuePair<string,Turing_machine> pair in this.turing_machines)
+            {
+                all_machines.Add(pair.Value);
+            }
+            return all_machines;
         }
     }
 }

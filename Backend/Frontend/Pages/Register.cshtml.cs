@@ -1,3 +1,4 @@
+using Backend.Service_Layer;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.ComponentModel.DataAnnotations;
@@ -28,12 +29,17 @@ namespace Frontend.Pages
             // TODO
 
             // user succesfuly registers to system show relevant message
-            TempData["RegistrationMessage"] = "User Successfully Registered";
+            Response<string> response = Backend_Connector.get_service_controller().Register(FirstName, LastName, Password, Email);
+            if (response.ErrorOccured)
+            {
+                TempData["RegistrationMessage"] = response.ErrorMessage;
+            }
+            else
+            {
+                TempData["RegistrationMessage"] = response.Value;
+            }
+            
 
-
-            FirstName = "";
-            LastName = "";
-            Email = "";
         }
     }
 }

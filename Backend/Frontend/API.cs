@@ -5,6 +5,6 @@ namespace Frontend
     public static class API
     {
         public static bool userLoggedin = false;
-        public static int selectedChallengeId = -1;
+        public static Guid selectedChallengeId;
     }
 }

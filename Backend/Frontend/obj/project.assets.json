@@ -14,6 +14,16 @@
             "related": ".xml"
           }
         }
+      },
+      "Backend/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v8.0",
+        "compile": {
+          "bin/placeholder/Backend.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/Backend.dll": {}
+        }
       }
     }
   },
@@ -47,10 +57,16 @@
         "newtonsoft.json.nuspec",
         "packageIcon.png"
       ]
+    },
+    "Backend/1.0.0": {
+      "type": "project",
+      "path": "../Backend/Backend.csproj",
+      "msbuildProject": "../Backend/Backend.csproj"
     }
   },
   "projectFileDependencyGroups": {
     "net8.0": [
+      "Backend >= 1.0.0",
       "Newtonsoft.Json >= 13.0.3"
     ]
   },
@@ -80,7 +96,11 @@
       "frameworks": {
         "net8.0": {
           "targetAlias": "net8.0",
-          "projectReferences": {}
+          "projectReferences": {
+            "C:\\Users\\bayan\\Desktop\\project_code\\Turing-Machine-Tutor\\Backend\\Backend\\Backend.csproj": {
+              "projectPath": "C:\\Users\\bayan\\Desktop\\project_code\\Turing-Machine-Tutor\\Backend\\Backend\\Backend.csproj"
+            }
+          }
         }
       },
       "warningProperties": {

@@ -10,7 +10,7 @@ using Backend.Bussiness_Layer.User_Component;
 
 namespace Backend.Service_Layer
 {
-    internal class Service_Controller
+    public class Service_Controller
     {
         private User_Controller user_Controller;
         private Turing_machine_controller turing_Machine_Controller;
@@ -76,6 +76,24 @@ namespace Backend.Service_Layer
             {
 
                 return Response<String>.FromError(e.Message);
+            }
+        }
+
+
+        public Response<List<Turing_machine>> extract_all_turing_machines()
+        {
+            try
+            {
+                Response<List<Turing_machine>> ok = Response<List<Turing_machine>>.FromValue(this.turing_Machine_Controller.extract_all_turing_machines());
+
+
+                return ok;
+
+            }
+            catch (Exception e)
+            {
+
+                return Response<List<Turing_machine>>.FromError(e.Message);
             }
         }
 
