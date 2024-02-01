@@ -20,7 +20,7 @@ namespace Frontend.Pages
 
         public void OnGet()
         {
-            challengeId = (Guid)TempData["Challenge"];
+            challengeId = API.selectedChallengeId;
 
             // challege id that the user has selected
 
@@ -71,7 +71,9 @@ namespace Frontend.Pages
             else if (validate != null)
             {
                 Console.WriteLine("Validate" + Code);
-                Response<string> response= Backend_Connector.get_service_controller().Validate_turing_machine(Code, challengeId.ToString());
+        
+                
+                Response<string> response= Backend_Connector.get_service_controller().Validate_turing_machine(Code, API.selectedChallengeId.ToString());
                 if(response.ErrorOccured)
                 {
                     TempData["TestResult"] = response.ErrorMessage;
