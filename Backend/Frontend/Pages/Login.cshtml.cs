@@ -17,7 +17,7 @@ namespace Frontend.Pages
 
         public void OnPost()
         {
-            session[""]
+           
             // TODO
 
             // user successfully logged in
