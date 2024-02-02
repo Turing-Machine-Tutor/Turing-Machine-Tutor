@@ -1,0 +1,17 @@
+def build():
+    # Example Turing Machine parameters
+    input_alphabet = ['0', '1']
+    tape_alphabet = ['0', '1','X','Y', 'B']  # B represents blank symbol
+    blank = 'B'
+    states = ['q0', 'q1', 'q2', 'q3' , 'q4', 'q5']
+    initial_state = 'q0'
+    acc = 'q4'
+    rej = 'q5'
+    delta = {
+        ('q0', '0'): ('X', 'q1', 'R'),
+        ('q0', '1'): ('1', 'q1', 'R'),
+        ('q1', '0'): ('0', 'q0', 'L'),
+        ('q1', '1'): ('1', 'q0', 'L'),
+        ('q0', 'B'): ('B', 'rej', 'S'),
+        ('q1', 'B'): ('B', 'acc', 'S')
+    }
