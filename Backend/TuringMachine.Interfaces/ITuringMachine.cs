@@ -12,10 +12,10 @@ namespace BussinessLayer.TuringMachines.Interfaces
         public override string ToString() => $"(state={State}, letter={TapeLetter})";
     }
     public record struct TransitionOutput(
-        string State, string TapeLetter,
+        string TapeLetter, string State,
         TransitionDirection Direction)
     {
-        public override string ToString() => $"(toState={State}, write {TapeLetter}, {Direction})";
+        public override string ToString() => $"(write {TapeLetter}, toState={State}, {Direction})";
     }
 
     public interface ITuringMachine

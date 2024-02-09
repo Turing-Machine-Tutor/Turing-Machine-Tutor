@@ -14,8 +14,12 @@
     <PackageReference Include="NUnit" Version="3.13.3" />
     <PackageReference Include="NUnit3TestAdapter" Version="4.2.1" />
     <PackageReference Include="NUnit.Analyzers" Version="3.6.1" />
-    <PackageReference Include="Microsoft.Playwright.NUnit" Version="1.27.1" />
     <PackageReference Include="coverlet.collector" Version="6.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\BussinessLayer.CodeEvaluation.Impl\BussinessLayer.CodeEvaluation.Impl.csproj" />
+    <ProjectReference Include="..\BussinessLayer.CodeEvaluation.Interfaces\BussinessLayer.CodeEvaluation.Interfaces.csproj" />
   </ItemGroup>
 
 </Project>

@@ -7,6 +7,11 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="IronPython" Version="3.4.1" />
+    <PackageReference Include="IronPython.StdLib" Version="3.4.1" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\BussinessLayer.CodeEvaluation.Interfaces\BussinessLayer.CodeEvaluation.Interfaces.csproj" />
     <ProjectReference Include="..\BussinessLayer.TuringMachine.Impl\BussinessLayer.TuringMachines.Impl.csproj" />
   </ItemGroup>
