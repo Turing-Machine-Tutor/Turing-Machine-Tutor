@@ -18,9 +18,21 @@ namespace Frontend.Pages
 
         [BindProperty]
         public string TestInput { get; set; }
+        [BindProperty]
+        public char[] MyArray { get; set; }
+
+
 
         public void OnGet()
         {
+            if (MyArray == null)
+            {
+                MyArray = new char[20];
+                for (int i = 0; i < MyArray.Length; i++)
+                {
+                    MyArray[i] = 'B';
+                }
+            }
             challengeId = API.selectedChallengeId;
             Description = API.selectedChallengeDesc;
             // challege id that the user has selected
@@ -52,6 +64,7 @@ namespace Frontend.Pages
         {
             string test = Request.Form["test"];
             string validate = Request.Form["validate"];
+            string step = Request.Form["step_button"];
             if (test != null)
             {
                 Console.WriteLine("Test" + Code);
@@ -86,6 +99,14 @@ namespace Frontend.Pages
 
                 // where we can use tempdata at the very beginning to initialize the service controller?
                 // TempData["service_controller"].Validate_turing_machine(code,id)
+
+            }
+            else if (step !=null)
+            {
+                
+                Console.WriteLine("first char in array is   " + MyArray[0]);
+                Console.WriteLine("TestInput is   " + TestInput);
+                
 
             }
 

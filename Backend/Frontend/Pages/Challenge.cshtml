@@ -25,6 +25,8 @@
     }
 
 </style>
+
+
 <form id="challengeForm" asp-action="Challenge" method="post">
 <div style="display: flex; justify-content: space-between; align-items: flex-start; padding: 20px;">
 
@@ -50,16 +52,65 @@
     </div>
 
     </div>
+
     <!-- Input and Buttons -->
     <div style="flex: 1; max-width: 25%; margin-left: 20px;">
         <label for="inputText">Input:</label>
         <input asp-for="TestInput" type="text" id="inputText" style="width: 100%; margin-bottom: 10px;">
             <button name="test" value="test" onclick="runTest()">Run Test</button>
+        <button name="step_button" value="step_button" onclick="step()">step</button>
     </div>
+    <div></div>
+    <div></div>
+    <style>
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin-top: 100px;
+        }
 
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: center;
+        }
+        .readonly-input {
+            border: none;
+            background-color: transparent;
+            width: 100%;
+            text-align: center;
+        }
+
+        td:first-child {
+            position: relative;
+        }
+
+            td:first-child::before {
+                content: '';
+                position: absolute;
+                top: -50px; /* Adjust as needed */
+                left: 50%;
+                width: 0;
+                height: 0;
+                border-left: 50px solid transparent;
+                border-right: 50px solid transparent;
+                border-bottom: 50px solid red; /* Triangle color */
+                transform: translateX(-50%) rotate(180deg);
+            }
+    </style>
+    <table id="myTable">
+            <tr>
+            @for (int i = 0; i < 20; i++)
+            {
+                <td>
+                <input asp-for="MyArray[i] " class="readonly-input" readonly />
+                    </td>
+            }
+            </tr>
+        </table>
     
+    </form>
 
-</form>
 
 
 <script>
@@ -82,6 +133,27 @@
 
         // For demonstration purposes, an alert is shown
         alert('Validating code...\nPython Code:\n' + pythonCode);
+    }
+
+    function step()
+    {
+     
+        // puts the string from input test on the tape of turing machine
+        var table = document.getElementById('myTable');
+        var inputText = document.getElementById('inputText');
+        console.log(typeof inputText.value);
+        console.log(inputText.value.length);
+        for (var i = 0; i < inputText.value.length; i++) {
+            
+            var cell = table.rows[0].cells[i];
+            var input = cell.querySelector('.readonly-input');
+            if (input) {
+                input.value = inputText.value[i]
+            }
+        }
+//-------------------------------------------------------------------------
+        
+       
     }
 
 
