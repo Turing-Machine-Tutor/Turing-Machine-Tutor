@@ -58,7 +58,8 @@
         <label for="inputText">Input:</label>
         <input asp-for="TestInput" type="text" id="inputText" style="width: 100%; margin-bottom: 10px;">
             <button name="test" value="test" onclick="runTest()">Run Test</button>
-        <button name="step_button" value="step_button" onclick="step()">step</button>
+        <button name="put_word_on_tape_button" value="put_word_on_tape_button" onclick="put_word_on_tape()">start_steps</button>
+        <button name="next_step_button" value="next_step_button" onclick="next_step()">next_step</button>
     </div>
     <div></div>
     <div></div>
@@ -85,7 +86,7 @@
             position: relative;
         }
 
-            td:first-child::before {
+            td.triangle {
                 content: '';
                 position: absolute;
                 top: -50px; /* Adjust as needed */
@@ -103,6 +104,7 @@
             @for (int i = 0; i < 20; i++)
             {
                 <td>
+                    <div class="triangle"></div>
                 <input asp-for="MyArray[i] " class="readonly-input" readonly />
                     </td>
             }
@@ -135,8 +137,8 @@
         alert('Validating code...\nPython Code:\n' + pythonCode);
     }
 
-    function step()
-    {
+    function put_word_on_tape() {
+    
      
         // puts the string from input test on the tape of turing machine
         var table = document.getElementById('myTable');
@@ -150,10 +152,38 @@
             if (input) {
                 input.value = inputText.value[i]
             }
-        }
-//-------------------------------------------------------------------------
-        
+        }     
        
+    }
+    function next_step() {
+        event.preventDefault();
+        var pythonCode = document.getElementById('pythonCode').value;
+        var helper_1 = pythonCode.indexOf("initial_state = "); // helper_1 helps me find index of initial_state =
+        var sub_string_of_python_code = pythonCode.substring(helper_1 + 17); //sub_string_of_python_code is the initial_state and the whole string after wards
+        var last_geresh_index = sub_string_of_python_code.indexOf("'");//this helps me find the length of init state
+        var init_state = sub_string_of_python_code.substring(0, last_geresh_index); // this gives me the init state
+        console.log(init_state);
+        var current_index = 0;
+        var table = document.getElementById('myTable');
+        for (var i = 0; i < 20; i++) {
+            var triangle = cell.querySelector('.triangle');
+            var cell = table.rows[0].cells[i];
+            var input = cell.querySelector('.readonly-input');
+            if (input) {
+                if (input.value == 0) {
+                    var nextCell = table.rows[0].cells[i + 1];
+                    var nextTriangle = nextCell.querySelector('.triangle');
+
+                    // Remove the triangle from the current cell
+                    triangle.style.display = 'none';
+                    console.log("my dick");
+
+                }
+            }
+
+
+
+        }
     }
 
 
