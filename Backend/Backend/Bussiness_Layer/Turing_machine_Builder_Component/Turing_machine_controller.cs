@@ -57,7 +57,7 @@ namespace Backend.Bussiness_Layer.Turing_machine_Builder_Component
         internal string Validate_turing_machine(string code,string selected_turing_machine_id)
         {
 
-            TuringMachine tm= TuringMachineBuilder.Parse(code);
+            TuringMachine tm= TuringMachineParser.Parse(code);
             Turing_machine selected_turing_machine = turing_machines[selected_turing_machine_id];
             string return_me = "running " + selected_turing_machine.get_total_tests_number().ToString() + " tests:  ";
             return_me = return_me + "passed: ";

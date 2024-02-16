@@ -3,7 +3,7 @@ using System.Text.RegularExpressions;
 
 namespace Backend.Bussiness_Layer.Turing_machine_Builder_Component
 {
-    public static class TuringMachineBuilder
+    public static class TuringMachineParser
     {
 
         public static TuringMachine Parse(string code)
