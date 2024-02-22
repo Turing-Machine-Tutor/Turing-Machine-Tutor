@@ -10,8 +10,37 @@ package bussiness {
         + remove(name: string, machine: TuringMachine): void
         + get(name: string): TuringMachine
         + get_all_names(): Iterable<string>
+        + run(turing_machine_name:string,input:string):tuple(tape:Tape,state:state,head_position:int)
+        +visualize(Turing_machine_name:string, input:string):void
+    }
+ class CombinedTuringMachine <<immutable dataclass>> {
+        -turing_machines: list<string>
+        +run() : TuringMachineRun
+        +visualize:
+
+
+
+        + states: FrozenSet<State>
+        + input_alphabet: Alphabet
+        + tape_alphabet: Alphabet
+        + blank_character: Letter
+        + delta: TransitionTable
+        + accepting_state: State
+        + rejecting_state: State
+        + initial_state: State
+
     }
 
+
+     class TuringMachineVisualizer <<immutable dataclass>> {
+        -turing_machine: TuringMachine | CombinedTuringMachine
+        -steps : list<(tape:tape,head_position:int,current_state:state)>
+        -add_step(tuple(tape,head_position,current_state)) : void
+        +build_steps():void
+        -build_steps_turingmachine(): void
+        -build_steps_turingmachinecombined(): void
+        +get_steps():list<(tape:tape,head_position:int,current_state:state)>
+    }
 
     class TuringMachine <<immutable dataclass>> {
         + states: FrozenSet<State>
