@@ -12,14 +12,14 @@ package bussiness {
         + get_all_names(): Iterable<string>
         + run(turing_machine_name:string,input:string):tuple(tape:Tape,state:state,head_position:int)
         +visualize(Turing_machine_name:string, input:string):void
+        +validate(Turing_machine_name:name,function_obj,extreme_case:list<string>,test_count:int,max_input_length:int):boolean
+
     }
+
+
  class CombinedTuringMachine <<immutable dataclass>> {
         -turing_machines: list<string>
         +run() : TuringMachineRun
-        +visualize:
-
-
-
         + states: FrozenSet<State>
         + input_alphabet: Alphabet
         + tape_alphabet: Alphabet
