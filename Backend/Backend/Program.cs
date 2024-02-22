@@ -47,9 +47,9 @@ class Program
 
     private static void display_first_menu(List<Turing_machine> list_of_tm)
     {
-        Console.WriteLine("please choose desired turing machine to work on: (choose the number) ");
+        Console.WriteLine("please choose desired turing machine to work on: (choose the number) \n");
        
-        Console.WriteLine("choose your desired action number:");
+        
 
         for (int i = 0; i < list_of_tm.Count; i++)
         {
