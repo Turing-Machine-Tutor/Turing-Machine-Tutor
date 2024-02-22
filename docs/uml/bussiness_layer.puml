@@ -1,0 +1,78 @@
+@startuml
+
+
+
+package bussiness {
+    class TuringMachineController {
+        - machines: Dictionary<string, TuringMachine>
+
+        + add(name: string, machine: TuringMachine): void
+        + remove(name: string, machine: TuringMachine): void
+        + get(name: string): TuringMachine
+        + get_all_names(): Iterable<string>
+    }
+
+
+    class TuringMachine <<immutable dataclass>> {
+        + states: FrozenSet<State>
+        + input_alphabet: Alphabet
+        + tape_alphabet: Alphabet
+        + blank_character: Letter
+        + delta: TransitionTable
+        + accepting_state: State
+        + rejecting_state: State
+        + initial_state: State
+
+    }
+
+    class TuringMachineRun {
+       - machine: TuringMachine
+       - current_tape: Tape
+       - input: Word
+       - state: State
+       - head_position: int
+       - history: Stack<Undo>
+
+       + get_result(): TuringMachineResult
+       + reset(): void
+       + step(): void
+       + undo(): void
+       + run_multiple_steps(): void
+    }
+
+    class TuringMachineConfiguration {
+
+    }
+
+package testing {
+    abstract class TuringMachineTester {
+
+    }
+
+    class ConstantWordsTester {
+
+    }
+
+    class RandomizedTester {
+
+    }
+
+    ConstantWordsTester -u-|> TuringMachineTester
+    RandomizedTester -u-|> TuringMachineTester
+
+    }
+}
+
+
+package service_layer {
+
+}
+
+package presentation_layer {
+
+}
+
+service_layer -d-> bussiness
+presentation_layer -d-> service_layer
+
+@enduml
