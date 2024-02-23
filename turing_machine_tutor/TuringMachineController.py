@@ -37,19 +37,20 @@ class TuringMachineController:
         raise Exception("to do")
 
 
-    def validate_turing_machines(self,turing_name,function_object,extreme_cases,test_count=100,max_input_length=20):
+    def validate_turing_machine(self,turing_name,function_object,extreme_cases,test_count=100,max_input_length=20):
         try:
             for _ in range(test_count): ## generate random words and test them
                 for input_length in range(1,max_input_length):
                     alphabet = ''.join(self.turing_machines[turing_name].alphabet)
                     input_string = ''.join(random.choice(alphabet) for _ in range(input_length))
                     print("testing on input: "+input_string)
-                    config=self.turing_machines[turing_name].run(input_string)
+                    final_machine_state=self.turing_machines[turing_name].run(input_string)
                     function_result=function_object(input_string) ## boolean function i guess
+                    is_in_acceptance_checker=self.turing_machines[turing_name].given_state_is_in_acceptance(final_machine_state.state)
                     ##   result1, accepted1 = self.turing_machines[original].run(input_string)
                     ## result2, accepted2 = self.turing_machines[userTm].run(input_string)
                     # if (result1 != result2) or (accepted1 != accepted2):
-                    if function_result!=config.state :
+                    if function_result!=is_in_acceptance_checker:
                         print(f"Validation failed for input: {input_string}")
                         return False
                     else :
