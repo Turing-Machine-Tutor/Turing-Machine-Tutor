@@ -1,4 +1,4 @@
-from Scripts.business_layer.configuration import Configuration
+from configuration import Configuration
 
 class TuringMachine:
     def __init__(self, states, alphabet, tape_symbols, blank, transitions, initial_state, accept_states, reject_states):
@@ -11,8 +11,11 @@ class TuringMachine:
         self.reject_states = set(reject_states) ##list
         self.blank = blank
 
-    def run_step(self, tape, head_position, current_state,configuration):
+    def run_step(self, configuration):
         # Check if the current state is an accepting or rejecting state
+        tape=configuration.tape
+        current_state=configuration.state
+        head_position=configuration.head_position
         if configuration.state in self.accept_states or configuration.state in self.reject_states:
             return configuration
 
@@ -43,14 +46,14 @@ class TuringMachine:
                 if head_position < 0: ##@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ this isn't illegal? if the head is on 0 and the transition says to move left this means the turing machine is incorrect isn't it?
                         tape.insert(0, self.blank)  # Blank symbol for extending the tape to the left
 
-            return tape, head_position, new_state
+            return Configuration(tape, head_position, new_state)
         else:
             # If no transition is defined, stay in the current state
-            return tape, head_position, current_state
+            return configuration
 
-    def contains_chars(self, input_string, char_list):
+    def contains_chars(self, input_string, input_alphabet):
         for ch in input_string:
-            if(ch not in char_list):
+            if(ch not in input_alphabet):
                 return False
         return True
 

@@ -1,6 +1,6 @@
 import random
 import string
-from Scripts.business_layer import TuringMachine
+from TuringMachine import TuringMachine
 
 class TuringMachineController:
     def __init__(self):
@@ -40,7 +40,7 @@ class TuringMachineController:
     def validate_turing_machines(self,turing_name,function_object,extreme_cases,test_count=100,max_input_length=20):
         try:
             for _ in range(test_count): ## generate random words and test them
-                for input_length in range(1,max_input_test_length):
+                for input_length in range(1,max_input_length):
                     alphabet = ''.join(self.turing_machines[turing_name].alphabet)
                     input_string = ''.join(random.choice(alphabet) for _ in range(input_length))
                     print("testing on input: "+input_string)

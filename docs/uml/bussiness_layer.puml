@@ -21,8 +21,8 @@ package business_layer {
         -turing_machines: list<string>
         +run() : configuration
         + states: FrozenSet<State>
-        + input_alphabet: Alphabet
-        + tape_alphabet: Alphabet
+        + input_alphabet: list<string>
+        + tape_alphabet: list<string>
         + blank_character: Letter
         + delta: TransitionTable
         + accepting_state: State
@@ -57,17 +57,17 @@ package business_layer {
     }
 
     class TuringMachine <<immutable dataclass>> {
-        + states: FrozenSet<State>
-        + input_alphabet: Alphabet
-        + tape_alphabet: Alphabet
-        + blank_character: Letter
-        + delta: TransitionTable
-        + accepting_state: State
+        + states: list<State>
+        + input_alphabet: list<string>
+        + tape_alphabet: list<string>
+        + blank_character: string
+        + delta: Dictionary< Tuple< state:State,tape_symbol:string > ,configuration >
+        + accepting_state: list<State>
         + rejecting_state: State
         + initial_state: State
         +run(input_string:string):configuration
         +run_step(configuration):configuration
-        +contains_chars(input_string:string, input_alphabet:list<char>):boolean
+        +contains_chars(input_string:string, input_alphabet:list<string>):boolean
         +run_combined(input_string:string,head_position:int):configuration
 
     }

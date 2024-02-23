@@ -1,4 +1,5 @@
-from business_layer.configuration import Configuration
+from configuration import Configuration
+
 
 def test_me(number):
     if number==1:
