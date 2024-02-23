@@ -2,24 +2,24 @@
 
 
 
-package bussiness {
+package business_layer {
     class TuringMachineController {
         - machines: Dictionary<string, TuringMachine>
 
         + add(name: string, machine: TuringMachine): void
-        + remove(name: string, machine: TuringMachine): void
+        + remove(name: string): void
         + get(name: string): TuringMachine
         + get_all_names(): Iterable<string>
-        + run(turing_machine_name:string,input:string):tuple(tape:Tape,state:state,head_position:int)
+        + run(turing_machine_name:string,input:string):configuration
         +visualize(Turing_machine_name:string, input:string):void
-        +validate(Turing_machine_name:name,function_obj,extreme_case:list<string>,test_count:int,max_input_length:int):boolean
+        +validate(Turing_machine_name:string,function_obj,extreme_case:list<string>,test_count:int,max_input_length:int):boolean
 
     }
 
 
  class CombinedTuringMachine <<immutable dataclass>> {
         -turing_machines: list<string>
-        +run() : TuringMachineRun
+        +run() : configuration
         + states: FrozenSet<State>
         + input_alphabet: Alphabet
         + tape_alphabet: Alphabet
@@ -34,12 +34,26 @@ package bussiness {
 
      class TuringMachineVisualizer <<immutable dataclass>> {
         -turing_machine: TuringMachine | CombinedTuringMachine
-        -steps : list<(tape:tape,head_position:int,current_state:state)>
+        -steps : list<configuration>
         -add_step(tuple(tape,head_position,current_state)) : void
         +build_steps():void
         -build_steps_turingmachine(): void
         -build_steps_turingmachinecombined(): void
-        +get_steps():list<(tape:tape,head_position:int,current_state:state)>
+        +get_steps():list<configuration>
+    }
+
+    class Configuration <<immutable dataclass>> {
+       -tape :Tape
+       -head_position:int
+       -state:State
+    }
+
+       class State <<immutable dataclass>> {
+        -state:string
+    }
+
+      class Tape <<immutable dataclass>> {
+        -tape_symbols:list<string>
     }
 
     class TuringMachine <<immutable dataclass>> {
@@ -51,15 +65,17 @@ package bussiness {
         + accepting_state: State
         + rejecting_state: State
         + initial_state: State
+        +run(input_string:string):configuration
+        +run_step(configuration):configuration
+        +contains_chars(input_string:string, input_alphabet:list<char>):boolean
+        +run_combined(input_string:string,head_position:int):configuration
 
     }
 
     class TuringMachineRun {
        - machine: TuringMachine
-       - current_tape: Tape
        - input: Word
-       - state: State
-       - head_position: int
+       - config: configuration
        - history: Stack<Undo>
 
        + get_result(): TuringMachineResult
@@ -69,9 +85,7 @@ package bussiness {
        + run_multiple_steps(): void
     }
 
-    class TuringMachineConfiguration {
 
-    }
 
 package testing {
     abstract class TuringMachineTester {
