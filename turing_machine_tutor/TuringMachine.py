@@ -1,33 +1,40 @@
+from Tape import Tape
 from configuration import Configuration
+from machine_run_state import Machine_Run_State
+
 
 class TuringMachine:
     def __init__(self, states, alphabet, tape_symbols, blank, transitions, initial_state, accept_states, reject_states):
         self.states = set(states)
-        self.alphabet = set(alphabet)
-        self.tape_symbols = set(tape_symbols)
+        self.input_alphabet = set(alphabet)
+        self.tape_alphabet = set(tape_symbols)
         self.transitions = transitions
         self.initial_state = initial_state
         self.accept_states = set(accept_states) ##list
         self.reject_states = set(reject_states) ##list
         self.blank = blank
+        self.current_machine_state=Machine_Run_State(Tape(list()),0,initial_state)
 
     def run_step(self, configuration):
         # Check if the current state is an accepting or rejecting state
-        tape=configuration.tape
-        current_state=configuration.state
-        head_position=configuration.head_position
-        if configuration.state in self.accept_states or configuration.state in self.reject_states:
+
+        tape=self.current_machine_state.tape
+        current_state=self.current_machine_state
+        head_position=self.current_machine_state.head_position
+        if current_state in self.accept_states or current_state in self.reject_states:
             return configuration
 
         # Retrieve the current symbol under the tape head
-        current_symbol = tape[configuration.head_position] if 0 <= configuration.head_position < len(tape) else '_'
-        if(current_symbol not in self.tape_symbols):
+        current_symbol = tape[head_position] if 0 <= head_position < len(tape) else '_'
+        if(current_symbol not in self.tape_alphabet):
             raise Exception("error on input: tape contains symbol not in tape alphabet.")
             ##return tape, -1, current_state # return head_position as -1
         # Check if a transition is defined for the current state and symbol
-        if (configuration.state, current_symbol) in self.transitions:
-            new_state, write_symbol, move_direction = self.transitions[(current_state, current_symbol)]
-
+        if (self.current_machine_state.state, current_symbol) in self.transitions:
+            config = self.transitions[(current_state, current_symbol)]
+            write_symbol=config.symbol
+            move_direction=config.action
+            new_state=config.state
             # Write the new symbol to the tape
             if 0 <= head_position < len(tape):
                 tape[head_position] = write_symbol

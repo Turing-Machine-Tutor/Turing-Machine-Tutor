@@ -1,10 +1,11 @@
 class Configuration:
-    def __init__(self, tape, new_symbol,state,head_position):
-        self.tape=tape   ## type is Tape
-        self.symbol=new_symbol ## symbol is string - one char
+    def __init__(self, state, new_symbol,action):
         self.state = state  ## type is State
+        self.symbol=new_symbol ## symbol is string - one char
+        self.action=action ## Action is string - one char L,R,S
 
-        self.head_position = head_position  ## type is int
+
+
 
 
     def try_me(self,function):

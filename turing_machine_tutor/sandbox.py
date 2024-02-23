@@ -11,6 +11,6 @@ def test_me(number):
     return
 
 
-ok=Configuration(1,2,3)
+ok=Configuration(1,2,3,0)
 print(ok.try_me(test_me))
 
