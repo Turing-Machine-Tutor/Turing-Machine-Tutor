@@ -18,26 +18,12 @@ class TuringMachine:
         self.current_machine_state=Machine_Run_State(Tape(list()),0,initial_state)
 
     def run_step(self, configuration):
-        # Check if the current state is an accepting or rejecting state
 
-        tape=self.current_machine_state.tape
-        current_state=self.current_machine_state
-        head_position=self.current_machine_state.head_position
-        if current_state in self.accept_states or current_state in self.reject_states:
-            return self.current_machine_state
-
-        # Retrieve the current symbol under the tape head
-        current_symbol = tape[head_position] if 0 <= head_position < len(tape) else '_'
-        if(current_symbol not in self.tape_alphabet):
-            raise Exception("error on input: tape contains symbol not in tape alphabet.")
-            ##return tape, -1, current_state # return head_position as -1
-        # Check if a transition is defined for the current state and symbol
-        if (self.current_machine_state.state, current_symbol) in self.transitions:
-            new_config = self.transitions[(current_state, current_symbol)]
-            # Write the new symbol to the tape +  Move the tape head according to the direction specified in the transition
-            self.current_machine_state.write_to_tape(new_config)
-        return self.current_machine_state
-            # If no transition is defined, stay in the current state and return it
+        self.current_machine_state.execute_config(configuration)
+        new_machine_run_state = Machine_Run_State(self.current_machine_state.tape.copy(),
+                                                self.current_machine_state.head_position,
+                                                self.current_machine_state.state)
+        return new_machine_run_state
 
 
     def contains_chars(self, input_string, input_alphabet):
@@ -45,6 +31,13 @@ class TuringMachine:
             if(ch not in input_alphabet):
                 return False
         return True
+
+    def get_config(self):
+        symbol = self.current_machine_state.tape[self.current_machine_state.head_position]
+        state=self.current_machine_state.state
+        config = self.transitions[(state,symbol)]
+        return config
+
 
     def reset_turing_machine(self):
         self.current_machine_state.tape = list()

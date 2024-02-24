@@ -81,12 +81,12 @@ anbn_turing_machine = TuringMachine(
 controller = TuringMachineController()
 controller.add_turing_machine('emptyString', emptyString)
 controller.add_turing_machine('tm1',tm1)
-controller.add_turing_machine('0n0n',anbn_turing_machine)
+controller.add_turing_machine('0n1n',anbn_turing_machine)
 
 # Run the Turing machine from the library
 mrs= controller.run_turing_machine('tm1', '000111')
 print(tm1.given_state_is_in_acceptance(mrs.state))
-mrs= controller.run_turing_machine('0n0n', '1001')
+mrs= controller.run_turing_machine('0n1n', '0000011111')
 print(anbn_turing_machine.given_state_is_in_acceptance(mrs.state))
 
 
@@ -105,5 +105,6 @@ def is_0n1n(input_str):
 
     return not stack
 
-print(is_0n1n("1001"))
+##controller.validate_turing_machine('0n0n',is_0n1n,{"00"})
+controller.visualize('0n1n',"0011")
 

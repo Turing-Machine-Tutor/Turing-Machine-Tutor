@@ -1,6 +1,8 @@
 import random
 import string
 from TuringMachine import TuringMachine
+from TuringMachineVisualizer import TuringMachineVisualizer
+
 
 class TuringMachineController:
     def __init__(self):
@@ -34,7 +36,10 @@ class TuringMachineController:
 
 
     def visualize(self,turing_name,input):
-        raise Exception("to do")
+        self.turing_machines[turing_name].reset_turing_machine()
+        visualizer =TuringMachineVisualizer(self.turing_machines[turing_name])
+        visualizer.run_and_visualize(input,5000)
+
 
 
     def validate_turing_machine(self,turing_name,function_object,extreme_cases,test_count=100,max_input_length=20):
@@ -47,14 +52,22 @@ class TuringMachineController:
                     final_machine_state=self.turing_machines[turing_name].run(input_string)
                     function_result=function_object(input_string) ## boolean function i guess
                     is_in_acceptance_checker=self.turing_machines[turing_name].given_state_is_in_acceptance(final_machine_state.state)
-                    ##   result1, accepted1 = self.turing_machines[original].run(input_string)
-                    ## result2, accepted2 = self.turing_machines[userTm].run(input_string)
-                    # if (result1 != result2) or (accepted1 != accepted2):
                     if function_result!=is_in_acceptance_checker:
                         print(f"Validation failed for input: {input_string}")
                         return False
                     else :
                         print(f"Validation passed for input: {input_string}")
+            print("testing extreme cases:\n ")
+            for extreme_case in extreme_cases: ##test extreme cases
+                final_machine_state = self.turing_machines[turing_name].run(extreme_case)
+                function_result = function_object(input_string)
+                is_in_acceptance_checker = self.turing_machines[turing_name].given_state_is_in_acceptance(final_machine_state.state)
+                if function_result != is_in_acceptance_checker:
+                    print(f"Validation failed for input: {extreme_case}")
+                    return False
+                else:
+                    print(f"Validation passed for input: {extreme_case}")
+
             print("Validation passed for all Turing machines.")
             return True
         except Exception as e:
