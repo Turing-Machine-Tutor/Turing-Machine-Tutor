@@ -10,7 +10,7 @@ package business_layer {
         + remove(name: string): void
         + get(name: string): TuringMachine
         + get_all_names(): Iterable<string>
-        + run(turing_machine_name:string,input:string):configuration
+        + run(turing_machine_name:string,input:string):Machine_Run_State
         +visualize(Turing_machine_name:string, input:string):void
         +validate(Turing_machine_name:string,function_obj,extreme_case:list<string>,test_count:int,max_input_length:int):boolean
 
@@ -43,9 +43,9 @@ package business_layer {
     }
 
     class Configuration <<immutable dataclass>> {
-       -tape :Tape
-       -head_position:int
-       -state:State
+         -state :State
+        -symbol:string
+        -action:string
     }
 
        class State <<immutable dataclass>> {
@@ -61,28 +61,22 @@ package business_layer {
         + input_alphabet: list<string>
         + tape_alphabet: list<string>
         + blank_character: string
-        + delta: Dictionary< Tuple< state:State,tape_symbol:string > ,configuration >
+        + transitions: Dictionary< Tuple< state:State,tape_symbol:string > ,configuration >
         + accepting_state: list<State>
         + rejecting_state: State
         + initial_state: State
-        +run(input_string:string):configuration
-        +run_step(configuration):configuration
+        +current_machine_state:Machine_Run_State
+        +run(input_string:string):Machine_Run_State
+        +run_step(configuration):Machine_Run_State
         +contains_chars(input_string:string, input_alphabet:list<string>):boolean
         +run_combined(input_string:string,head_position:int):configuration
 
     }
 
-    class TuringMachineRun {
-       - machine: TuringMachine
-       - input: Word
-       - config: configuration
-       - history: Stack<Undo>
-
-       + get_result(): TuringMachineResult
-       + reset(): void
-       + step(): void
-       + undo(): void
-       + run_multiple_steps(): void
+    class Machine_Run_State {
+       -tape :Tape
+       -head_position:int
+       -state:State
     }
 
 

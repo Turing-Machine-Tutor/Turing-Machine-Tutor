@@ -14,18 +14,21 @@ class Machine_Run_State:
 
 
 
-    def write_to_tape(self, config):
-        if 0 <= self.head_position < len(self.tape):
-            self.tape[self.head_position] = config.symbol
-        elif config.action == 'R':
-            self.tape.append(config.symbol)
+    def write_to_tape_and_advance_current_state(self, config):
+        self.tape[self.head_position] = config.symbol
+        self.state=config.state
+        if config.action == 'R':
             self.head_position += 1
             if self.head_position == len(self.tape):
-                self.tape.append("B")
+                self.tape.append("B")  # Blank symbol for extending the tape to the right
         elif config.action == 'L':
-            self.tape.insert(0, config.symbol)
             self.head_position -= 1
-            if self.head_position < 0:  ##@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ this isn't illegal? if the head is on 0 and the transition says to move left this means the turing machine is incorrect isn't it?
-                self.tape.insert(0, "B")
+            if self.head_position < 0:
+                self.tape.insert(0, "B")  # Blank symbol for extending the tape to the left
+
+
+
+    def put_word_on_tape(self, input_string):
+        self.tape=list(input_string)
 
 

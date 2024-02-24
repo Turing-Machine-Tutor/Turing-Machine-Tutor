@@ -6,9 +6,9 @@ from machine_run_state import Machine_Run_State
 
 
 class TuringMachine:
-    def __init__(self, states, alphabet, tape_symbols, blank, transitions, initial_state, accept_states, reject_states):
+    def __init__(self, states, input_alphabet, tape_symbols, blank, transitions, initial_state, accept_states, reject_states):
         self.states = set(states)
-        self.input_alphabet = set(alphabet)
+        self.input_alphabet = set(input_alphabet)
         self.tape_alphabet = set(tape_symbols)
         self.transitions = transitions
         self.initial_state = initial_state
@@ -49,26 +49,28 @@ class TuringMachine:
     def reset_turing_machine(self):
         self.current_machine_state.tape = list()
         self.current_machine_state.head_position = 0
-        self.current_machine_state.current_state = self.initial_state
+        self.current_machine_state.state = self.initial_state
 
     def run(self, input_string):
         max_steps=100*len(input_string)
         self.reset_turing_machine()
+        self.current_machine_state.put_word_on_tape(input_string)
         steps = 0
 
-        if not self.contains_chars(input_string, self.alphabet):
+        if not self.contains_chars(input_string, self.input_alphabet):
             raise Exception("input string contains char not from the alphabet.")
             ##return Configuration(''.join(tape), head_position,current_state in self.accept_states) ## @@@@ current_state in self.accept_states why boolean it should be state?
 
 
-        while self.current_machine_state.current_state not in self.accept_states and self.current_machine_state.current_state not in self.reject_states and steps < max_steps:
+        while self.current_machine_state.state not in self.accept_states and self.current_machine_state.state not in self.reject_states and steps < max_steps:
             current_symbol = self.current_machine_state.tape[self.current_machine_state.head_position]
-            if(current_symbol not in self.tape_symbols):
+            if(current_symbol not in self.tape_alphabet):
                 raise Exception("error on input: tape contains symbol not in tape alphabet.")
                 ##return tape, -1, current_state # return head_position as -1
-            if (self.current_machine_state.current_state, current_symbol) in self.transitions:
-                current_config=self.transitions[(self.current_machine_state.current_state, current_symbol)]
-                self.current_machine_state.write_to_tape(current_config)
+            if (self.current_machine_state.state, current_symbol) in self.transitions:
+                current_config=self.transitions[(self.current_machine_state.state, current_symbol)]
+                ##self.current_machine_state.write_to_tape(current_config)
+                self.execute_config(current_config)
                 steps += 1
             else:
                 break
@@ -112,4 +114,10 @@ class TuringMachine:
 
           #return ''.join(tape), current_state in self.accept_states, head_position
           return ''.join(tape), current_state, head_position
+
+    def execute_config(self, current_config):
+        self.current_machine_state.write_to_tape_and_advance_current_state(current_config)
+
+
+
 
