@@ -70,7 +70,7 @@ class TuringMachine:
             if (self.current_machine_state.state, current_symbol) in self.transitions:
                 current_config=self.transitions[(self.current_machine_state.state, current_symbol)]
                 ##self.current_machine_state.write_to_tape(current_config)
-                self.execute_config(current_config)
+                self.current_machine_state.execute_config(current_config)
                 steps += 1
             else:
                 break
@@ -85,38 +85,31 @@ class TuringMachine:
 
     def run_combined(self, input_string,head_position): ##@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ head=0?
           max_steps=100*len(input_string)
-          tape = list(input_string)
-          #head_position = 0
-          current_state = self.initial_state
+          self.reset_turing_machine()
+          self.current_machine_state.head_position=head_position
+          self.current_machine_state.put_word_on_tape(input_string)
           steps = 0
 
-          while current_state not in self.accept_states and current_state not in self.reject_states and steps < max_steps:
-              current_symbol = tape[head_position]
+          while self.current_machine_state.state not in self.accept_states and self.current_machine_state.state not in self.reject_states and steps < max_steps:
+              current_symbol = self.current_machine_state.tape[head_position]
 
-              if (current_state, current_symbol) in self.transitions:
-                  new_state, new_symbol, move_direction = self.transitions[(current_state, current_symbol)]
+              if (self.current_machine_state.state, current_symbol) in self.transitions:
+                  current_config=self.transitions[(self.current_machine_state.state, current_symbol)]
 
-                  tape[head_position] = new_symbol
-
-                  if move_direction == 'R':
-                      head_position += 1
-                      if head_position == len(tape):
-                          tape.append(self.blank)  # Blank symbol for extending the tape to the right
-                  elif move_direction == 'L':
-                      head_position -= 1
-                      if head_position < 0:
-                          tape.insert(0, self.blank)  # Blank symbol for extending the tape to the left
-
-                  current_state = new_state
+                  self.current_machine_state.execute_config(current_config)
                   steps += 1
               else:
                   break
 
-          #return ''.join(tape), current_state in self.accept_states, head_position
-          return ''.join(tape), current_state, head_position
+          final_machine_run_state = Machine_Run_State(self.current_machine_state.tape,
+                                                      self.current_machine_state.head_position,
+                                                      self.current_machine_state.state)
 
-    def execute_config(self, current_config):
-        self.current_machine_state.write_to_tape_and_advance_current_state(current_config)
+          return final_machine_run_state
+          #return ''.join(tape), current_state in self.accept_states, head_position
+         ## return ''.join(tape), current_state, head_position
+
+
 
 
 

@@ -41,7 +41,7 @@ class TuringMachineController:
         try:
             for _ in range(test_count): ## generate random words and test them
                 for input_length in range(1,max_input_length):
-                    alphabet = ''.join(self.turing_machines[turing_name].alphabet)
+                    alphabet = ''.join(self.turing_machines[turing_name].input_alphabet)
                     input_string = ''.join(random.choice(alphabet) for _ in range(input_length))
                     print("testing on input: "+input_string)
                     final_machine_state=self.turing_machines[turing_name].run(input_string)

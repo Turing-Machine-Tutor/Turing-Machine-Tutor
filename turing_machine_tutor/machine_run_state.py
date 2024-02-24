@@ -14,7 +14,7 @@ class Machine_Run_State:
 
 
 
-    def write_to_tape_and_advance_current_state(self, config):
+    def execute_config(self, config):
         self.tape[self.head_position] = config.symbol
         self.state=config.state
         if config.action == 'R':
@@ -30,5 +30,6 @@ class Machine_Run_State:
 
     def put_word_on_tape(self, input_string):
         self.tape=list(input_string)
+
 
 
