@@ -210,8 +210,26 @@ combined_tm.add('step4', step4)
 
 controller.add_turing_machine('combined_shit',combined_tm)
 
-# Run the Turing machine from the library
-# mrs= controller.run_turing_machine_with_while_condition('011',step6,'combined_shit')
-controller.validate_combined_turing_machine_with_while_condition('combined_shit',is_0n1n,{"011"},step6)
+#----------------------------testing combine_tm_with_conidition---------------------------
+
+#controller.validate_combined_turing_machine_with_while_condition('combined_shit',is_0n1n,{"011"},step6)
 # print("at end tape is:  ",mrs.tape)
 # print(step6.given_state_is_in_acceptance(mrs.state))
+
+#----------------------------------------------------------------------------------------
+
+
+
+
+
+
+
+#----------------------------testing combine_tm------------------------------------------
+
+#mrs= controller.run_turing_machine('combined_shit','001')
+
+#print("fuck you is:   ",combined_tm.turing_machines[-1].given_state_is_in_acceptance(mrs.state))
+controller.validate_turing_machine('combined_shit',is_0n1n,{"0011"})
+# controller.visualize('0n1n',"0011")
+
+#----------------------------------------------------------------------------------------

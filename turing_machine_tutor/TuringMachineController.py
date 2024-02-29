@@ -112,7 +112,6 @@ class TuringMachineController:
 
 
     def validate_turing_machine(self,turing_name,function_object,extreme_cases,test_count=100,max_input_length=20):
-        try:
             if turing_name not in self.turing_machines.keys():
                 raise Exception("there is no turing machine with the name: ",turing_name)
             for _ in range(test_count): ## generate random words and test them
@@ -120,9 +119,25 @@ class TuringMachineController:
                     alphabet = ''.join(self.turing_machines[turing_name].input_alphabet)
                     input_string = ''.join(random.choice(alphabet) for _ in range(input_length))
                     print("testing on input: "+input_string)
-                    final_machine_state=self.turing_machines[turing_name].run(input_string)
+                    final_machine_state=None
+                    try:
+                        final_machine_state=self.turing_machines[turing_name].run(input_string)
+                    except Exception as e:
+                        print(e)
                     function_result=function_object(input_string) ## boolean function i guess
-                    is_in_acceptance_checker=self.turing_machines[turing_name].given_state_is_in_acceptance(final_machine_state.state)
+                    if (final_machine_state == None):
+                        if function_result == False:
+                            print(f"Validation passed for input: {input_string}")
+                        else:
+                            print(f"Validation failed for input: {input_string}")
+                        continue
+                    if (isinstance(self.turing_machines[turing_name], TuringMachine)):
+                        ##it is normal turing machine
+                        is_in_acceptance_checker=self.turing_machines[turing_name].given_state_is_in_acceptance(final_machine_state.state)
+                    else:
+                        ##it is combined_turing_machine
+                        is_in_acceptance_checker = self.turing_machines[turing_name].turing_machines[-1].given_state_is_in_acceptance(
+                            final_machine_state.state)
                     if function_result!=is_in_acceptance_checker:
                         print(f"Validation failed for input: {input_string}")
                         return False
@@ -141,8 +156,6 @@ class TuringMachineController:
 
             print("Validation passed for all Turing machines.")
             return True
-        except Exception as e:
-            print(e)
 
     def validate_combined_turing_machine_with_while_condition(self,turing_name,function_object,extreme_cases,condition_machine_chekcer,test_count=100,max_input_length=20):
         try:

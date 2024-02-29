@@ -9,7 +9,7 @@ class CombinedTuringMachine:
         self.turing_machines.append(new_turing_machine)
         self.turing_machines_names.append(new_turing_machine_name)
 
-    def run(self, input_str,head_position):
+    def run(self, input_str,head_position=0): ##if it is not given then it is 0, this what means the '=0'
         result_tm = input_str
         first_step_is_over_flag = 0
         machine_run_state=None
