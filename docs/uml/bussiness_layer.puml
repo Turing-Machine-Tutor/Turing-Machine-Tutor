@@ -8,10 +8,14 @@ package business_layer {
 
         + add(name: string, machine: TuringMachine): void
         + remove(name: string): void
-        + get(name: string): TuringMachine
+        + get_turing_machine(name: string): TuringMachine
         + get_all_names(): Iterable<string>
         + run(turing_machine_name:string,input:string):Machine_Run_State
         +visualize(Turing_machine_name:string, input:string):void
+        +visualize_step_by_step(Turing_machine_name:string, input:string):void
+        -display_step_at_index(steps[], index:int , step_counter:int): int
+        -display_steps_of_visualizer(steps[]): void
+        -print_step(step : Machine_Run_State , step_counter:int):void
         +validate(Turing_machine_name:string,function_obj,extreme_case:list<string>,test_count:int,max_input_length:int):boolean
 
     }
@@ -34,12 +38,8 @@ package business_layer {
 
      class TuringMachineVisualizer <<immutable dataclass>> {
         -turing_machine: TuringMachine | CombinedTuringMachine
-        -steps : list<configuration>
-        -add_step(tuple(tape,head_position,current_state)) : void
-        +build_steps():void
-        -build_steps_turingmachine(): void
-        -build_steps_turingmachinecombined(): void
-        +get_steps():list<configuration>
+        -steps : list<Machine_Run_State>
+        +run_and_visualize ( input_string:string, max_steps:int): list<Machine_Run_State>
     }
 
     class Configuration <<immutable dataclass>> {
