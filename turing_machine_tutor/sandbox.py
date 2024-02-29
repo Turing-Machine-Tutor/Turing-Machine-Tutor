@@ -70,7 +70,9 @@ anbn_turing_machine = TuringMachine(
         ('q2', '0'): Configuration('q2', '0', 'L'),  # Continue moving left over 0
         ('q2', 'X'): Configuration('q0', 'X', 'R'),  # Move right to find the next 0 after 1s
         ('q0', 'Y'): Configuration('q0', 'Y', 'R'),  # Skip Y in the process
-        ('q0', 'B'): Configuration('q4', 'B', 'R')   # Accept if B is encountered after checking
+        ('q0', 'B'): Configuration('q4', 'B', 'R'),   # Accept if B is encountered after checking
+        ('q0', '1'): Configuration('q5', 'B', 'R'),
+        ('q1', 'B'): Configuration('q5', 'B', 'L')
     },
     initial_state='q0',
     accept_states={'q4'},
@@ -106,5 +108,5 @@ def is_0n1n(input_str):
     return not stack
 
 ##controller.validate_turing_machine('0n0n',is_0n1n,{"00"})
-controller.visualize('0n1n',"0011")
+controller.visualize('0n1n',"0000111")
 
