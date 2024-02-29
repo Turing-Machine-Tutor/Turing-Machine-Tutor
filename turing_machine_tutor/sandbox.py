@@ -1,3 +1,4 @@
+from CombinedTuringMachine import CombinedTuringMachine
 from TuringMachine import TuringMachine
 from TuringMachineController import TuringMachineController
 from configuration import Configuration
@@ -106,7 +107,111 @@ def is_0n1n(input_str):
             return False  # Invalid symbol
 
     return not stack
+#
+# controller.validate_turing_machine('0n1n',is_0n1n,{"0011"})
+# controller.visualize('0n1n',"0011")
 
-##controller.validate_turing_machine('0n0n',is_0n1n,{"00"})
-controller.visualize('0n1n',"0000111")
 
+
+
+
+step1 = TuringMachine(
+    states={'q0', 'q1', 'q2'},
+    input_alphabet={'0', '1', 'X', 'Y', 'B'},
+    tape_symbols={'0', '1', 'X', 'Y', 'B'},
+    blank='B',
+    transitions={
+        ('q0', '0'): Configuration('q2', 'X', 'R'),  # Step 1 change 0 to X
+        ('q0', '1'): Configuration('q3', '1', 'S'),
+        ('q0', 'X'): Configuration('q3', 'X', 'S'),
+        ('q0', 'Y'): Configuration('q3', 'Y', 'S'),
+        ('q0', 'B'): Configuration('q3', 'B', 'S')
+    },
+    initial_state='q0',
+    accept_states={'q2'},
+    reject_states={'q3'}
+)
+
+step2 = TuringMachine(
+    states={'q0', 'q1', 'q2'},
+    input_alphabet={'0', '1', 'X', 'Y', 'B'},
+    tape_symbols={'0', '1', 'X', 'Y', 'B'},
+    blank='B',
+    transitions={
+        ('q0', '0'): Configuration('q0', '0', 'R'),  # Step 2 move right to the first 1
+        ('q0', '1'): Configuration('q2', '1', 'S'),  # if you do not find symbol 1, reject the language
+        ('q0', 'X'): Configuration('q0', 'X', 'R'),
+        ('q0', 'Y'): Configuration('q0', 'Y', 'R'),
+        ('q0', 'B'): Configuration('q3', 'B', 'S')
+    },
+    initial_state='q0',
+    accept_states={'q2'},
+    reject_states={'q3'}
+)
+
+step3 = TuringMachine(
+    states={'q0', 'q1', 'q2'},
+    input_alphabet={'0', '1', 'X', 'Y', 'B'},
+    tape_symbols={'0', '1', 'X', 'Y', 'B'},
+    blank='B',
+    transitions={
+        ('q0', '0'): Configuration('q3', '0', 'S'),  # Step 3 change 1 to Y
+        ('q0', '1'): Configuration('q2', 'Y', 'L'),
+        ('q0', 'X'): Configuration('q3', 'X', 'S'),
+        ('q0', 'Y'): Configuration('q3', 'Y', 'S'),
+        ('q0', 'B'): Configuration('q3', 'B', 'S')
+    },
+    initial_state='q0',
+    accept_states={'q2'},
+    reject_states={'q3'}
+)
+
+step4 = TuringMachine(
+    states={'q0', 'q1', 'q2'},
+    input_alphabet={'0', '1', 'X', 'Y', 'B'},
+    tape_symbols={'0', '1', 'X', 'Y', 'B'},
+    blank='B',
+    transitions={
+        ('q0', '0'): Configuration('q0', '0', 'L'),  # Step 4 Move Left to Leftmost 0
+        ('q0', '1'): Configuration('q3', '1', 'S'),
+        ('q0', 'X'): Configuration('q2', 'X', 'R'),
+        ('q0', 'Y'): Configuration('q0', 'Y', 'L'),
+        ('q0', 'B'): Configuration('q3', 'B', 'R')
+    },
+    initial_state='q0',
+    accept_states={'q2'},
+    reject_states={'q3'}
+)
+
+#step 5 repeat steps number 01 to 04 until no more 0 and 1 remain in the input tape
+
+step6 = TuringMachine(
+    states={'q0', 'q1', 'q2'},
+    input_alphabet={'0', '1', 'X', 'Y', 'B'},
+    tape_symbols={'0', '1', 'X', 'Y', 'B'},
+    blank='B',
+    transitions={
+        ('q0', '0'): Configuration('q3', '0', 'S'),  # Step 6 check if all turing machine tape is X and Y ( there is no 1 and 0 left on the tape)
+        ('q0', '1'): Configuration('q3', '1', 'S'),
+        ('q0', 'X'): Configuration('q0', 'X', 'R'),
+        ('q0', 'Y'): Configuration('q0', 'Y', 'R'),
+        ('q0', 'B'): Configuration('q2', 'B', 'S')
+    },
+    initial_state='q0',
+    accept_states={'q2'},
+    reject_states={'q3'}
+)
+
+combined_tm = CombinedTuringMachine()
+combined_tm.add('step1', step1)
+combined_tm.add('step2', step2)
+combined_tm.add('step3', step3)
+combined_tm.add('step4', step4)
+
+controller.add_turing_machine('combined_shit',combined_tm)
+
+# Run the Turing machine from the library
+mrs= controller.run_turing_machine_with_while_condition('011',step6,'combined_shit')
+#controller.validate_turing_machine('combined_shit',is_0n1n,{"0011"})
+print("at end tape is:  ",mrs.tape)
+print(step6.given_state_is_in_acceptance(mrs.state))

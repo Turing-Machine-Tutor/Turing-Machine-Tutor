@@ -52,9 +52,6 @@ package business_layer {
         -state:string
     }
 
-      class Tape <<immutable dataclass>> {
-        -tape_symbols:list<string>
-    }
 
     class TuringMachine <<immutable dataclass>> {
         + states: list<State>
@@ -74,7 +71,7 @@ package business_layer {
     }
 
     class Machine_Run_State {
-       -tape :Tape
+       -tape :list<string>
        -head_position:int
        -state:State
     }

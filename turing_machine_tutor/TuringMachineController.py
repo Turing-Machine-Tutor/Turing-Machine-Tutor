@@ -9,7 +9,7 @@ class TuringMachineController:
     def __init__(self):
         self.turing_machines = {}
 
-    def add_turing_machine(self, name, turing_machine:TuringMachine):
+    def add_turing_machine(self, name, turing_machine):
         self.turing_machines[name] = turing_machine
 
     def remove(self,name):
@@ -26,6 +26,19 @@ class TuringMachineController:
 
     def get_all_names(self):
         return self.turing_machines.keys()
+
+
+
+    def run_turing_machine_with_while_condition(self,input_string,condition_machine_chekcer,combined_machine_name):
+        try:
+            machine_run_state=self.turing_machines[combined_machine_name].run(input_string,0)
+            machine_run_state=condition_machine_chekcer.run(machine_run_state.tape)
+            while not condition_machine_chekcer.given_state_is_in_acceptance(machine_run_state.state):
+                machine_run_state = self.turing_machines[combined_machine_name].run(machine_run_state.tape,machine_run_state.head_position)
+                machine_run_state=condition_machine_chekcer.run(machine_run_state.tape)
+            return machine_run_state
+        except Exception as e:
+            print(e)
 
 
 
@@ -100,6 +113,8 @@ class TuringMachineController:
 
     def validate_turing_machine(self,turing_name,function_object,extreme_cases,test_count=100,max_input_length=20):
         try:
+            if turing_name not in self.turing_machines.keys():
+                raise Exception("there is no turing machine with the name: ",turing_name)
             for _ in range(test_count): ## generate random words and test them
                 for input_length in range(1,max_input_length):
                     alphabet = ''.join(self.turing_machines[turing_name].input_alphabet)

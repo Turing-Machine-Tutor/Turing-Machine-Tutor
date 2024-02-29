@@ -1,5 +1,4 @@
-from Tape import Tape
-from configuration import Configuration
+# from Tape import Tape
 from machine_run_state import Machine_Run_State
 
 
@@ -15,10 +14,9 @@ class TuringMachine:
         self.accept_states = set(accept_states) ##list
         self.reject_states = set(reject_states) ##list
         self.blank = blank
-        self.current_machine_state=Machine_Run_State(Tape(list()),0,initial_state)
+        self.current_machine_state=Machine_Run_State(list(),0,initial_state)
 
     def run_step(self, configuration):
-
         self.current_machine_state.execute_config(configuration)
         new_machine_run_state = Machine_Run_State(self.current_machine_state.tape.copy(),
                                                 self.current_machine_state.head_position,
@@ -46,7 +44,7 @@ class TuringMachine:
 
     def run(self, input_string):
         max_steps=100*len(input_string)
-        self.reset_turing_machine()
+       # self.reset_turing_machine()
         self.current_machine_state.put_word_on_tape(input_string)
         steps = 0
 
@@ -76,31 +74,31 @@ class TuringMachine:
     def given_state_is_in_acceptance(self,state):
         return state in self.accept_states
 
-    def run_combined(self, input_string,head_position): ##@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ head=0?
-          max_steps=100*len(input_string)
-          self.reset_turing_machine()
-          self.current_machine_state.head_position=head_position
-          self.current_machine_state.put_word_on_tape(input_string)
-          steps = 0
-
-          while self.current_machine_state.state not in self.accept_states and self.current_machine_state.state not in self.reject_states and steps < max_steps:
-              current_symbol = self.current_machine_state.tape[head_position]
-
-              if (self.current_machine_state.state, current_symbol) in self.transitions:
-                  current_config=self.transitions[(self.current_machine_state.state, current_symbol)]
-
-                  self.current_machine_state.execute_config(current_config)
-                  steps += 1
-              else:
-                  break
-
-          final_machine_run_state = Machine_Run_State(self.current_machine_state.tape,
-                                                      self.current_machine_state.head_position,
-                                                      self.current_machine_state.state)
-
-          return final_machine_run_state
-          #return ''.join(tape), current_state in self.accept_states, head_position
-         ## return ''.join(tape), current_state, head_position
+    # def run_combined(self, input_string,head_position): ##@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ head=0?
+    #       max_steps=100*len(input_string)
+    #       self.reset_turing_machine()
+    #       self.current_machine_state.head_position=head_position
+    #       self.current_machine_state.put_word_on_tape(input_string)
+    #       steps = 0
+    #
+    #       while self.current_machine_state.state not in self.accept_states and self.current_machine_state.state not in self.reject_states and steps < max_steps:
+    #           current_symbol = self.current_machine_state.tape[head_position]
+    #
+    #           if (self.current_machine_state.state, current_symbol) in self.transitions:
+    #               current_config=self.transitions[(self.current_machine_state.state, current_symbol)]
+    #
+    #               self.current_machine_state.execute_config(current_config)
+    #               steps += 1
+    #           else:
+    #               break
+    #
+    #       final_machine_run_state = Machine_Run_State(self.current_machine_state.tape,
+    #                                                   self.current_machine_state.head_position,
+    #                                                   self.current_machine_state.state)
+    #
+    #       return final_machine_run_state
+    #       #return ''.join(tape), current_state in self.accept_states, head_position
+    #      ## return ''.join(tape), current_state, head_position
 
 
 
