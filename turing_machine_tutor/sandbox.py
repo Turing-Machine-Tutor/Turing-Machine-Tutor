@@ -202,7 +202,7 @@ step6 = TuringMachine(
     reject_states={'q3'}
 )
 
-combined_tm = CombinedTuringMachine()
+combined_tm = CombinedTuringMachine({'0', '1'})
 combined_tm.add('step1', step1)
 combined_tm.add('step2', step2)
 combined_tm.add('step3', step3)
@@ -211,7 +211,7 @@ combined_tm.add('step4', step4)
 controller.add_turing_machine('combined_shit',combined_tm)
 
 # Run the Turing machine from the library
-mrs= controller.run_turing_machine_with_while_condition('011',step6,'combined_shit')
-#controller.validate_turing_machine('combined_shit',is_0n1n,{"0011"})
-print("at end tape is:  ",mrs.tape)
-print(step6.given_state_is_in_acceptance(mrs.state))
+# mrs= controller.run_turing_machine_with_while_condition('011',step6,'combined_shit')
+controller.validate_combined_turing_machine_with_while_condition('combined_shit',is_0n1n,{"011"},step6)
+# print("at end tape is:  ",mrs.tape)
+# print(step6.given_state_is_in_acceptance(mrs.state))

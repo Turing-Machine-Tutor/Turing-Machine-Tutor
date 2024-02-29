@@ -1,8 +1,8 @@
 class CombinedTuringMachine:
-    def __init__(self):
+    def __init__(self,input_alphabet):
         self.turing_machines_names = []
         self.turing_machines = []
-
+        self.input_alphabet = set(input_alphabet)
 
 
     def add(self, new_turing_machine_name, new_turing_machine):

@@ -43,14 +43,11 @@ package business_layer {
     }
 
     class Configuration <<immutable dataclass>> {
-         -state :State
+         -state :string
         -symbol:string
         -action:string
     }
 
-       class State <<immutable dataclass>> {
-        -state:string
-    }
 
 
     class TuringMachine <<immutable dataclass>> {
@@ -73,7 +70,7 @@ package business_layer {
     class Machine_Run_State {
        -tape :list<string>
        -head_position:int
-       -state:State
+       -state:string
     }
 
 

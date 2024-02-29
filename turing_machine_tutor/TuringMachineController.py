@@ -144,5 +144,52 @@ class TuringMachineController:
         except Exception as e:
             print(e)
 
+    def validate_combined_turing_machine_with_while_condition(self,turing_name,function_object,extreme_cases,condition_machine_chekcer,test_count=100,max_input_length=20):
+        try:
+            if turing_name not in self.turing_machines.keys():
+                raise Exception("there is no turing machine with the name: ", turing_name)
+            for _ in range(test_count):  ## generate random words and test them
+                for input_length in range(1, max_input_length):
+                    alphabet = ''.join(self.turing_machines[turing_name].input_alphabet)
+                    input_string = ''.join(random.choice(alphabet) for _ in range(input_length))
+                    print("testing on input: " + input_string)
+                    final_machine_state=self.run_turing_machine_with_while_condition(input_string,condition_machine_chekcer,turing_name)
+                    function_result = function_object(input_string)  ## boolean function i guess
+                    if(final_machine_state==None):
+                        if function_result==False:
+                            print(f"Validation passed for input: {input_string}")
+                        else:
+                            print(f"Validation failed for input: {input_string}")
+                        continue
+                    is_in_acceptance_checker = condition_machine_chekcer.given_state_is_in_acceptance(
+                        final_machine_state.state)
+                    if function_result != is_in_acceptance_checker:
+                        print(f"Validation failed for input: {input_string}")
+                        return False
+                    else:
+                        print(f"Validation passed for input: {input_string}")
+            print("testing extreme cases:\n ")
+            for extreme_case in extreme_cases:  ##test extreme cases
+                final_machine_state=self.run_turing_machine_with_while_condition(extreme_case,condition_machine_chekcer,turing_name)
+                function_result = function_object(extreme_case)
+                if (final_machine_state == None):
+                    if function_result == False:
+                        print(f"Validation passed for input: {extreme_case}")
+                    else:
+                        print(f"Validation failed for input: {extreme_case}")
+                    continue
+                is_in_acceptance_checker = condition_machine_chekcer.given_state_is_in_acceptance(
+                    final_machine_state.state)
+                if function_result != is_in_acceptance_checker:
+                    print(f"Validation failed for input: {extreme_case}")
+                    return False
+                else:
+                    print(f"Validation passed for input: {extreme_case}")
+
+            print("Validation passed for all Turing machines.")
+            return True
+        except Exception as e:
+            print(e)
+
 
 
