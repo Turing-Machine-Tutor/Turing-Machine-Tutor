@@ -109,7 +109,7 @@ def is_0n1n(input_str):
     return not stack
 #
 # controller.validate_turing_machine('0n1n',is_0n1n,{"0011"})
-# controller.visualize('0n1n',"0011")
+controller.visualize('0n1n',"0011")
 
 
 
@@ -229,7 +229,7 @@ controller.add_turing_machine('combined_shit',combined_tm)
 #mrs= controller.run_turing_machine('combined_shit','001')
 
 #print("fuck you is:   ",combined_tm.turing_machines[-1].given_state_is_in_acceptance(mrs.state))
-controller.validate_turing_machine('combined_shit',is_0n1n,{"0011"})
-# controller.visualize('0n1n',"0011")
+#controller.validate_turing_machine('combined_shit',is_0n1n,{"0011"})
+controller.visualize('combined_shit',"01")
 
 #----------------------------------------------------------------------------------------

@@ -50,7 +50,7 @@ class TuringMachineController:
 
 
     def visualize(self,turing_name,input):
-        self.turing_machines[turing_name].reset_turing_machine()
+        #self.turing_machines[turing_name].reset_turing_machine()
         visualizer =TuringMachineVisualizer(self.turing_machines[turing_name])
         steps= visualizer.run_and_visualize(input,5000)
 
@@ -97,10 +97,17 @@ class TuringMachineController:
 
     def print_step(self, step, step_counter):
         tape_str = ' '.join(step.tape)
+
         head_position_str = ' ' * (2 * step.head_position) + '^'
         # Display current state and step number
         state_step_info = f"State: {step.state} | Step: {step_counter + 1}"
-
+        if (len(step.tape) == 0):
+            print("\n\n")
+            print("proceeding to next turing machine")
+            print(state_step_info)
+            time.sleep(1)  # Pause for a short duration to visualize each step
+            print("\n\n\n")
+            return
         # Print the visualization
         print(tape_str)
         print(head_position_str)

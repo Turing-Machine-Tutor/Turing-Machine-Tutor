@@ -24,9 +24,9 @@ class TuringMachine:
         return new_machine_run_state
 
 
-    def contains_chars(self, input_string, input_alphabet):
+    def contains_chars(self, input_string):
         for ch in input_string:
-            if(ch not in input_alphabet):
+            if(ch not in self.input_alphabet):
                 return False
         return True
 
@@ -42,13 +42,14 @@ class TuringMachine:
         self.current_machine_state.head_position = 0
         self.current_machine_state.state = self.initial_state
 
-    def run(self, input_string):
+    def run(self, input_string,head_position=0):
         max_steps=100*len(input_string)
        # self.reset_turing_machine()
         self.current_machine_state.put_word_on_tape(input_string)
+        self.current_machine_state.head_position= head_position
         steps = 0
 
-        if not self.contains_chars(input_string, self.input_alphabet):
+        if not self.contains_chars(input_string):
             raise Exception("input string contains char not from the alphabet.")
             ##return Configuration(''.join(tape), head_position,current_state in self.accept_states) ## @@@@ current_state in self.accept_states why boolean it should be state?
 
