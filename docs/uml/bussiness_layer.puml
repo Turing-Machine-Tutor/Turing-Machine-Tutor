@@ -5,7 +5,6 @@
 package business_layer {
     class TuringMachineController {
         - machines: Dictionary<string, TuringMachine>
-
         + add(name: string, machine: TuringMachine): void
         + remove(name: string): void
         + get_turing_machine(name: string): TuringMachine
@@ -24,16 +23,16 @@ package business_layer {
 
 
  class CombinedTuringMachine <<immutable dataclass>> {
-        -turing_machines: list<string>
-        +run() : configuration
-        + states: FrozenSet<State>
+        -turing_machines: list<TuringMachine>
+        +run() : Machine_Run_State
+        + states: FrozenSet<string>
         + input_alphabet: list<string>
         + tape_alphabet: list<string>
         + blank_character: Letter
         + delta: TransitionTable
-        + accepting_state: State
-        + rejecting_state: State
-        + initial_state: State
+        + accepting_state: string
+        + rejecting_state: string
+        + initial_state: string
 
     }
 
@@ -54,14 +53,14 @@ package business_layer {
 
 
     class TuringMachine <<immutable dataclass>> {
-        + states: list<State>
+        + states: list<string>
         + input_alphabet: list<string>
         + tape_alphabet: list<string>
         + blank_character: string
         + transitions: Dictionary< Tuple< state:State,tape_symbol:string > ,configuration >
-        + accepting_state: list<State>
-        + rejecting_state: State
-        + initial_state: State
+        + accepting_state: list<string>
+        + rejecting_state: string
+        + initial_state: string
         +current_machine_state:Machine_Run_State
         +run(input_string:string,head_position:int):Machine_Run_State
         +run_step(configuration):Machine_Run_State
