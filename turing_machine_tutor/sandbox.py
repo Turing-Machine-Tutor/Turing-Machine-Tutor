@@ -225,8 +225,7 @@ controller.visualize_with_while_condition_machine("0011",step6,'combined_shit')
 
 
 #to do:
-# add visuilze for combined_with_while shit
-#
+
 # add visualzie_step_by_step for combined_with_while shit
 
 
