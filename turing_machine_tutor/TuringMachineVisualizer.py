@@ -48,7 +48,7 @@ class TuringMachineVisualizer:
             return self.steps
 
 
-    def run_and_visualize_combined_turing_machine(self, input_string):
+    def run_and_visualize_combined_turing_machine(self, input_string,head_position=0):
         clear_output(wait=True)  # clear first output of getting user input
         # Reset visualization steps
         self.steps = []
@@ -63,9 +63,9 @@ class TuringMachineVisualizer:
                 return self.steps
             if first_step_is_over_flag==0:
                 try:
-                    self.steps=self.steps+visualizer.run_and_visualize(input_string, 5000)
+                    self.steps=self.steps+visualizer.run_and_visualize(input_string, 5000,head_position)
                     turing_machine.reset_turing_machine()
-                    machine_run_state=turing_machine.run(input_string)
+                    machine_run_state=turing_machine.run(input_string,head_position)
                 except Exception as e:
                     return self.steps
                 first_step_is_over_flag=1

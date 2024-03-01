@@ -11,6 +11,7 @@ package business_layer {
         + get_turing_machine(name: string): TuringMachine
         + get_all_names(): Iterable<string>
         + run(turing_machine_name:string,input:string):Machine_Run_State
+        +run_turing_machine_with_while_condition(input_string:string ,condition_machine_chekcer:TuringMachine ,combined_machine_name:string):Machine_Run_State
         +visualize(Turing_machine_name:string, input:string):void
         +visualize_step_by_step(Turing_machine_name:string, input:string):void
         -display_step_at_index(steps[], index:int , step_counter:int): int
@@ -18,6 +19,7 @@ package business_layer {
         -print_step(step : Machine_Run_State , step_counter:int):void
         +validate(Turing_machine_name:string,function_obj,extreme_case:list<string>,test_count:int,max_input_length:int):boolean
         +visualize_combined_machine_step_by_step(machine_name:string, input_string:string):void
+        +visualize_with_while_condition_machine(input_string:string,condition_machine_chekcer:string,combined_machine_name:string):void
     }
 
 

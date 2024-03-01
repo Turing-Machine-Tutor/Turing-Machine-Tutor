@@ -240,5 +240,23 @@ class TuringMachineController:
             index = index + 1
             user_input = input("Press Enter to continue or type 'stop' to end: ")
 
+    def visualize_with_while_condition_machine(self, input_string,condition_machine_chekcer,combined_machine_name):
+        try:
+            visualizer = TuringMachineVisualizer(self.turing_machines[combined_machine_name])
+            visualizer_while_machine = TuringMachineVisualizer(condition_machine_chekcer)
+            steps = visualizer.run_and_visualize_combined_turing_machine(input_string)
+            machine_run_state=steps[len(steps)-3]
+            steps = steps+visualizer_while_machine.run_and_visualize(machine_run_state.tape, 500)
+            machine_run_state=steps[len(steps)-3]
+            while not condition_machine_chekcer.given_state_is_in_acceptance(machine_run_state.state):
+                steps = steps+visualizer.run_and_visualize_combined_turing_machine(machine_run_state.tape,machine_run_state.head_position)
+                machine_run_state = steps[len(steps) - 3]
+                steps = steps + visualizer_while_machine.run_and_visualize(machine_run_state.tape, 500)
+                machine_run_state = steps[len(steps) - 3]
+            self.display_steps_of_visualizer(steps)
+        except Exception as e:
+            print(e)
+
+
 
 
