@@ -17,7 +17,7 @@ package business_layer {
         -display_steps_of_visualizer(steps[]): void
         -print_step(step : Machine_Run_State , step_counter:int):void
         +validate(Turing_machine_name:string,function_obj,extreme_case:list<string>,test_count:int,max_input_length:int):boolean
-
+        +visualize_combined_machine_step_by_step(machine_name:string, input_string:string):void
     }
 
 
@@ -40,6 +40,7 @@ package business_layer {
         -turing_machine: TuringMachine | CombinedTuringMachine
         -steps : list<Machine_Run_State>
         +run_and_visualize ( input_string:string, max_steps:int): list<Machine_Run_State>
+        +run_and_visualize_combined_turing_machine( input_string:string, max_steps:int): list<Machine_Run_State>
     }
 
     class Configuration <<immutable dataclass>> {
@@ -60,7 +61,7 @@ package business_layer {
         + rejecting_state: State
         + initial_state: State
         +current_machine_state:Machine_Run_State
-        +run(input_string:string):Machine_Run_State
+        +run(input_string:string,head_position:int):Machine_Run_State
         +run_step(configuration):Machine_Run_State
         +contains_chars(input_string:string, input_alphabet:list<string>):boolean
         +run_combined(input_string:string,head_position:int):configuration

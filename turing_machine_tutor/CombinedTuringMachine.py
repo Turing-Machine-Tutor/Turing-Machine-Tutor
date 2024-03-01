@@ -17,13 +17,12 @@ class CombinedTuringMachine:
             # Run the first Turing machine initially
             try:
                 if first_step_is_over_flag==0:
-                    tm.current_machine_state.head_position=head_position
-                    machine_run_state = tm.run(result_tm)
+                    machine_run_state = tm.run(result_tm,head_position)
                     first_step_is_over_flag=1
                 else:
-                    tm.current_machine_state.head_position=machine_run_state.head_position
+                    current_head_position=machine_run_state.head_position
                     result_tm = machine_run_state.tape.copy()
-                    machine_run_state = tm.run(result_tm)
+                    machine_run_state = tm.run(result_tm,current_head_position)
             except Exception as e:
                 raise (e)
 
@@ -34,15 +33,15 @@ class CombinedTuringMachine:
 
         return machine_run_state
 
-    def run_while_my_tm_condition(self, input_str, turing_machine_condition):
-        head_position = 0
-        result_combined = input_str
-        continue_this = True
-        output, accepted = turing_machine_condition.run(result_combined)
-        while continue_this and accepted:
-            result_combined, continue_this, head_position = self.run_while_my_condition(result_combined, head_position)
-            output, accepted = turing_machine_condition.run(result_combined)
-        return output
+    # def run_while_my_tm_condition(self, input_str, turing_machine_condition):
+    #     head_position = 0
+    #     result_combined = input_str
+    #     continue_this = True
+    #     output, accepted = turing_machine_condition.run(result_combined)
+    #     while continue_this and accepted:
+    #         result_combined, continue_this, head_position = self.run_while_my_condition(result_combined, head_position)
+    #         output, accepted = turing_machine_condition.run(result_combined)
+    #     return output
 
 
     def run_while_my_condition(self, tape, head_position):

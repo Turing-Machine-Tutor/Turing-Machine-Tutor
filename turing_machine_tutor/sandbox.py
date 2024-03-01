@@ -86,11 +86,11 @@ controller.add_turing_machine('emptyString', emptyString)
 controller.add_turing_machine('tm1',tm1)
 controller.add_turing_machine('0n1n',anbn_turing_machine)
 
-# Run the Turing machine from the library
-mrs= controller.run_turing_machine('tm1', '000111')
-print(tm1.given_state_is_in_acceptance(mrs.state))
-mrs= controller.run_turing_machine('0n1n', '0000011111')
-print(anbn_turing_machine.given_state_is_in_acceptance(mrs.state))
+# # Run the Turing machine from the library
+# mrs= controller.run_turing_machine('tm1', '000111')
+# print(tm1.given_state_is_in_acceptance(mrs.state))
+# mrs= controller.run_turing_machine('0n1n', '0000011111')
+# print(anbn_turing_machine.given_state_is_in_acceptance(mrs.state))
 
 
 def is_0n1n(input_str):
@@ -109,7 +109,8 @@ def is_0n1n(input_str):
     return not stack
 #
 # controller.validate_turing_machine('0n1n',is_0n1n,{"0011"})
-controller.visualize('0n1n',"0011")
+# controller.visualize('0n1n',"01")
+# controller.visualize_step_by_step('0n1n',"01")
 
 
 
@@ -212,13 +213,19 @@ controller.add_turing_machine('combined_shit',combined_tm)
 
 #----------------------------testing combine_tm_with_conidition---------------------------
 
-#controller.validate_combined_turing_machine_with_while_condition('combined_shit',is_0n1n,{"011"},step6)
+# controller.validate_combined_turing_machine_with_while_condition('combined_shit',is_0n1n,{"0011"},step6)
 # print("at end tape is:  ",mrs.tape)
 # print(step6.given_state_is_in_acceptance(mrs.state))
 
 #----------------------------------------------------------------------------------------
 
 
+#to do:
+# add visualzie_step_by_step for combined shit
+#
+# add visuilze for combined_with_while shit
+#
+# add visualzie_step_by_step for combined_with_while shit
 
 
 
@@ -226,10 +233,11 @@ controller.add_turing_machine('combined_shit',combined_tm)
 
 #----------------------------testing combine_tm------------------------------------------
 
-#mrs= controller.run_turing_machine('combined_shit','001')
+mrs= controller.run_turing_machine('combined_shit','01')
 
-#print("fuck you is:   ",combined_tm.turing_machines[-1].given_state_is_in_acceptance(mrs.state))
-#controller.validate_turing_machine('combined_shit',is_0n1n,{"0011"})
-controller.visualize('combined_shit',"01")
+# print("fuck you is:   ",combined_tm.turing_machines[-1].given_state_is_in_acceptance(mrs.state))
+# controller.validate_turing_machine('combined_shit',is_0n1n,{"0011"})
+# controller.visualize('combined_shit',"01")
+controller.visualize_combined_machine_step_by_step('combined_shit',"01")
 
 #----------------------------------------------------------------------------------------

@@ -75,8 +75,12 @@ class TuringMachineController:
 
     def display_step_at_index(self, steps,index,step_counter):
         if (isinstance(steps[index], str)):
-            print(steps[index])
-            return -1
+            if index<len(steps)-1:
+                print(steps[index])
+                return step_counter + 1
+            else:
+                print(steps[index])
+                return -1
         self.print_step(steps[index], step_counter)
         return step_counter + 1
 
@@ -104,7 +108,7 @@ class TuringMachineController:
         if (len(step.tape) == 0):
             print("\n\n")
             print("proceeding to next turing machine")
-            print(state_step_info)
+            print(f"Step: {step_counter + 1}")
             time.sleep(1)  # Pause for a short duration to visualize each step
             print("\n\n\n")
             return
@@ -152,8 +156,19 @@ class TuringMachineController:
                         print(f"Validation passed for input: {input_string}")
             print("testing extreme cases:\n ")
             for extreme_case in extreme_cases: ##test extreme cases
-                final_machine_state = self.turing_machines[turing_name].run(extreme_case)
+                final_machine_state=None
+                try:
+                    final_machine_state = self.turing_machines[turing_name].run(extreme_case)
+                except Exception as e:
+                    print(e)
+
                 function_result = function_object(extreme_case)
+                if (final_machine_state == None):
+                    if function_result == False:
+                        print(f"Validation passed for input: {extreme_case}")
+                    else:
+                        print(f"Validation failed for input: {extreme_case}")
+                    continue
                 is_in_acceptance_checker = self.turing_machines[turing_name].given_state_is_in_acceptance(final_machine_state.state)
                 if function_result != is_in_acceptance_checker:
                     print(f"Validation failed for input: {extreme_case}")
@@ -210,6 +225,20 @@ class TuringMachineController:
             return True
         except Exception as e:
             print(e)
+
+    def visualize_combined_machine_step_by_step(self, machine_name, input_string):
+        #self.turing_machines[machine_name].reset_turing_machine()
+        visualizer = TuringMachineVisualizer(self.turing_machines[machine_name])
+        steps = visualizer.run_and_visualize(input_string, 5000)
+        user_input = input("Press Enter to continue or type 'stop' to end: ")
+        index = 0
+        step_counter = 0
+        while user_input != "stop":
+            step_counter = self.display_step_at_index(steps, index, step_counter)
+            if (step_counter == -1):
+                return
+            index = index + 1
+            user_input = input("Press Enter to continue or type 'stop' to end: ")
 
 
 
