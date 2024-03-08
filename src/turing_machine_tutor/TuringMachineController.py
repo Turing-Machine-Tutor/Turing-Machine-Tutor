@@ -3,11 +3,13 @@ import time
 
 from TuringMachine import TuringMachine
 from TuringMachineVisualizer import TuringMachineVisualizer
+from turing_machine_tutor.Challenge import Challenge
 
 
 class TuringMachineController:
     def __init__(self):
         self.turing_machines = {}
+        self.challenges = dict()
 
     def add_turing_machine(self, name, turing_machine):
         turing_machine.name = name
@@ -258,6 +260,19 @@ class TuringMachineController:
     #         self.display_steps_of_visualizer(steps)
     #     except Exception as e:
     #         print(e)
+
+    def add_challenge(self, turing_machine_name, turing_machine_description, function_that_accepts_the_language_of_tm,
+                      edge_cases_list):
+        challenge = Challenge(turing_machine_description, function_that_accepts_the_language_of_tm, edge_cases_list)
+        self.challenges[turing_machine_name] = challenge
+
+    def get_challenges(self):
+        print("\n\ncurrent available challenges:\n")
+        index = 1
+        for key in self.challenges.keys():
+            print(f"[{index}]turing machine name: {key}")
+            print(f"description: {self.challenges[key].description}\n")
+            index = index + 1
 
 
 
