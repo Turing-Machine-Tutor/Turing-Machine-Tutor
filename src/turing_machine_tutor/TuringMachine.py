@@ -5,7 +5,9 @@ from machine_run_state import Machine_Run_State
 
 
 class TuringMachine:
-    def __init__(self, states, input_alphabet, tape_symbols, blank, transitions, initial_state, accept_states, reject_states):
+    def __init__(self, states, input_alphabet, tape_symbols, transitions, initial_state, accept_states, reject_states):
+        self.isValidTM(states, input_alphabet, tape_symbols, transitions, initial_state, accept_states, reject_states)
+        
         self.states = set(states)
         self.input_alphabet = set(input_alphabet)
         self.tape_alphabet = set(tape_symbols)
@@ -13,8 +15,65 @@ class TuringMachine:
         self.initial_state = initial_state
         self.accept_states = set(accept_states) ##list
         self.reject_states = set(reject_states) ##list
-        self.blank = blank
+        self.blank = "B"
         self.current_machine_state=Machine_Run_State(list(),0,initial_state)
+        self.name = ""
+
+        # add Validate turing machine and throw exception if turing machine is not valid
+
+        
+    def isValidTM(self, states, input_alphabet, tape_symbols, transitions, initial_state, accept_states, reject_states):
+        try:
+            check = "B" in tape_symbols
+            if(not check):
+                raise Exception("tape symbols must Must contain the blank symbol 'B'")
+            check = True
+            for alpha in input_alphabet:
+                if alpha not in tape_symbols:
+                    check = False
+                    break
+            if(not check):
+                raise Exception("Input alphabet must be in tape symbols")
+            check = initial_state in states
+            if(not check):
+                raise Exception("initial state must be in states")
+            check = True
+            for st in accept_states:
+                if st not in states:
+                    check = False
+                    break
+            if(not check):
+                raise Exception("accept state must be in states")
+            check = True
+            for st in reject_states:
+                if st not in states:
+                    check = False
+                    break
+            if(not check):
+                raise Exception("reject state must be in states")
+            
+            check = True
+            for key,value in transitions.items():
+                str_value = "(" + value.state + ", " + value.symbol + ", " + value.action + ")"
+                error_msg = str(key) + " : " + str_value
+                # check valid key
+                if(key[0] not in states):
+                    raise Exception("found error in key value at: "+error_msg+" state must be in states")
+                if(key[1] not in tape_symbols):
+                    raise Exception("found error in key value at: "+error_msg+" symbol must be in tape symbols")
+                
+                # check valid value
+                if(value.state not in states):
+                    raise Exception("found error in Configuration value at: "+error_msg+" state must be in states")
+                if(value.symbol not in tape_symbols):
+                    raise Exception("found error in Configuration value at: "+error_msg+" symbol must be in tape symbols")
+                if(value.action not in ['R', 'L', 'S']):
+                    raise Exception("found error in Configuration value at: "+error_msg+" action must be 'R' / 'L' / 'S'")            
+        except Exception as e:
+            raise e
+
+    def setTMName(self, name):
+        self.name = name
 
     def run_step(self, configuration):
         self.current_machine_state.execute_config(configuration)

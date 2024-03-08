@@ -4,7 +4,7 @@ from IPython.display import display, clear_output
 from CombinedTuringMachine import CombinedTuringMachine
 from TuringMachine import TuringMachine
 from machine_run_state import Machine_Run_State
-
+from IFTuringMachine import IFTuringMachine
 
 class TuringMachineVisualizer:
     def __init__(self, turing_machine):
@@ -13,7 +13,9 @@ class TuringMachineVisualizer:
 
 
     def run_and_visualize(self, input_string, max_steps=10,head_position=0):
-        if(isinstance(self.tm,CombinedTuringMachine)):
+        if(isinstance(self.tm,IFTuringMachine)):
+            return self.run_and_visualize_if_turing_machine(input_string)
+        elif(isinstance(self.tm,CombinedTuringMachine)):
             return self.run_and_visualize_combined_turing_machine(input_string)
         else:
             clear_output(wait=True)  # clear first output of getting user input
@@ -40,9 +42,9 @@ class TuringMachineVisualizer:
                 self.steps.append(self.tm.run_step(current_config))
 
             if self.tm.current_machine_state.state in self.tm.accept_states:
-                self.steps.append("reached accept state")
+                self.steps.append("reached accept state") # To do: add name at the first of line
             elif self.tm.current_machine_state.state in self.tm.reject_states:
-                self.steps.append("reached reject state")
+                self.steps.append("reached reject state") # To do: add name at the first of line
             else:
                 self.steps.append("turing machine stoped before finishing the run on the given input")
             return self.steps
@@ -55,8 +57,36 @@ class TuringMachineVisualizer:
         first_step_is_over_flag = 0
         machine_run_state=None
         self.tm.turing_machines[0].reset_turing_machine() ## only reset first machine
-
-        for turing_machine in self.tm.turing_machines:
+        cond = False
+        #index = 0
+        while not cond:
+            for turing_machine in self.tm.turing_machines:
+                visualizer = TuringMachineVisualizer(turing_machine)
+                if not turing_machine.contains_chars(input_string):
+                    self.steps.append("input string contains char not from the alphabet.")
+                    return self.steps
+                if first_step_is_over_flag==0:
+                    try:
+                        self.steps=self.steps+visualizer.run_and_visualize(input_string, 5000,head_position)
+                        turing_machine.reset_turing_machine()
+                        machine_run_state=turing_machine.run(input_string,head_position)
+                    except Exception as e:
+                        return self.steps
+                    first_step_is_over_flag=1
+                else:
+                    try:
+                        self.steps=self.steps+visualizer.run_and_visualize(machine_run_state.tape, 5000,machine_run_state.head_position)
+                        turing_machine.reset_turing_machine()
+                        machine_run_state = turing_machine.run(machine_run_state.tape,machine_run_state.head_position)
+                    except Exception as e:
+                        return self.steps
+                # self.steps.append("halted on "+self.tm.turing_machines_names[index] + " on acceptance state")
+                # index += 1
+            #index = 0
+            
+            # self.tm.while_condition.run_and_visualize()
+            ## run and visulaize While Condition Turing machine
+            turing_machine = self.tm.while_condition
             visualizer = TuringMachineVisualizer(turing_machine)
             if not turing_machine.contains_chars(input_string):
                 self.steps.append("input string contains char not from the alphabet.")
@@ -76,7 +106,22 @@ class TuringMachineVisualizer:
                     machine_run_state = turing_machine.run(machine_run_state.tape,machine_run_state.head_position)
                 except Exception as e:
                     return self.steps
+            if(self.tm.while_condition != None):
+                cond = not self.tm.while_condition.given_state_is_in_acceptance(machine_run_state.state)
+            else:
+                cond = True
         return self.steps
 
 
+    def run_and_visualize_if_turing_machine(self, input_string):
+        if_visualizer = TuringMachineVisualizer(self.tm.ifTm)
+        if_visualizer.run_and_visualize(input_string, 5000)
+        if if_visualizer.tm.current_machine_state.state in if_visualizer.tm.accept_states:
+            then_visualizer = TuringMachineVisualizer(self.tm.thenTm)
+            then_visualizer.run_and_visualize(input_string, 5000)
+            return if_visualizer.steps + then_visualizer.steps
+        else:
+            else_visualizer = TuringMachineVisualizer(self.tm.elseTm)
+            else_visualizer.run_and_visualize(input_string, 5000)
+            return if_visualizer.steps + else_visualizer.steps
 

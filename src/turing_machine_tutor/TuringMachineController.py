@@ -10,6 +10,7 @@ class TuringMachineController:
         self.turing_machines = {}
 
     def add_turing_machine(self, name, turing_machine):
+        turing_machine.name = name
         self.turing_machines[name] = turing_machine
 
     def remove(self,name):
@@ -26,7 +27,6 @@ class TuringMachineController:
 
     def get_all_names(self):
         return self.turing_machines.keys()
-
 
 
     def run_turing_machine_with_while_condition(self,input_string,condition_machine_chekcer,combined_machine_name):
@@ -52,13 +52,13 @@ class TuringMachineController:
     def visualize(self,turing_name,input):
         #self.turing_machines[turing_name].reset_turing_machine()
         visualizer =TuringMachineVisualizer(self.turing_machines[turing_name])
-        steps= visualizer.run_and_visualize(input,5000)
+        steps = visualizer.run_and_visualize(input,5000)
 
         self.display_steps_of_visualizer(steps)
 
 
     def visualize_step_by_step(self,turing_name,machine_input):
-        self.turing_machines[turing_name].reset_turing_machine()
+        #self.turing_machines[turing_name].reset_turing_machine()
         visualizer =TuringMachineVisualizer(self.turing_machines[turing_name])
         steps= visualizer.run_and_visualize(machine_input,5000)
         user_input = input("Press Enter to continue or type 'stop' to end: ")
@@ -240,22 +240,22 @@ class TuringMachineController:
             index = index + 1
             user_input = input("Press Enter to continue or type 'stop' to end: ")
 
-    def visualize_with_while_condition_machine(self, input_string,condition_machine_chekcer,combined_machine_name):
-        try:
-            visualizer = TuringMachineVisualizer(self.turing_machines[combined_machine_name])
-            visualizer_while_machine = TuringMachineVisualizer(condition_machine_chekcer)
-            steps = visualizer.run_and_visualize_combined_turing_machine(input_string)
-            machine_run_state=steps[len(steps)-3]
-            steps = steps+visualizer_while_machine.run_and_visualize(machine_run_state.tape, 500)
-            machine_run_state=steps[len(steps)-3]
-            while not condition_machine_chekcer.given_state_is_in_acceptance(machine_run_state.state):
-                steps = steps+visualizer.run_and_visualize_combined_turing_machine(machine_run_state.tape,machine_run_state.head_position)
-                machine_run_state = steps[len(steps) - 3]
-                steps = steps + visualizer_while_machine.run_and_visualize(machine_run_state.tape, 500)
-                machine_run_state = steps[len(steps) - 3]
-            self.display_steps_of_visualizer(steps)
-        except Exception as e:
-            print(e)
+    # def visualize_with_while_condition_machine(self, input_string,condition_machine_chekcer,combined_machine_name):
+    #     try:
+    #         visualizer = TuringMachineVisualizer(self.turing_machines[combined_machine_name])
+    #         visualizer_while_machine = TuringMachineVisualizer(condition_machine_chekcer)
+    #         steps = visualizer.run_and_visualize_combined_turing_machine(input_string)
+    #         machine_run_state=steps[len(steps)-3]
+    #         steps = steps+visualizer_while_machine.run_and_visualize(machine_run_state.tape, 500)
+    #         machine_run_state=steps[len(steps)-3]
+    #         while not condition_machine_chekcer.given_state_is_in_acceptance(machine_run_state.state):
+    #             steps = steps+visualizer.run_and_visualize_combined_turing_machine(machine_run_state.tape,machine_run_state.head_position)
+    #             machine_run_state = steps[len(steps) - 3]
+    #             steps = steps + visualizer_while_machine.run_and_visualize(machine_run_state.tape, 500)
+    #             machine_run_state = steps[len(steps) - 3]
+    #         self.display_steps_of_visualizer(steps)
+    #     except Exception as e:
+    #         print(e)
 
 
 
