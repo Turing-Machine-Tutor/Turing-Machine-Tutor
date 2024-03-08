@@ -1,5 +1,9 @@
 # from Tape import Tape
-from machine_run_state import Machine_Run_State
+import os
+import sys
+# Add the parent directory of mypackage to the Python path
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+from turing_machine_tutor.machine_run_state import Machine_Run_State
 
 
 
@@ -24,6 +28,21 @@ class TuringMachine:
         
     def isValidTM(self, states, input_alphabet, tape_symbols, transitions, initial_state, accept_states, reject_states):
         try:
+            if(states == None or len(states) == 0):
+                raise Exception("states cannot be None / empty list")
+            if(input_alphabet == None or len(input_alphabet) == 0):
+                raise Exception("input_alphabet cannot be None / empty list")
+            if(tape_symbols == None or len(tape_symbols) == 0):
+                raise Exception("tape_symbols cannot be None / empty list")
+            if(transitions == None or len(transitions) == 0):
+                raise Exception("transitions cannot be None / empty list")
+            if(initial_state == None or len(initial_state) == 0):
+                raise Exception("initial_state cannot be None / empty string")
+            if(accept_states == None or len(accept_states) == 0):
+                raise Exception("accept_states cannot be None / empty list")
+            if(reject_states == None or len(reject_states) == 0):
+                raise Exception("reject_states cannot be None / empty list")
+            
             check = "B" in tape_symbols
             if(not check):
                 raise Exception("tape symbols must Must contain the blank symbol 'B'")
