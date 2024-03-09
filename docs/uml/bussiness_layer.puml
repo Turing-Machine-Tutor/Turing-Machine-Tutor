@@ -1,111 +1,127 @@
 @startuml
 
+package data_types {
 
-
-package business_layer {
-    class TuringMachineController {
-        - machines: Dictionary<string, TuringMachine>
-        + add(name: string, machine: TuringMachine): void
-        + remove(name: string): void
-        + get_turing_machine(name: string): TuringMachine
-        + get_all_names(): Iterable<string>
-        + run(turing_machine_name:string,input:string):Machine_Run_State
-        +run_turing_machine_with_while_condition(input_string:string ,condition_machine_chekcer:TuringMachine ,combined_machine_name:string):Machine_Run_State
-        +visualize(Turing_machine_name:string, input:string):void
-        +visualize_step_by_step(Turing_machine_name:string, input:string):void
-        -display_step_at_index(steps[], index:int , step_counter:int): int
-        -display_steps_of_visualizer(steps[]): void
-        -print_step(step : Machine_Run_State , step_counter:int):void
-        +validate(Turing_machine_name:string,function_obj,extreme_case:list<string>,test_count:int,max_input_length:int):boolean
-        +visualize_combined_machine_step_by_step(machine_name:string, input_string:string):void
-        +visualize_with_while_condition_machine(input_string:string,condition_machine_chekcer:string,combined_machine_name:string):void
-    }
-
-
- class CombinedTuringMachine <<immutable dataclass>> {
-        -turing_machines: list<TuringMachine>
-        +run() : Machine_Run_State
-        + states: FrozenSet<string>
-        + input_alphabet: list<string>
-        + tape_alphabet: list<string>
+    class TuringMachine <<immutable dataclass>> {
+        + states: readonly_list<State>
+        + input_alphabet: readonly_list<Letter>
+        + tape_alphabet: readonly_list<Letter>
         + blank_character: Letter
-        + delta: TransitionTable
-        + accepting_state: string
-        + rejecting_state: string
-        + initial_state: string
-
+        + delta: readonly_map<DeltaEntryInput, DeltaEntryOutput>
+        + accepting_state: State
+        + rejecting_state: State
+        + initial_state: State
+        + create_runner(word: Word): TuringMachineRunner
     }
 
 
-     class TuringMachineVisualizer <<immutable dataclass>> {
-        -turing_machine: TuringMachine | CombinedTuringMachine
-        -steps : list<Machine_Run_State>
-        +run_and_visualize ( input_string:string, max_steps:int): list<Machine_Run_State>
-        +run_and_visualize_combined_turing_machine( input_string:string, max_steps:int): list<Machine_Run_State>
+    class DeltaEntryInput <<immutable dataclass>> {
+        + state: State
+        + letter: Letter
+    }
+
+    class DeltaEntryOutput <<immutable dataclass>> {
+        + target_state: State
+        + write_letter: Letter
+        + direction: Direction
     }
 
     class Configuration <<immutable dataclass>> {
-         -state :string
-        -symbol:string
-        -action:string
+        + state: State
+        + tape: readonly_list<Letter>
+        + head_position: int
     }
 
-
-
-    class TuringMachine <<immutable dataclass>> {
-        + states: list<string>
-        + input_alphabet: list<string>
-        + tape_alphabet: list<string>
-        + blank_character: string
-        + transitions: Dictionary< Tuple< state:State,tape_symbol:string > ,configuration >
-        + accepting_state: list<string>
-        + rejecting_state: string
-        + initial_state: string
-        +current_machine_state:Machine_Run_State
-        +run(input_string:string,head_position:int):Machine_Run_State
-        +run_step(configuration):Machine_Run_State
-        +contains_chars(input_string:string, input_alphabet:list<string>):boolean
-        +run_combined(input_string:string,head_position:int):configuration
-
+    class Undo <<immutable dataclass>> {
+        + direction: Direction
+        + original_letter: Letter
+        + original_state: State
     }
 
-    class Machine_Run_State {
-       -tape :list<string>
-       -head_position:int
-       -state:string
+    note bottom of Undo {
+        **to undo**:
+        0. move direction
+        1. write original_letter
+        2. change to original_state
     }
 
+    DeltaEntryOutput --[hidden]r-- DeltaEntryInput
+}
 
+package runner {
+    class TuringMachineRunner {
+        - machine: TuringMachine
+        - input_word: Word
+        - tape: list<Letter>
+        - state: State
+        - undo: Stack<Undo>
+        + get_current_configuration(): Configuration
+        + step(): void
+        + run_steps(steps: int | None): void
+        + undo(): void
+        + print(): void
+    }
+}
 
 package testing {
     abstract class TuringMachineTester {
+        + readonly machine: TuringMachine
+        + test(): TestSuiteResult
+    }
+
+    class PredefinedWordsTester {
 
     }
 
-    class ConstantWordsTester {
+    abstract class RandomizedTester {
+        # generate_word(random: Random): Word
+        # is_in_language(word: Word): boolean
+        - amount_positives: int
+        - amount_negatives: int
+        + get_seed(): int
+        + set_seed(seed: int)
+    }
+
+    note top of RandomizedTester {
+        TA implements generate_word()
+        and is_in_language(word: Word)
+    }
+
+    class HybridTester {
 
     }
 
-    class RandomizedTester {
-
+    class PredefinedWordTest <<immutable dataclass>> {
+        + word: Word
+        + expected: str
     }
 
-    ConstantWordsTester -u-|> TuringMachineTester
+    PredefinedWordsTester *-l- PredefinedWordTest
+
+    PredefinedWordsTester -u-|> TuringMachineTester
     RandomizedTester -u-|> TuringMachineTester
+    HybridTester -u-|> TuringMachineTester
+    HybridTester *-r- PredefinedWordTest
+    HybridTester *-l- RandomizedTester
 
+    class TestResult <<immutable dataclass>> {
+        + passed: boolean
+        + expected: boolean
+        + actual: boolean
+        + input: Word
     }
+
+    class TestSuiteResult <<immutable dataclass>> {
+        + test_amount: int
+        + amount_passed: int
+        + all_passed: boolean
+    }
+
+    TestSuiteResult *-- TestResult
 }
 
+data_types -[hidden]d- testing
+data_types -[hidden]r- runner
 
-package service_layer {
-
-}
-
-package presentation_layer {
-
-}
-
-service_layer -d-> bussiness
-presentation_layer -d-> service_layer
 
 @enduml
