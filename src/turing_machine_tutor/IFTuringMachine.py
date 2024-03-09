@@ -1,4 +1,4 @@
-import TuringMachine
+from turing_machine_tutor.TuringMachine import TuringMachine
 
 class IFTuringMachine:
     def __init__(self):
