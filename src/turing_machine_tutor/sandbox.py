@@ -117,7 +117,7 @@ controller.add_challenge("0n1n","turing machine that accepts 0n1n",is_0n1n,{"001
 controller.add_challenge("random_shit","turing machine that accepts 0n1n",is_0n1n,{"0011","01"});
 controller.add_challenge("random_shit_2","turing machine that accepts 0n1n",is_0n1n,{"0011","01"});
 controller.get_challenges()
-controller.validate_turing_machine('0n1n',is_0n1n,{"0011"})
+# controller.validate_turing_machine('0n1n',is_0n1n,{"0011"})
 # # controller.visualize('0n1n',"01")
 # # controller.visualize_step_by_step('0n1n',"01")
 
@@ -336,9 +336,99 @@ if1.setThenTM(thenTm,"then1")
 if1.setElseTM(elseTm, "else1")
 
 controller = TuringMachineController()
-controller.add_turing_machine("if", if1)
-mrs =  controller.run_turing_machine("if", "011")
-print(mrs.tape)
-print(ifTm.given_state_is_in_acceptance(mrs.state))
+# controller.add_turing_machine("if", if1)
+# mrs =  controller.run_turing_machine("if", "011")
+# print(mrs.tape)
+# print(ifTm.given_state_is_in_acceptance(mrs.state))
 
 #controller.visualize_step_by_step("if", "01111111")
+
+simple_turing_machine = TuringMachine(
+    states={'q0', 'q1','q2'},
+    input_alphabet={'0', '1'},
+    tape_symbols={'0', '1', 'B'},
+    transitions={
+        ('q0', '0'): Configuration('q1', '1', 'R'),  # if encountered 0 put 1 and move right
+        ('q0', '1'): Configuration('q0', '1', 'R'),  # if encountered 1 just move right
+        ('q0', 'B'): Configuration('q1', 'B', 'S'),  # if encountered 1 just move right
+        ('q1', '0'): Configuration('q1', '0', 'S'),  # after reaching q1 don't do anything
+        ('q1', '1'): Configuration('q1', '1', 'S'),  # after reaching q1 don't do anything
+        ('q1', 'B'): Configuration('q1', 'B', 'S'),  # after reaching q1 don't do anything
+
+    },
+    initial_state='q0',
+    accept_states={'q1'},
+    reject_states={'q2'}
+)
+
+
+simple_turing_machine_2 = TuringMachine(
+    states={'q0', 'q1','q2'},
+    input_alphabet={'0', '1'},
+    tape_symbols={'0', '1', 'B'},
+    transitions={
+        ('q0', '0'): Configuration('q0', '0', 'R'),  # if encountered 0 put 1 and move right
+        ('q0', '1'): Configuration('q1', '0', 'R'),  # if encountered 1 just move right
+        ('q0', 'B'): Configuration('q1', 'B', 'S'),  # if encountered 1 just move right
+        ('q1', '0'): Configuration('q1', '0', 'S'),  # after reaching q1 don't do anything
+        ('q1', '1'): Configuration('q1', '1', 'S'),  # after reaching q1 don't do anything
+        ('q1', 'B'): Configuration('q1', 'B', 'S'),  # after reaching q1 don't do anything
+
+    },
+    initial_state='q0',
+    accept_states={'q1'},
+    reject_states={'q2'}
+)
+
+
+while_machine = TuringMachine(
+    states={'q0', 'q1','q2'},
+    input_alphabet={'0', '1'},
+    tape_symbols={'0', '1', 'B'},
+    transitions={
+        ('q0', '0'): Configuration('q0', '0', 'R'),  # if encountered 0 put 1 and move right
+        ('q0', '1'): Configuration('q0', '1', 'R'),  # if encountered 1 just move right
+        ('q0', 'B'): Configuration('q1', 'B', 'S'),  # if encountered 1 just move right
+    },
+    initial_state='q0',
+    accept_states={'q1'},
+    reject_states={'q2'}
+)
+
+
+ifcond_machine= TuringMachine( ## if first letter is 1
+    states={'q0', 'q1','q2'},
+    input_alphabet={'0', '1'},
+    tape_symbols={'0', '1', 'B'},
+    transitions={
+        ('q0', '0'): Configuration('q2', '0', 'S'),
+        ('q0', '1'): Configuration('q1', '1', 'R'),
+        ('q0', 'B'): Configuration('q2', 'B', 'S'),
+
+    },
+    initial_state='q0',
+    accept_states={'q1'},
+    reject_states={'q2'}
+)
+
+
+combined_tm = CombinedTuringMachine()
+combined_tm.setTuringMachineWhileCondition(while_machine,"condition")
+combined_tm.add("step1",simple_turing_machine)
+combined_tm.add("step2",simple_turing_machine_2)
+
+controller.add_turing_machine("shit",simple_turing_machine)
+controller.add_turing_machine("shit2",combined_tm)
+
+
+if_machine=IFTuringMachine() #if first letter is 1 then convert first 0 to 1 else convert first 1 to 0
+
+if_machine.setIfTM(ifcond_machine,"ifcond")
+if_machine.setThenTM(simple_turing_machine,"convert_0_to_1")
+if_machine.setElseTM(simple_turing_machine_2,"convert_1_to_0")
+
+controller.add_turing_machine("ifshit",if_machine)
+
+controller.visualize("ifshit","10")
+
+

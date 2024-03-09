@@ -1,10 +1,11 @@
 import time
 from IPython.display import display, clear_output
-
-from CombinedTuringMachine import CombinedTuringMachine
-from TuringMachine import TuringMachine
-from machine_run_state import Machine_Run_State
-from IFTuringMachine import IFTuringMachine
+ ##@@@@@@@@@@@@@@@@@@@@@@222 if you run sandbox remove this turing_machine_tutor.
+##@@@@@@@@@@@@@@@@@@@@@@222 if you run test put this turing_machine_tutor.
+from turing_machine_tutor.CombinedTuringMachine import CombinedTuringMachine
+from turing_machine_tutor.TuringMachine import TuringMachine
+from turing_machine_tutor.machine_run_state import Machine_Run_State
+from turing_machine_tutor.IFTuringMachine import IFTuringMachine
 
 class TuringMachineVisualizer:
     def __init__(self, turing_machine):
@@ -83,7 +84,11 @@ class TuringMachineVisualizer:
                 # self.steps.append("halted on "+self.tm.turing_machines_names[index] + " on acceptance state")
                 # index += 1
             #index = 0
-            
+
+            if (self.tm.while_condition == None):
+                return self.steps
+
+
             # self.tm.while_condition.run_and_visualize()
             ## run and visulaize While Condition Turing machine
             turing_machine = self.tm.while_condition

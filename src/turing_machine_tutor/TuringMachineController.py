@@ -1,8 +1,8 @@
 import random
 import time
 
-from TuringMachine import TuringMachine
-from TuringMachineVisualizer import TuringMachineVisualizer
+from turing_machine_tutor.TuringMachine import TuringMachine
+from turing_machine_tutor.TuringMachineVisualizer import TuringMachineVisualizer
 from turing_machine_tutor.Challenge import Challenge
 
 
@@ -31,16 +31,16 @@ class TuringMachineController:
         return self.turing_machines.keys()
 
 
-    def run_turing_machine_with_while_condition(self,input_string,condition_machine_chekcer,combined_machine_name):
-        try:
-            machine_run_state=self.turing_machines[combined_machine_name].run(input_string,0)
-            machine_run_state=condition_machine_chekcer.run(machine_run_state.tape)
-            while not condition_machine_chekcer.given_state_is_in_acceptance(machine_run_state.state):
-                machine_run_state = self.turing_machines[combined_machine_name].run(machine_run_state.tape,machine_run_state.head_position)
-                machine_run_state=condition_machine_chekcer.run(machine_run_state.tape)
-            return machine_run_state
-        except Exception as e:
-            print(e)
+    # def run_turing_machine_with_while_condition(self,input_string,condition_machine_chekcer,combined_machine_name):
+    #     try:
+    #         machine_run_state=self.turing_machines[combined_machine_name].run(input_string,0)
+    #         machine_run_state=condition_machine_chekcer.run(machine_run_state.tape)
+    #         while not condition_machine_chekcer.given_state_is_in_acceptance(machine_run_state.state):
+    #             machine_run_state = self.turing_machines[combined_machine_name].run(machine_run_state.tape,machine_run_state.head_position)
+    #             machine_run_state=condition_machine_chekcer.run(machine_run_state.tape)
+    #         return machine_run_state
+    #     except Exception as e:
+    #         print(e)
 
 
 
