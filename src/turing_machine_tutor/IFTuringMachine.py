@@ -13,6 +13,10 @@ class IFTuringMachine:
         #self.thenName = ""
         self.elseTm = None
         #self.elseName = ""
+        self.resultTM = None
+
+    def given_state_is_in_acceptance(self,state):
+        return self.resultTM.given_state_is_in_acceptance(state)
 
     def setIfTM(self, tm, name):
         if(tm == None):
@@ -61,10 +65,12 @@ class IFTuringMachine:
         if (machine_run_state.state in self.ifTm.accept_states):
             # then run thenTm
             machine_run_state = self.thenTm.run(input_str)
+            self.resultTM = self.thenTm
             return machine_run_state
         elif(self.elseTm != None and isinstance(self.elseTm, TuringMachine)):
             # else run elseTm
             machine_run_state = self.elseTm.run(input_str)
+            self.resultTM = self.elseTm
             return machine_run_state
     
     def get_input_alphabet(self):

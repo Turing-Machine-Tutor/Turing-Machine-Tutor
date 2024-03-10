@@ -13,7 +13,8 @@ class CombinedTuringMachine:
         self.input_alphabet = set(input_alphabet)
         self.while_condition = None
         self.name = ""
-
+    def given_state_is_in_acceptance(self,state):
+        return self.turing_machines[-1].given_state_is_in_acceptance(state)
     def add(self, new_turing_machine_name, new_turing_machine):
         if(new_turing_machine == None):
             raise Exception("TM cannot be None")
