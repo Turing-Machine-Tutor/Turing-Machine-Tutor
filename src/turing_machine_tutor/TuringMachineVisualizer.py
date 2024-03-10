@@ -25,7 +25,7 @@ class TuringMachineVisualizer:
         elif(isinstance(self.tm,CombinedTuringMachine)):
             return self.run_and_visualize_combined_turing_machine(input_string)
         elif(isinstance(self.tm,TuringMachine)):
-            clear_output(wait=True)  # clear first output of getting user input
+            #clear_output(wait=True)  # clear first output of getting user input
             # Reset visualization steps
             self.steps = []
             if not self.tm.contains_chars(input_string):

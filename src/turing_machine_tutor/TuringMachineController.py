@@ -82,7 +82,7 @@ class TuringMachineController:
         user_input = "start"
         index=0
         step_counter=0
-        while user_input!="stop":
+        while user_input.lower() !="stop":
             step_counter=self.display_step_at_index(steps,index,step_counter)
             if(step_counter==-1):
                 return
@@ -116,8 +116,9 @@ class TuringMachineController:
                 print(step)
                 continue
             self.print_step(step,steps_counter)
+            clear_output(wait=True)
             steps_counter=steps_counter+1
-
+    
 
     def print_step(self, step, step_counter):
         tape_str = ' '.join(step.tape)
@@ -126,11 +127,10 @@ class TuringMachineController:
         # Display current state and step number
         state_step_info = f"State: {step.state} | Step: {step_counter + 1}"
         if (len(step.tape) == 0):
-            #clear_output(wait=True)
             print("proceeding to next turing machine")
             print(f"Step: {step_counter + 1}")
             time.sleep(1)  # Pause for a short duration to visualize each step
-            clear_output(wait=True)
+            #clear_output(wait=True)
             return
         # Print the visualization
         print(tape_str)
@@ -138,7 +138,7 @@ class TuringMachineController:
         print(state_step_info)
         print('-' * (2 * len(step.tape) + 1))  # Separator line
         time.sleep(1)  # Pause for a short duration to visualize each step
-        clear_output(wait=True)
+        #clear_output(wait=True)
 
 
     def validate_turing_machineTA(self, name, test_count=100,max_input_length=20):

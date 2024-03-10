@@ -492,121 +492,235 @@ from turing_machine_tutor.IFTuringMachine import IFTuringMachine
 # #self.assertEqual(res,False)
 
 
-try:
-    step1 = TuringMachine(
-        states={'q0', 'q1', 'q2', 'q3'},
-        input_alphabet={'0', '1', 'X', 'Y', 'B'},
-        tape_symbols={'0', '1', 'X', 'Y', 'B'},
-        transitions={
-            ('q0', '0'): Configuration('q2', 'X', 'R'),  # Step 1 change 0 to X
-            ('q0', '1'): Configuration('q3', '1', 'S'),
-            ('q0', 'X'): Configuration('q3', 'X', 'S'),
-            ('q0', 'Y'): Configuration('q3', 'Y', 'S'),
-            ('q0', 'B'): Configuration('q3', 'B', 'S')
-        },
-        initial_state='q0',
-        accept_states={'q2'},
-        reject_states={'q3'}
-    )
-    step2 = TuringMachine(
-    states={'q0', 'q1', 'q2', 'q3'},
-    input_alphabet={'0', '1', 'X', 'Y', 'B'},
-    tape_symbols={'0', '1', 'X', 'Y', 'B'},
-    transitions={
-        ('q0', '0'): Configuration('q0', '0', 'R'),  # Step 2 move right to the first 1
-        ('q0', '1'): Configuration('q2', '1', 'S'),  # if you do not find symbol 1, reject the language
-        ('q0', 'X'): Configuration('q0', 'X', 'R'),
-        ('q0', 'Y'): Configuration('q0', 'Y', 'R'),
-        ('q0', 'B'): Configuration('q3', 'B', 'S')
-    },
-    initial_state='q0',
-    accept_states={'q2'},
-    reject_states={'q3'}
-)
+# try:
+#     step1 = TuringMachine(
+#         states={'q0', 'q1', 'q2', 'q3'},
+#         input_alphabet={'0', '1', 'X', 'Y', 'B'},
+#         tape_symbols={'0', '1', 'X', 'Y', 'B'},
+#         transitions={
+#             ('q0', '0'): Configuration('q2', 'X', 'R'),  # Step 1 change 0 to X
+#             ('q0', '1'): Configuration('q3', '1', 'S'),
+#             ('q0', 'X'): Configuration('q3', 'X', 'S'),
+#             ('q0', 'Y'): Configuration('q3', 'Y', 'S'),
+#             ('q0', 'B'): Configuration('q3', 'B', 'S')
+#         },
+#         initial_state='q0',
+#         accept_states={'q2'},
+#         reject_states={'q3'}
+#     )
+#     step2 = TuringMachine(
+#     states={'q0', 'q1', 'q2', 'q3'},
+#     input_alphabet={'0', '1', 'X', 'Y', 'B'},
+#     tape_symbols={'0', '1', 'X', 'Y', 'B'},
+#     transitions={
+#         ('q0', '0'): Configuration('q0', '0', 'R'),  # Step 2 move right to the first 1
+#         ('q0', '1'): Configuration('q2', '1', 'S'),  # if you do not find symbol 1, reject the language
+#         ('q0', 'X'): Configuration('q0', 'X', 'R'),
+#         ('q0', 'Y'): Configuration('q0', 'Y', 'R'),
+#         ('q0', 'B'): Configuration('q3', 'B', 'S')
+#     },
+#     initial_state='q0',
+#     accept_states={'q2'},
+#     reject_states={'q3'}
+# )
 
-    step3 = TuringMachine(
-        states={'q0', 'q1', 'q2', 'q3'},
+#     step3 = TuringMachine(
+#         states={'q0', 'q1', 'q2', 'q3'},
+#         input_alphabet={'0', '1', 'X', 'Y', 'B'},
+#         tape_symbols={'0', '1', 'X', 'Y', 'B'},
+#         transitions={
+#             ('q0', '0'): Configuration('q3', '0', 'S'),  # Step 3 change 1 to Y
+#             ('q0', '1'): Configuration('q2', 'Y', 'L'),
+#             ('q0', 'X'): Configuration('q3', 'X', 'S'),
+#             ('q0', 'Y'): Configuration('q3', 'Y', 'S'),
+#             ('q0', 'B'): Configuration('q3', 'B', 'S')
+#         },
+#         initial_state='q0',
+#         accept_states={'q2'},
+#         reject_states={'q3'}
+#     )
+
+#     step4 = TuringMachine(
+#         states={'q0', 'q1', 'q2', 'q3'},
+#         input_alphabet={'0', '1', 'X', 'Y', 'B'},
+#         tape_symbols={'0', '1', 'X', 'Y', 'B'},
+#         transitions={
+#             ('q0', '0'): Configuration('q0', '0', 'L'),  # Step 4 Move Left to Leftmost 0
+#             ('q0', '1'): Configuration('q3', '1', 'S'),
+#             ('q0', 'X'): Configuration('q2', 'X', 'R'),
+#             ('q0', 'Y'): Configuration('q0', 'Y', 'L'),
+#             ('q0', 'B'): Configuration('q3', 'B', 'R')
+#         },
+#         initial_state='q0',
+#         accept_states={'q2'},
+#         reject_states={'q3'}
+#     )
+
+#     #step 5 repeat steps number 01 to 04 until no more 0 and 1 remain in the input tape
+#     step5 = TuringMachine(
+#         states={'q0', 'q1', 'q2', 'q3'},
+#         input_alphabet={'0', '1', 'X', 'Y', 'B'},
+#         tape_symbols={'0', '1', 'X', 'Y', 'B'},
+#         transitions={
+#             ('q0', '0'): Configuration('q2', '0', 'S'),  # Step 6 check if all turing machine tape is X and Y ( there is no 1 and 0 left on the tape)
+#             ('q0', '1'): Configuration('q2', '1', 'S'),
+#             ('q0', 'X'): Configuration('q0', 'X', 'R'),
+#             ('q0', 'Y'): Configuration('q0', 'Y', 'R'),
+#             ('q0', 'B'): Configuration('q3', 'B', 'S')
+#         },
+#         initial_state='q0',
+#         accept_states={'q2'},
+#         reject_states={'q3'}
+#     )
+#     step6 = TuringMachine(
+#         states={'q0', 'q1', 'q2', 'q3'},
+#         input_alphabet={'0', '1', 'X', 'Y', 'B'},
+#         tape_symbols={'0', '1', 'X', 'Y', 'B'},
+#         transitions={
+#             ('q0', '0'): Configuration('q3', '0', 'S'),  # Step 6 check if all turing machine tape is X and Y ( there is no 1 and 0 left on the tape)
+#             ('q0', '1'): Configuration('q3', '1', 'S'),
+#             ('q0', 'X'): Configuration('q0', 'X', 'R'),
+#             ('q0', 'Y'): Configuration('q0', 'Y', 'R'),
+#             ('q0', 'B'): Configuration('q2', 'B', 'S')
+#         },
+#         initial_state='q0',
+#         accept_states={'q2'},
+#         reject_states={'q3'}
+#     )
+
+#     combined_tm = CombinedTuringMachine({'0', '1'})
+#     combined_tm.add('Change 0 to X', step1)
+#     combined_tm.add('Move Right To First 1', step2)
+#     combined_tm.add('Change 1 to Y', step3)
+#     combined_tm.add('Move Left to Leftmost 0', step4)
+#     # test without cond
+#     result = TuringMachineController()
+#     result.add_turing_machine("myCombined", combined_tm)
+#     res = result.run_turing_machine("myCombined", "0011")
+#     print(res)
+#     res = ''.join(res.tape)
+#     res = res.replace('B','')
+#     # test with while cond
+#     result.remove("myCombined")
+#     combined_tm.setTuringMachineWhileCondition("0 or 1 in tape", step5)
+#     result.add_turing_machine("myCombined", combined_tm)
+#     res = result.run_turing_machine("myCombined", "0011")
+#     res = ''.join(res.tape)
+#     res = res.replace('B','')
+#     #self.assertEqual(result, "XXYY")
+# except Exception as e:
+#     print("NO")
+
+
+
+
+
+
+step1 = TuringMachine(
+            states={'q0', 'q1', 'q2', 'q3'},
+            input_alphabet={'0', '1', 'X', 'Y', 'B'},
+            tape_symbols={'0', '1', 'X', 'Y', 'B'},
+            transitions={
+                ('q0', 'X'): Configuration('q0', 'X', 'R'),
+                ('q0', '0'): Configuration('q2', '0', 'S'),
+                ('q0', '1'): Configuration('q2', '1', 'S')
+            },
+            initial_state='q0',
+            accept_states={'q2'},
+            reject_states={'q3'}
+        )
+step2 = TuringMachine(
+        states={'q0', 'q1', 'q2', 'q3', 'q4'},
         input_alphabet={'0', '1', 'X', 'Y', 'B'},
         tape_symbols={'0', '1', 'X', 'Y', 'B'},
         transitions={
-            ('q0', '0'): Configuration('q3', '0', 'S'),  # Step 3 change 1 to Y
-            ('q0', '1'): Configuration('q2', 'Y', 'L'),
-            ('q0', 'X'): Configuration('q3', 'X', 'S'),
-            ('q0', 'Y'): Configuration('q3', 'Y', 'S'),
-            ('q0', 'B'): Configuration('q3', 'B', 'S')
+            ('q0', '0'): Configuration('q1', 'X', 'R'),
+            ('q1', 'X'): Configuration('q1', 'X', 'R'),
+            ('q1', '0'): Configuration('q1', '0', 'R'),
+            ('q1', '1'): Configuration('q2', '1', 'S'), ####
+
+            ('q0', '1'): Configuration('q4', 'X', 'R'),
+            ('q4', 'X'): Configuration('q4', 'X', 'R'),
+            ('q4', '1'): Configuration('q4', '1', 'R'),
+            ('q4', '0'): Configuration('q2', '0', 'S')
         },
         initial_state='q0',
         accept_states={'q2'},
         reject_states={'q3'}
     )
 
-    step4 = TuringMachine(
-        states={'q0', 'q1', 'q2', 'q3'},
-        input_alphabet={'0', '1', 'X', 'Y', 'B'},
-        tape_symbols={'0', '1', 'X', 'Y', 'B'},
-        transitions={
-            ('q0', '0'): Configuration('q0', '0', 'L'),  # Step 4 Move Left to Leftmost 0
-            ('q0', '1'): Configuration('q3', '1', 'S'),
-            ('q0', 'X'): Configuration('q2', 'X', 'R'),
-            ('q0', 'Y'): Configuration('q0', 'Y', 'L'),
-            ('q0', 'B'): Configuration('q3', 'B', 'R')
-        },
-        initial_state='q0',
-        accept_states={'q2'},
-        reject_states={'q3'}
-    )
+step3 = TuringMachine(
+            states={'q0', 'q1', 'q2', 'q3'},
+            input_alphabet={'0', '1', 'X', 'Y', 'B'},
+            tape_symbols={'0', '1', 'X', 'Y', 'B'},
+            transitions={
+                ('q1', 'B'): Configuration('q2', 'B', 'R'),
+                ('q0', 'B'): Configuration('q2', 'B', 'R'),
+                ('q0', '1'): Configuration('q1', 'X', 'L'),
+                ('q0', '0'): Configuration('q1', 'X', 'L'),
+                ('q1', 'X'): Configuration('q1', 'X', 'L'),
+                ('q1', '0'): Configuration('q1', '0', 'L'),
+                ('q1', '1'): Configuration('q1', '1', 'L')
+            },
+            initial_state='q0',
+            accept_states={'q2'},
+            reject_states={'q3'}
+        )
 
-    #step 5 repeat steps number 01 to 04 until no more 0 and 1 remain in the input tape
-    step5 = TuringMachine(
-        states={'q0', 'q1', 'q2', 'q3'},
-        input_alphabet={'0', '1', 'X', 'Y', 'B'},
-        tape_symbols={'0', '1', 'X', 'Y', 'B'},
-        transitions={
-            ('q0', '0'): Configuration('q2', '0', 'S'),  # Step 6 check if all turing machine tape is X and Y ( there is no 1 and 0 left on the tape)
-            ('q0', '1'): Configuration('q2', '1', 'S'),
-            ('q0', 'X'): Configuration('q0', 'X', 'R'),
-            ('q0', 'Y'): Configuration('q0', 'Y', 'R'),
-            ('q0', 'B'): Configuration('q3', 'B', 'S')
-        },
-        initial_state='q0',
-        accept_states={'q2'},
-        reject_states={'q3'}
-    )
-    step6 = TuringMachine(
-        states={'q0', 'q1', 'q2', 'q3'},
-        input_alphabet={'0', '1', 'X', 'Y', 'B'},
-        tape_symbols={'0', '1', 'X', 'Y', 'B'},
-        transitions={
-            ('q0', '0'): Configuration('q3', '0', 'S'),  # Step 6 check if all turing machine tape is X and Y ( there is no 1 and 0 left on the tape)
-            ('q0', '1'): Configuration('q3', '1', 'S'),
-            ('q0', 'X'): Configuration('q0', 'X', 'R'),
-            ('q0', 'Y'): Configuration('q0', 'Y', 'R'),
-            ('q0', 'B'): Configuration('q2', 'B', 'S')
-        },
-        initial_state='q0',
-        accept_states={'q2'},
-        reject_states={'q3'}
-    )
+# step4 = TuringMachine(
+#             states={'q0', 'q1', 'q2', 'q3'},
+#             input_alphabet={'0', '1', 'X', 'Y', 'B'},
+#             tape_symbols={'0', '1', 'X', 'Y', 'B'},
+#             transitions={
+#                 ('q0', 'X'): Configuration('q0', 'X', 'R'),
+#                 ('q0', '0'): Configuration('q2', '0', 'S'),
+#                 ('q0', '1'): Configuration('q2', '1', 'S'),
+#                 ('q0', 'B'): Configuration('q2', 'B', 'L'),
+#             },
+#             initial_state='q0',
+#             accept_states={'q2'},
+#             reject_states={'q3'}
+#         )
 
-    combined_tm = CombinedTuringMachine({'0', '1'})
-    combined_tm.add('Change 0 to X', step1)
-    combined_tm.add('Move Right To First 1', step2)
-    combined_tm.add('Change 1 to Y', step3)
-    combined_tm.add('Move Left to Leftmost 0', step4)
-    # test without cond
-    result = TuringMachineController()
-    result.add_turing_machine("myCombined", combined_tm)
-    res = result.run_turing_machine("myCombined", "0011")
-    print(res)
-    res = ''.join(res.tape)
-    res = res.replace('B','')
-    # test with while cond
-    result.remove("myCombined")
-    combined_tm.setTuringMachineWhileCondition("0 or 1 in tape", step5)
-    result.add_turing_machine("myCombined", combined_tm)
-    res = result.run_turing_machine("myCombined", "0011")
-    res = ''.join(res.tape)
-    res = res.replace('B','')
-    #self.assertEqual(result, "XXYY")
-except Exception as e:
-    print("NO")
+        #step 5 repeat steps number 01 to 04 until no more 0 and 1 remain in the input tape
+step5 = TuringMachine(
+            states={'q0', 'q1', 'q2', 'q3'},
+            input_alphabet={'0', '1', 'X', 'Y', 'B'},
+            tape_symbols={'0', '1', 'X', 'Y', 'B'},
+            transitions={
+                ('q0', 'X'): Configuration('q0', 'X', 'R'),
+                ('q0', '0'): Configuration('q1', '0', 'S'),
+                ('q0', '1'): Configuration('q1', '1', 'S'),
+                ('q0', 'B'): Configuration('q3', 'B', 'S')
+            },
+            initial_state='q0',
+            accept_states={'q1'},
+            reject_states={'q3'}
+        )
+
+
+combined_tm = CombinedTuringMachine({'0', '1'})
+combined_tm.add('Change 0 to X', step1)
+combined_tm.add('Move Right To First 1', step2)
+combined_tm.add('Change 1 to Y', step3)
+#combined_tm.add('Move Left to Leftmost 0', step4)
+
+#you want to repeat steps number 01 to 04 until no more 0 and 1 remain in the input tape
+combined_tm.setTuringMachineWhileCondition("0 or 1 in tape", step5)
+controller = TuringMachineController()
+####################important step!!!! dont forget!!!##########################
+controller.add_turing_machine('OccurenceOf0==1',combined_tm)
+###############################################################################
+
+controller.run_turing_machine('OccurenceOf0==1', "0011")
+
+# def check_zeros_equal_ones(input_str):
+#     if(len(input_str) == 0):
+#       return False
+#     if(str(input_str[0]) != "0"):
+#         return False
+#     count_0 = input_str.count('0')
+#     count_1 = input_str.count('1')
+#     return count_0 == count_1
+
+# controller.validate_turing_machine('OccurenceOf0==1', check_zeros_equal_ones)

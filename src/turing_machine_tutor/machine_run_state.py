@@ -24,6 +24,7 @@ class Machine_Run_State:
         elif config.action == 'L':
             self.head_position -= 1
             if self.head_position < 0:
+                self.head_position = 0
                 self.tape.insert(0, "B")  # Blank symbol for extending the tape to the left
 
 

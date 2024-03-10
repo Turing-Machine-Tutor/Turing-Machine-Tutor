@@ -13,8 +13,10 @@ class CombinedTuringMachine:
         self.input_alphabet = set(input_alphabet)
         self.while_condition = None
         self.name = ""
+    
     def given_state_is_in_acceptance(self,state):
         return self.turing_machines[-1].given_state_is_in_acceptance(state)
+    
     def add(self, new_turing_machine_name, new_turing_machine):
         if(new_turing_machine == None):
             raise Exception("TM cannot be None")
@@ -60,6 +62,7 @@ class CombinedTuringMachine:
         self.while_condition.name = name
 
     def runHelper(self, turing_machines, head_position, result_tm, first_step_is_over_flag, machine_run_state):
+        index = 1
         for tm in turing_machines:
             # Run the first Turing machine initially
             try:
@@ -73,8 +76,10 @@ class CombinedTuringMachine:
 
                 if (machine_run_state.state in tm.accept_states):
                     continue
-                elif (machine_run_state.state in tm.reject_states):
-                    raise Exception("turing machine:  "+tm.name+ " halted on rejected state")
+                else:
+                    raise Exception("turing machine:  "+tm.name+ " halted on rejected/non accepted state")
+                # elif (machine_run_state.state in tm.reject_states):
+                #     raise Exception("turing machine:  "+tm.name+ " halted on rejected state")
             except Exception as e:
                 raise (e)
         return machine_run_state, first_step_is_over_flag , result_tm
