@@ -3,11 +3,11 @@ import sys
 # Add the parent directory of mypackage to the Python path
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
-from CombinedTuringMachine import CombinedTuringMachine
-from TuringMachine import TuringMachine
-from TuringMachineController import TuringMachineController
-from configuration import Configuration
-from IFTuringMachine import IFTuringMachine
+from turing_machine_tutor.CombinedTuringMachine import CombinedTuringMachine
+from turing_machine_tutor.TuringMachine import TuringMachine
+from turing_machine_tutor.TuringMachineController import TuringMachineController
+from turing_machine_tutor.configuration import Configuration
+from turing_machine_tutor.IFTuringMachine import IFTuringMachine
 
 
 # def test_me(number):
@@ -331,7 +331,7 @@ elseTm = TuringMachine( # condition if input legth is less than 4 change every 0
 )
 
 if1 = IFTuringMachine()
-if1.setIfTM(ifTm,'if1')
+if1.setIfTM(ifTm,"if1")
 if1.setThenTM(thenTm,"then1")
 if1.setElseTM(elseTm, "else1")
 
@@ -430,5 +430,4 @@ if_machine.setElseTM(simple_turing_machine_2,"convert_1_to_0")
 controller.add_turing_machine("ifshit",if_machine)
 
 controller.visualize("ifshit","10")
-
 
