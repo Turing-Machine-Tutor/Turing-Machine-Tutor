@@ -907,8 +907,8 @@ class TestTuringMachineController(unittest.TestCase):
             self.assertEqual(res,True)
             print(res)
             #print(result.run_turing_machine("myCombined", "01"))
-            #res = result.validate_turing_machine("myCombined",notValidFunc)
-            #self.assertEqual(res,False)
+            res = result.validate_turing_machine("myCombined",notValidFunc)
+            self.assertEqual(res,False)
         except Exception as e:
             self.fail("shouldn't throw exception when validating")
 

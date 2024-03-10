@@ -9,6 +9,7 @@ from turing_machine_tutor.CombinedTuringMachine import CombinedTuringMachine
 from turing_machine_tutor.IFTuringMachine import IFTuringMachine
 from turing_machine_tutor.TuringMachineVisualizer import TuringMachineVisualizer
 from turing_machine_tutor.Challenge import Challenge
+from IPython.display import display, clear_output
 
 
 class TuringMachineController:
@@ -55,7 +56,13 @@ class TuringMachineController:
 
     def run_turing_machine(self, name, input_string):
         try:
-            return self.turing_machines[name].run(input_string)
+            output = self.turing_machines[name].run(input_string)
+            try:
+                print("tape:= " + ''.join(output.tape.copy()))
+                print("accepted:= "+str(self.turing_machines[name].given_state_is_in_acceptance(output.state)))
+            except Exception as e:
+                print(e)
+            return output
         except Exception as e:
             print(e)
 
@@ -117,11 +124,11 @@ class TuringMachineController:
         # Display current state and step number
         state_step_info = f"State: {step.state} | Step: {step_counter + 1}"
         if (len(step.tape) == 0):
-            print("\n\n")
+            #clear_output(wait=True)
             print("proceeding to next turing machine")
             print(f"Step: {step_counter + 1}")
             time.sleep(1)  # Pause for a short duration to visualize each step
-            print("\n\n\n")
+            clear_output(wait=True)
             return
         # Print the visualization
         print(tape_str)
