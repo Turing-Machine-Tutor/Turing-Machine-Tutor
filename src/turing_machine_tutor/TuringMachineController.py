@@ -79,15 +79,17 @@ class TuringMachineController:
         #self.turing_machines[turing_name].reset_turing_machine()
         visualizer =TuringMachineVisualizer(self.turing_machines[turing_name])
         steps= visualizer.run_and_visualize(machine_input,5000)
-        user_input = input("Press Enter to continue or type 'stop' to end: ")
+        user_input = "start"
         index=0
         step_counter=0
         while user_input!="stop":
+            user_input = input("Press Enter to continue or type 'stop' to end: ")
+            if(user_input=="stop"):
+                return
             step_counter=self.display_step_at_index(steps,index,step_counter)
             if(step_counter==-1):
                 return
             index=index+1
-            user_input = input("Press Enter to continue or type 'stop' to end: ")
 
 
 
