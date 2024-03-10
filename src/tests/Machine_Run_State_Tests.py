@@ -29,7 +29,7 @@ class Machine_Run_State_Tests(unittest.TestCase):
         machine_run_state_test=Machine_Run_State(["t","e","s","t"],0,"q1")
         #assume this transition ('q1','t') -> ('q0','t','L') exists
         machine_run_state_test.execute_config(config_test)
-        self.assertEquals(machine_run_state_test.head_position,-1)
+        self.assertEquals(machine_run_state_test.head_position,0)
         self.assertEquals(machine_run_state_test.state,'q0')
         self.assertEquals(machine_run_state_test.tape, ["B","t","e","s","t"])
 
