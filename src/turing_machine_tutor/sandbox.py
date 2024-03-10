@@ -665,7 +665,7 @@ controller = TuringMachineController()
 controller.add_turing_machine('OccurenceOf0==1',combined_tm)
 ###############################################################################
 
-controller.run_turing_machine('OccurenceOf0==1', "201221021000 ")
+controller.run_turing_machine('OccurenceOf0==1', "01201")
 
 # def check_zeros_equal_ones(input_str):
 #     if(len(input_str) == 0):
