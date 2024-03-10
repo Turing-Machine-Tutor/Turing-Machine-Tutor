@@ -1,7 +1,3 @@
-import os
-import sys
-# Add the parent directory of mypackage to the Python path
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
 import unittest
 
@@ -81,7 +77,7 @@ class TuringMachineVisualizer_Tests(unittest.TestCase):
             accept_states={'q1'},
             reject_states={'q2'}
         )
-        combined_tm = CombinedTuringMachine({'0', '1'})
+        combined_tm = CombinedTuringMachine()
         combined_tm.add("step1", simple_turing_machine_1)
         combined_tm.add("step2", simple_turing_machine_2)
         visualizer = TuringMachineVisualizer(combined_tm)

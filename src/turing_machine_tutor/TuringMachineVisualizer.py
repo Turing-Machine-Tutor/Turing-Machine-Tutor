@@ -1,7 +1,3 @@
-import os
-import sys
-# Add the parent directory of mypackage to the Python path
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 import time
 from IPython.display import display, clear_output
  ##@@@@@@@@@@@@@@@@@@@@@@222 if you run sandbox remove this turing_machine_tutor.
@@ -13,8 +9,6 @@ from turing_machine_tutor.IFTuringMachine import IFTuringMachine
 
 class TuringMachineVisualizer:
     def __init__(self, turing_machine):
-        if not(isinstance(turing_machine,IFTuringMachine) or isinstance(turing_machine,CombinedTuringMachine) or isinstance(turing_machine,TuringMachine)):
-            raise Exception("TM cannot be Not (TuringMachine / IFTuringMachine / CombinedTuringMachine) Object")
         self.tm = turing_machine
         self.steps = [] ##type is Machine_Run_State
 
@@ -24,7 +18,7 @@ class TuringMachineVisualizer:
             return self.run_and_visualize_if_turing_machine(input_string)
         elif(isinstance(self.tm,CombinedTuringMachine)):
             return self.run_and_visualize_combined_turing_machine(input_string)
-        elif(isinstance(self.tm,TuringMachine)):
+        else:
             clear_output(wait=True)  # clear first output of getting user input
             # Reset visualization steps
             self.steps = []

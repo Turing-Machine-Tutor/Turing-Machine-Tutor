@@ -233,3 +233,4 @@ def halts_for_every_possible_input(turing_machine): ...
 ```
 
 **However,** we test if your machine terminates by limiting the amount of steps it's allowed to take. That is, for every task, the TA has defined a limit of steps, that if your machine doesn't halt, we assume it's probably stuck. If your machine was given a word with length 10 and takes one million steps, then perhaps it will terminate the next step, but probably not. And even if your machine will take one million and one steps to correctly decide a 10-character word, that probably means you have room for improvement.
+

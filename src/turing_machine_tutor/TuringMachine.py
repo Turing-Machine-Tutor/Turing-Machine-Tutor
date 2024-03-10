@@ -2,9 +2,12 @@
 import os
 import sys
 # Add the parent directory of mypackage to the Python path
+from typing import TypedDict
+
+from turing_machine_tutor.domain import Letter
+
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 from turing_machine_tutor.machine_run_state import Machine_Run_State
-
 
 
 
@@ -25,41 +28,23 @@ class TuringMachine:
 
         # add Validate turing machine and throw exception if turing machine is not valid
 
-    def get_input_alphabet(self):
-        if(self.input_alphabet == None):
-            raise Exception("Cannot get input alphabet, please construct the turing machine first")
-        return self.input_alphabet
-    
+        
     def isValidTM(self, states, input_alphabet, tape_symbols, transitions, initial_state, accept_states, reject_states):
-        # lambda function that checks all list items are string
-        is_all_strings = lambda my_list: all(isinstance(item, str) and len(item) >= 1 for item in my_list)
         try:
-            if(states == None or len(states) == 0 or (not isinstance(states, (list,set))) or (not is_all_strings(states))):
-                raise Exception("states cannot be None / empty list, and must be all string in list of len > 1")
-            if(input_alphabet == None or len(input_alphabet) == 0 or (not isinstance(input_alphabet, (list,set))) or (not is_all_strings(input_alphabet))):
-                raise Exception("input_alphabet cannot be None / empty list, and must be all string in list of len > 1")
-            if(tape_symbols == None or len(tape_symbols) == 0 or (not isinstance(tape_symbols, (list,set))) or (not is_all_strings(tape_symbols))):
-                raise Exception("tape_symbols cannot be None / empty list, and must be all string in list of len > 1")
-            
-            all_transitions_str = transitions == None or len(transitions) == 0 or (not isinstance(transitions, dict))
-            if(all_transitions_str):
-                raise Exception("transitions cannot be None / empty dict, and must be dict with all string values of key and all string values of Configuration of len > 1")
-            all_transitions_str = isinstance(transitions,dict)
-            if (all_transitions_str):
-                for key,value in transitions.items():
-                    if (key[0] == None or key[1] == None or value.state == None or value.symbol == None or value.action == None):
-                        raise Exception("transitions cannot be None / empty dict, and must be dict with all string values of key and all string values of Configuration of len > 1")   
-                    all_transitions_str = isinstance(key[0], str) and len(key[0])>0 and isinstance(key[1], str)and len(key[1])>0 and isinstance(value.state, str) and len(value.state)>0 and isinstance(value.symbol, str) and len(value.symbol)>0 and isinstance(value.action, str) and len(value.action)>0
-                    if not all_transitions_str:
-                        raise Exception("transitions cannot be None / empty dict, and must be dict with all string values of key and all string values of Configuration of len > 1")   
-             
-                            
-            if(initial_state == None or len(initial_state) == 0 or (not isinstance(initial_state, str))):
-                raise Exception("initial_state cannot be None / empty string, and must string of len > 1")
-            if(accept_states == None or len(accept_states) == 0 or (not isinstance(accept_states, (list,set))) or (not is_all_strings(accept_states))):
-                raise Exception("accept_states cannot be None / empty list, and must be all string in list of len > 1")
-            if(reject_states == None or len(reject_states) == 0 or (not isinstance(reject_states, (list,set))) or (not is_all_strings(reject_states))):
-                raise Exception("reject_states cannot be None / empty list, and must be all string in list of len > 1")
+            if(states == None or len(states) == 0):
+                raise Exception("states cannot be None / empty list")
+            if(input_alphabet == None or len(input_alphabet) == 0):
+                raise Exception("input_alphabet cannot be None / empty list")
+            if(tape_symbols == None or len(tape_symbols) == 0):
+                raise Exception("tape_symbols cannot be None / empty list")
+            if(transitions == None or len(transitions) == 0):
+                raise Exception("transitions cannot be None / empty list")
+            if(initial_state == None or len(initial_state) == 0):
+                raise Exception("initial_state cannot be None / empty string")
+            if(accept_states == None or len(accept_states) == 0):
+                raise Exception("accept_states cannot be None / empty list")
+            if(reject_states == None or len(reject_states) == 0):
+                raise Exception("reject_states cannot be None / empty list")
             
             check = "B" in tape_symbols
             if(not check):
@@ -123,7 +108,6 @@ class TuringMachine:
     def contains_chars(self, input_string):
         for ch in input_string:
             if(ch not in self.input_alphabet):
-                print(ch)
                 return False
         return True
 
@@ -140,9 +124,6 @@ class TuringMachine:
         self.current_machine_state.state = self.initial_state
 
     def run(self, input_string,head_position=0):
-        is_all_strings = lambda my_list: all(isinstance(item, str) and len(item) == 1 for item in my_list)
-        if(input_string == None or not((isinstance(input_string,list) and is_all_strings(input_string)) or isinstance(input_string,str))):
-            raise Exception("Input String cannot be None or not str object or list of chars")
         max_steps=100*len(input_string)
        # self.reset_turing_machine()
         self.current_machine_state.put_word_on_tape(input_string)
