@@ -438,7 +438,7 @@ class TestTuringMachine(unittest.TestCase):
             )
             result.run("")
         except Exception as e:
-            self.fail("TuringMachine() raised Exception: "+e+", with valid TuringMachine and valid input unexpectedly!")
+            self.fail("TuringMachine() raised Exception: "+str(e)+", with valid TuringMachine and valid input unexpectedly!")
     ###############################################################################################################
     #test Valid TM run with not valid input
     def test_TM_Run_withInValidTuringMachineInput(self):

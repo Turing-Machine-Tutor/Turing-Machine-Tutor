@@ -17,7 +17,7 @@ class TestCombinedTuringMachine(unittest.TestCase):
         notValid_list = [None, "", [], 5, 'asd']
         for n_v in notValid_list:
             try:
-                result = CombinedTuringMachine()
+                result = CombinedTuringMachine({'0', '1'})
                 result.add("test", n_v)
             except Exception as e:
                 if n_v == None:
@@ -45,7 +45,7 @@ class TestCombinedTuringMachine(unittest.TestCase):
         notValid_list = [None, "", '']
         for n_v in notValid_list:
             try:
-                result = CombinedTuringMachine()
+                result = CombinedTuringMachine({'0', '1'})
                 result.add(n_v, step1)
             except Exception as e:
                 self.assertEqual("Name cannot be None", str(e))
@@ -70,7 +70,7 @@ class TestCombinedTuringMachine(unittest.TestCase):
         notValid_list = [5, [55], {5}]
         for n_v in notValid_list:
             try:
-                result = CombinedTuringMachine()
+                result = CombinedTuringMachine({'0', '1'})
                 result.add(n_v, step1)
             except Exception as e:
                 self.assertEqual("Name cannot be not str object", str(e))
@@ -95,7 +95,7 @@ class TestCombinedTuringMachine(unittest.TestCase):
         notValid_list = ["add1", "add1"]
         for n_v in notValid_list:
             try:
-                result = CombinedTuringMachine()
+                result = CombinedTuringMachine({'0', '1'})
                 result.add(n_v, step1)
             except Exception as e:
                 self.assertEqual("Turing machine with this name already exists in the list", str(e))
@@ -105,7 +105,7 @@ class TestCombinedTuringMachine(unittest.TestCase):
         notValid_list = [None, "", [], 5, 'asd']
         for n_v in notValid_list:
             try:
-                result = CombinedTuringMachine()
+                result = CombinedTuringMachine({'0', '1'})
                 result.setTuringMachineWhileCondition("test", n_v)
             except Exception as e:
                 if n_v == None:
@@ -135,7 +135,7 @@ class TestCombinedTuringMachine(unittest.TestCase):
         notValid_list = [None, "", '']
         for n_v in notValid_list:
             try:
-                result = CombinedTuringMachine()
+                result = CombinedTuringMachine({'0', '1'})
                 result.setTuringMachineWhileCondition(n_v, step1)
             except Exception as e:
                 self.assertEqual("Name cannot be None", str(e))
@@ -160,7 +160,7 @@ class TestCombinedTuringMachine(unittest.TestCase):
         notValid_list = [5, [55], {5}]
         for n_v in notValid_list:
             try:
-                result = CombinedTuringMachine()
+                result = CombinedTuringMachine({'0', '1'})
                 result.setTuringMachineWhileCondition(n_v, step1)
             except Exception as e:
                 self.assertEqual("Name cannot be not str object", str(e))
@@ -174,7 +174,7 @@ class TestCombinedTuringMachine(unittest.TestCase):
         notValid_list = [None, ""]
         for n_v in notValid_list:
             try:
-                result = CombinedTuringMachine()
+                result = CombinedTuringMachine({'0', '1'})
                 result.remove(n_v)
             except Exception as e:
                 self.assertEqual("Name cannot be None", str(e))
@@ -184,7 +184,7 @@ class TestCombinedTuringMachine(unittest.TestCase):
         notValid_list = [5, [5], {"55"}]
         for n_v in notValid_list:
             try:
-                result = CombinedTuringMachine()
+                result = CombinedTuringMachine({'0', '1'})
                 result.remove(n_v)
             except Exception as e:
                 self.assertEqual("Name cannot be not str object", str(e))
@@ -194,7 +194,7 @@ class TestCombinedTuringMachine(unittest.TestCase):
         notValid_list = ["test1", "test2", "a"]
         for n_v in notValid_list:
             try:
-                result = CombinedTuringMachine()
+                result = CombinedTuringMachine({'0', '1'})
                 result.remove(n_v)
             except Exception as e:
                 self.assertEqual("Turing machine with this name doesn't exists in the list", str(e))
@@ -219,7 +219,7 @@ class TestCombinedTuringMachine(unittest.TestCase):
         Valid_list = ["test1"]
         for v in Valid_list:
             try:
-                result = CombinedTuringMachine()
+                result = CombinedTuringMachine({'0', '1'})
                 result.add(v,step1)
                 result.remove(v)
             except Exception as e:
@@ -290,7 +290,7 @@ class TestCombinedTuringMachine(unittest.TestCase):
             accept_states={'q2'},
             reject_states={'q3'}
         )
-        combined_tm = CombinedTuringMachine()
+        combined_tm = CombinedTuringMachine({'0', '1'})
         combined_tm.add('Change 0 to X', step1)
         combined_tm.add('Move Right To First 1', step2)
         combined_tm.add('Change 1 to Y', step3)
@@ -397,7 +397,7 @@ class TestCombinedTuringMachine(unittest.TestCase):
             reject_states={'q3'}
         )
 
-        combined_tm = CombinedTuringMachine()
+        combined_tm = CombinedTuringMachine({'0', '1'})
         combined_tm.add('Change 0 to X', step1)
         combined_tm.add('Move Right To First 1', step2)
         combined_tm.add('Change 1 to Y', step3)
@@ -505,7 +505,7 @@ class TestCombinedTuringMachine(unittest.TestCase):
             reject_states={'q3'}
         )
 
-        combined_tm = CombinedTuringMachine()
+        combined_tm = CombinedTuringMachine({'0', '1'})
         combined_tm.add('Change 0 to X', step1)
         combined_tm.add('Move Right To First 1', step2)
         combined_tm.add('Change 1 to Y', step3)
@@ -615,7 +615,7 @@ class TestCombinedTuringMachine(unittest.TestCase):
             reject_states={'q3'}
         )
 
-        combined_tm = CombinedTuringMachine()
+        combined_tm = CombinedTuringMachine({'0', '1'})
         combined_tm.add('Change 0 to X', step1)
         combined_tm.add('Move Right To First 1', step2)
         combined_tm.add('Change 1 to Y', step3)
