@@ -136,7 +136,7 @@ class TuringMachineController:
         print(state_step_info)
         print('-' * (2 * len(step.tape) + 1))  # Separator line
         time.sleep(1)  # Pause for a short duration to visualize each step
-        print("\n\n\n")
+        clear_output(wait=True)
 
 
 
