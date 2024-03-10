@@ -141,7 +141,7 @@ class TuringMachineController:
         clear_output(wait=True)
 
 
-    def validate_turing_machine(self, name, test_count=100,max_input_length=20):
+    def validate_turing_machineTA(self, name, test_count=100,max_input_length=20):
         turing_name = name
         
         if(turing_name == None or turing_name == ""):
