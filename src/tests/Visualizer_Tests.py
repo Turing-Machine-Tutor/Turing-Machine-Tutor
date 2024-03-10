@@ -81,7 +81,7 @@ class TuringMachineVisualizer_Tests(unittest.TestCase):
             accept_states={'q1'},
             reject_states={'q2'}
         )
-        combined_tm = CombinedTuringMachine()
+        combined_tm = CombinedTuringMachine({'0', '1'})
         combined_tm.add("step1", simple_turing_machine_1)
         combined_tm.add("step2", simple_turing_machine_2)
         visualizer = TuringMachineVisualizer(combined_tm)
