@@ -66,6 +66,10 @@ class IFTuringMachine:
             # else run elseTm
             machine_run_state = self.elseTm.run(input_str)
             return machine_run_state
-        
+    
+    def get_input_alphabet(self):
+        if(self.ifTm == None or (not isinstance(self.ifTm, TuringMachine))):
+            raise Exception("Cannot get input alphabet, Missing IF TM. Please Use SetIFtm to set the turing machine")
+        return self.setIfTM.input_alphabet
     
         

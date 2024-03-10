@@ -133,19 +133,41 @@ class TuringMachineController:
 
 
 
-    def validate_turing_machine(self,turing_name,function_object,extreme_cases,test_count=100,max_input_length=20):
+    def validate_turing_machine(self,turing_name,function_object,extreme_cases=[],test_count=100,max_input_length=20):
+            if(turing_name == None or turing_name == ""):
+                raise Exception("Name cannot be None")
+            if(not isinstance(turing_name, str)):
+                raise Exception("Name cannot be not str object")
             if turing_name not in self.turing_machines.keys():
-                raise Exception("there is no turing machine with the name: ",turing_name)
+                raise Exception("there is no turing machine with the name: "+turing_name)
+            if(function_object == None):
+                raise Exception("func cannot be None")
+            if(not callable(function_object)):
+                raise Exception("func cannot be not function object")
+            try:
+                if(not isinstance(function_object(""),bool)):
+                    raise Exception()
+            except Exception as e:
+                raise Exception("func cannot be function object that doesnt get string input and output True/False (boolean)")
+            is_all_strings = lambda my_list: all(isinstance(item, str) and len(item) >= 1 for item in my_list)
+            if(extreme_cases == None):
+                raise Exception("extreme_cases cannot be None")
+            if((not isinstance(extreme_cases, (list,set))) or not is_all_strings(extreme_cases)):
+                raise Exception("extreme_cases cannot contain a non string object")
+
             for _ in range(test_count): ## generate random words and test them
                 for input_length in range(1,max_input_length):
-                    alphabet = ''.join(self.turing_machines[turing_name].input_alphabet)
+                    #print("My alphabet is : " + str(self.turing_machines[turing_name].get_input_alphabet()))
+                    alphabet = ''.join(self.turing_machines[turing_name].get_input_alphabet())
                     input_string = ''.join(random.choice(alphabet) for _ in range(input_length))
                     print("testing on input: "+input_string)
                     final_machine_state=None
                     try:
                         final_machine_state=self.turing_machines[turing_name].run(input_string)
+                        #final_machine_state=self.turing_machines[turing_name].run("01")
                     except Exception as e:
                         print(e)
+                        final_machine_state = None
                     function_result=function_object(input_string) ## boolean function i guess
                     if (final_machine_state == None):
                         str_results = "func returned: " + str(function_result) + " TM returned: False" 
@@ -153,6 +175,7 @@ class TuringMachineController:
                             print(f"Validation passed for input: {input_string}")
                         else:
                             print(f"Validation failed for input: {input_string}" + " , " + str_results)
+                            return False
                         continue
                     if (isinstance(self.turing_machines[turing_name], TuringMachine)):
                         ##it is normal turing machine
@@ -181,6 +204,7 @@ class TuringMachineController:
                         print(f"Validation passed for input: {extreme_case}")
                     else:
                         print(f"Validation failed for input: {extreme_case}")
+                        return False
                     continue
                 is_in_acceptance_checker = self.turing_machines[turing_name].given_state_is_in_acceptance(final_machine_state.state)
                 if function_result != is_in_acceptance_checker:
