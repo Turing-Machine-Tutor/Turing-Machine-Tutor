@@ -87,7 +87,7 @@ class TuringMachineController:
             if(step_counter==-1):
                 return
             user_input = input("Press Enter to continue or type 'stop' to end: ")
-            clear_output(wait=True)
+            #clear_output(wait=True)
             index=index+1
             
 
@@ -102,6 +102,7 @@ class TuringMachineController:
                 print(steps[index])
                 return -1
         self.print_step(steps[index], step_counter)
+        clear_output(wait=True)
         return step_counter + 1
 
 

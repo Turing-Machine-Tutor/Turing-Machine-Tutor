@@ -68,6 +68,8 @@ class CombinedTuringMachine:
             try:
                 if first_step_is_over_flag==0:
                     machine_run_state = tm.run(result_tm,head_position)
+                    result_tm = machine_run_state.tape.copy()
+
                     first_step_is_over_flag=1
                 else:
                     current_head_position=machine_run_state.head_position
@@ -82,6 +84,7 @@ class CombinedTuringMachine:
                 #     raise Exception("turing machine:  "+tm.name+ " halted on rejected state")
             except Exception as e:
                 raise (e)
+        result_tm = ''.join(machine_run_state.tape.copy()).replace('B','')
         return machine_run_state, first_step_is_over_flag , result_tm
 
     def run(self, input_str,head_position=0): ##if it is not given then it is 0, this what means the '=0'
