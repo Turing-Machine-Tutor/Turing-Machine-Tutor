@@ -1,9 +1,9 @@
 from dataclasses import *
 from typing import Iterable, Mapping
 
-from attr import frozen
+from attr import define
 
-from src.turing_machine_tutor.input_validation import assert_types
+from turing_machine_tutor.util.input_validation import assert_types
 
 
 class Letter(str):
