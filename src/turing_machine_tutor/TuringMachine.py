@@ -124,7 +124,7 @@ class TuringMachine:
     def contains_chars(self, input_string):
         for ch in input_string:
             if(ch not in self.input_alphabet):
-                print(ch)
+                #print(ch)
                 return False
         return True
 
