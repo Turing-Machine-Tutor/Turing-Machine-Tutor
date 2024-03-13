@@ -27,7 +27,7 @@ class TuringMachineController:
             raise Exception("Name cannot be None")
         if(not isinstance(name, str)):
             raise Exception("Name cannot be not str object")
-        if(name == self.turing_machines.keys()):
+        if(name in self.turing_machines.keys()):
             raise Exception("Turing machine with this name already exists in the dict")
         turing_machine.name = name
         self.turing_machines[name] = turing_machine

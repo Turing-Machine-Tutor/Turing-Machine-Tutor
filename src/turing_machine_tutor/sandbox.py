@@ -750,6 +750,7 @@ combined_tm.add("step2", simple_turing_machine_2)
 
 ####################important step!!!! dont forget!!!##########################
 controller.add_turing_machine('MyCombined',combined_tm)
+controller.add_turing_machine('MyCombined',combined_tm)
 ###############################################################################
 
 controller.visualize_step_by_step('MyCombined', "002111")
