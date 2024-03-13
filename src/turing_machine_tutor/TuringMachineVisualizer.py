@@ -83,6 +83,7 @@ class TuringMachineVisualizer:
                         turing_machine.reset_turing_machine()
                         machine_run_state=turing_machine.run(input_string,head_position)
                     except Exception as e:
+                        self.steps.append("reached reject state")
                         return self.steps
                     first_step_is_over_flag=1
                 else:
@@ -94,15 +95,22 @@ class TuringMachineVisualizer:
                         turing_machine.reset_turing_machine()
                         machine_run_state = turing_machine.run(machine_run_state.tape,machine_run_state.head_position)
                     except Exception as e:
+                        self.steps.append("reached reject state")
                         return self.steps
                 # self.steps.append("halted on "+self.tm.turing_machines_names[index] + " on acceptance state")
                 # index += 1
             #index = 0
 
+            # remove steps with tape [] 
+            for s in self.steps:
+                if(not isinstance(s,str)):
+                    if(len(s.tape) == 0):
+                        self.steps.remove(s)
+
             if (self.tm.while_condition == None):
                 return self.steps
 
-
+            self.steps.append("proceeding to next cond turing machine with the name: "+self.tm.while_condition.name)
             # self.tm.while_condition.run_and_visualize()
             ## run and visulaize While Condition Turing machine
             turing_machine = self.tm.while_condition
@@ -116,6 +124,7 @@ class TuringMachineVisualizer:
                     turing_machine.reset_turing_machine()
                     machine_run_state=turing_machine.run(input_string,head_position)
                 except Exception as e:
+                    self.steps.append("reached reject state")
                     return self.steps
                 first_step_is_over_flag=1
             else:
@@ -124,11 +133,16 @@ class TuringMachineVisualizer:
                     turing_machine.reset_turing_machine()
                     machine_run_state = turing_machine.run(machine_run_state.tape,machine_run_state.head_position)
                 except Exception as e:
+                    self.steps.append("reached reject state")
                     return self.steps
             if(self.tm.while_condition != None):
                 cond = not self.tm.while_condition.given_state_is_in_acceptance(machine_run_state.state)
             else:
                 cond = True
+            if not cond:
+                index_tm_name = 0
+                self.steps.append("starting again with turing machine with the name: "+self.tm.turing_machines[index_tm_name].name)
+
         return self.steps
 
 

@@ -93,10 +93,11 @@ class TestTuringMachineController(unittest.TestCase):
             accept_states={'q2'},
             reject_states={'q3'}
         )
+        result = TuringMachineController()
         notValid_list = ["add1", "add1"]
         for n_v in notValid_list:
             try:
-                result = TuringMachineController()
+                
                 result.add_turing_machine(n_v, step1)
             except Exception as e:
                 self.assertEqual("Turing machine with this name already exists in the dict", str(e))
