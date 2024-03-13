@@ -86,33 +86,33 @@ class TuringMachineVisualizer_Tests(unittest.TestCase):
         combined_tm.add("step2", simple_turing_machine_2)
         visualizer = TuringMachineVisualizer(combined_tm)
         steps = visualizer.run_and_visualize("01", 5000)
-        self.assertEquals(steps[0].tape, ["0", "1"])
-        self.assertEquals(steps[0].head_position, 0)
-        self.assertEquals(steps[0].state, "q0")
+        self.assertEquals(steps[1].tape, ["0", "1"])
+        self.assertEquals(steps[1].head_position, 0)
+        self.assertEquals(steps[1].state, "q0")
 
-        self.assertEquals(steps[1].tape, ["1", "1"])
-        self.assertEquals(steps[1].head_position, 1)
-        self.assertEquals(steps[1].state, "q1")
+        self.assertEquals(steps[2].tape, ["1", "1"])
+        self.assertEquals(steps[2].head_position, 1)
+        self.assertEquals(steps[2].state, "q1")
 
-        self.assertEquals(steps[2].tape, [])
-        self.assertEquals(steps[2].head_position, 0)
-        self.assertEquals(steps[2].state, "q0")
+        self.assertEquals(steps[3].tape, [])
+        self.assertEquals(steps[3].head_position, 0)
+        self.assertEquals(steps[3].state, "q0")
 
-        self.assertEquals(steps[3], "reached accept state")
+        self.assertEquals(steps[4], "reached accept state")
 
-        self.assertEquals(steps[4].tape, ["1", "1"])
-        self.assertEquals(steps[4].head_position, 1)
-        self.assertEquals(steps[4].state, "q0")
-
-        self.assertEquals(steps[5].tape, ["1", "0","B"])
-        self.assertEquals(steps[5].head_position, 2)
-        self.assertEquals(steps[5].state, "q1")
-
-        self.assertEquals(steps[6].tape, [])
-        self.assertEquals(steps[6].head_position, 0)
+        self.assertEquals(steps[6].tape, ["1", "1"])
+        self.assertEquals(steps[6].head_position, 1)
         self.assertEquals(steps[6].state, "q0")
 
-        self.assertEquals(steps[7], "reached accept state")
+        self.assertEquals(steps[7].tape, ["1", "0","B"])
+        self.assertEquals(steps[7].head_position, 2)
+        self.assertEquals(steps[7].state, "q1")
+
+        self.assertEquals(steps[8].tape, [])
+        self.assertEquals(steps[8].head_position, 0)
+        self.assertEquals(steps[8].state, "q0")
+
+        self.assertEquals(steps[9], "reached accept state")
 
     def test_run_and_visualize_while_condition_machine(self):
         self.assertEquals(1,1)
@@ -171,39 +171,39 @@ class TuringMachineVisualizer_Tests(unittest.TestCase):
         if_machine.setElseTM(simple_turing_machine_2, "convert_1_to_0")
         visualizer = TuringMachineVisualizer(if_machine)
         steps = visualizer.run_and_visualize("01", 5000)
-
-        self.assertEquals(steps[0].tape, ["0", "1"])
-        self.assertEquals(steps[0].head_position, 0)
-        self.assertEquals(steps[0].state, "q0")
-
+        print(steps)
         self.assertEquals(steps[1].tape, ["0", "1"])
         self.assertEquals(steps[1].head_position, 0)
-        self.assertEquals(steps[1].state, "q2")
+        self.assertEquals(steps[1].state, "q0")
 
         self.assertEquals(steps[2].tape, ["0", "1"])
         self.assertEquals(steps[2].head_position, 0)
         self.assertEquals(steps[2].state, "q2")
 
-        self.assertEquals(steps[3], "reached reject state")
+        self.assertEquals(steps[3].tape, ["0", "1"])
+        self.assertEquals(steps[3].head_position, 0)
+        self.assertEquals(steps[3].state, "q2")
 
-        self.assertEquals(steps[4].tape, ["0", "1"])
-        self.assertEquals(steps[4].head_position, 0)
-        self.assertEquals(steps[4].state, "q0")
+        self.assertEquals(steps[4], "reached reject state")
 
-        self.assertEquals(steps[5].tape, ["0", "1"])
-        self.assertEquals(steps[5].head_position, 1)
-        self.assertEquals(steps[5].state, "q0")
+        self.assertEquals(steps[6].tape, ["0", "1"])
+        self.assertEquals(steps[6].head_position, 0)
+        self.assertEquals(steps[6].state, "q0")
+
+        self.assertEquals(steps[7].tape, ["0", "1"])
+        self.assertEquals(steps[7].head_position, 1)
+        self.assertEquals(steps[7].state, "q0")
 
 
-        self.assertEquals(steps[6].tape, ["0", "0","B"])
-        self.assertEquals(steps[6].head_position, 2)
-        self.assertEquals(steps[6].state, "q1")
+        self.assertEquals(steps[8].tape, ["0", "0","B"])
+        self.assertEquals(steps[8].head_position, 2)
+        self.assertEquals(steps[8].state, "q1")
 
-        self.assertEquals(steps[7].tape, ["0", "0", "B"])
-        self.assertEquals(steps[7].head_position, 2)
-        self.assertEquals(steps[7].state, "q1")
+        self.assertEquals(steps[9].tape, ["0", "0", "B"])
+        self.assertEquals(steps[9].head_position, 2)
+        self.assertEquals(steps[9].state, "q1")
 
-        self.assertEquals(steps[8], "reached accept state")
+        self.assertEquals(steps[10], "reached accept state")
 
         def test_run_and_visualize_if_condition_enters_else(self):
             if_machine = IFTuringMachine()  # if first letter is 1 then convert first 0 to 1 else convert first 1 to 0

@@ -28,7 +28,8 @@ class CombinedTuringMachine:
             raise Exception("Name cannot be not str object")
         for tm in self.turing_machines:
             if(tm.name == new_turing_machine_name):
-                raise Exception("Turing machine with this name already exists in the list")
+                raise Exception("Turing machine with this name already exists in the list")    
+        
         new_turing_machine.name = new_turing_machine_name
         self.turing_machines.append(new_turing_machine)
         #self.turing_machines_names.append(new_turing_machine_name)
