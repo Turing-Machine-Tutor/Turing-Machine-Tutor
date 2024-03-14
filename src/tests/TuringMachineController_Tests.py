@@ -93,10 +93,11 @@ class TestTuringMachineController(unittest.TestCase):
             accept_states={'q2'},
             reject_states={'q3'}
         )
+        result = TuringMachineController()
         notValid_list = ["add1", "add1"]
         for n_v in notValid_list:
             try:
-                result = TuringMachineController()
+                
                 result.add_turing_machine(n_v, step1)
             except Exception as e:
                 self.assertEqual("Turing machine with this name already exists in the dict", str(e))
@@ -718,13 +719,8 @@ class TestTuringMachineController(unittest.TestCase):
                     self.assertEqual("func cannot be None",str(e))
                 else:
                     self.assertEqual("func cannot be not function object",str(e))
-        def func1(asd):
-            return 0
-        def func2(asd):
-            return "asd"
-        def func3():
-            return True
-        not_valid_list = [func1, func2, func3]
+        
+        not_valid_list = [func11, func2, func3]
         for n_v in not_valid_list:
             try:
                 result = result.validate_turing_machine("myCombined", n_v)
@@ -837,8 +833,6 @@ class TestTuringMachineController(unittest.TestCase):
         result = TuringMachineController()
         result.add_turing_machine("myCombined", combined_tm)
 
-        def func1(asd):
-            return True
 
         not_valid_list = [None, 5, [5], {5}, "test"]
         for n_v in not_valid_list:
@@ -852,6 +846,8 @@ class TestTuringMachineController(unittest.TestCase):
 
     ###############################################################################################################
     ###############################################################################################################
+    
+    
     # test TuringMachineController validate function with valid func input
     def test_TuringMachineController_Validate_ValidTMInput(self):
         step1 = TuringMachine(
@@ -880,28 +876,6 @@ class TestTuringMachineController(unittest.TestCase):
         result = TuringMachineController()
         result.add_turing_machine("myCombined", combined_tm)
 
-        def is_0n1n(s):
-            if(len(s) < 2):
-                return False
-            elif(len(s) == 2 and s != "01"):
-                return False
-            elif(len(s) == 2 and s == "01"):
-                return True
-            st = s.split('01')
-            if(len(st) != 2):
-                return False
-            if(len(st[0]) != len(st[1])):
-                return False
-            for i in st[0]:
-                if i != '0':
-                    return False
-            for i in st[1]:
-                if i != '1':
-                    return False
-            return True
-
-        def notValidFunc(asd):
-            return True
         try:
             res = result.validate_turing_machine("myCombined",is_0n1n)
             self.assertEqual(res,True)
@@ -910,9 +884,45 @@ class TestTuringMachineController(unittest.TestCase):
             res = result.validate_turing_machine("myCombined",notValidFunc)
             self.assertEqual(res,False)
         except Exception as e:
+            print(str(e))
             self.fail("shouldn't throw exception when validating")
 
     ###############################################################################################################
-    
+
+
+
+def is_0n1n(s):
+    if(len(s) < 2):
+        return False
+    elif(len(s) == 2 and s != "01"):
+        return False
+    elif(len(s) == 2 and s == "01"):
+        return True
+    st = s.split('01')
+    if(len(st) != 2):
+        return False
+    if(len(st[0]) != len(st[1])):
+        return False
+    for i in st[0]:
+        if i != '0':
+            return False
+    for i in st[1]:
+        if i != '1':
+            return False
+    return True
+
+def notValidFunc(asd):
+    return True
+
+def func1(asd):
+    return True
+def func11(asd):
+    return 0
+def func2(asd):
+    return "asd"
+def func3():
+    return True
+
+
 if __name__ == '__main__':
     unittest.main()

@@ -77,8 +77,8 @@ class TestTuringMachine(unittest.TestCase):
     ###############################################################################################################
 # test Not Valid TM input alphabet State
     def test_TM_Constructor_withInValidInputAlphabet(self):
-        not_valid_input_alphabet = [          {}       ,        None            ,    {'0'}]
-        not_valid_tape_symbols = [{'0', '1', 'B'},          {'0', '1', 'B'}    , {'B', '1', '2'}]
+        not_valid_input_alphabet = [          {}       ,        None         , {'00', '0' '1', 'B'}  ,    {'0'}]
+        not_valid_tape_symbols = [{'0', '1', 'B'},          {'0', '1', 'B'}    , {'0', '1', 'B'},  {'B', '1', '2'}]
         for index in range(0,2):
 
             try: 
@@ -97,9 +97,9 @@ class TestTuringMachine(unittest.TestCase):
                 )
                 self.fail("should throw exception")
             except Exception as e:
-                self.assertEqual("input_alphabet cannot be None / empty list, and must be all string in list of len > 1", str(e))
+                self.assertEqual("input_alphabet cannot be None / empty list, and must be all string in list of len = 1", str(e))
 
-        for index in range(2,3):
+        for index in range(3,4):
             try:
                 TuringMachine(
                 states={'q0', 'q1', 'q2'},
@@ -140,7 +140,7 @@ class TestTuringMachine(unittest.TestCase):
                 )
                 self.fail("should throw exception")
             except Exception as e:
-                self.assertEqual("tape_symbols cannot be None / empty list, and must be all string in list of len > 1", str(e))
+                self.assertEqual("tape_symbols cannot be None / empty list, and must be all string in list of len = 1", str(e))
 
         for index in range(2,3):
             try:
@@ -478,7 +478,7 @@ class TestTuringMachine(unittest.TestCase):
             )
             result.run("2222")
         except Exception as e:
-            self.assertEqual("input string contains char not from the alphabet.",str(e))
+            self.assertEqual("rejected input, input string contains char not from the alphabet.",str(e))
     ###############################################################################################################
     
     

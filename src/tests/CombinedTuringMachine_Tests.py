@@ -626,7 +626,7 @@ class TestCombinedTuringMachine(unittest.TestCase):
             try:
                 result = combined_tm.run(n_v)
             except Exception as e:
-                self.assertEqual("input string contains char not from the alphabet.",str(e))
+                self.assertEqual("rejected input, input string contains char not from the alphabet.",str(e))
     ###############################################################################################################
     
 

@@ -10,7 +10,8 @@ from turing_machine_tutor.IFTuringMachine import IFTuringMachine
 from turing_machine_tutor.TuringMachineVisualizer import TuringMachineVisualizer
 from turing_machine_tutor.Challenge import Challenge
 from IPython.display import display, clear_output
-
+import ast
+import inspect
 
 class TuringMachineController:
     def __init__(self):
@@ -26,7 +27,7 @@ class TuringMachineController:
             raise Exception("Name cannot be None")
         if(not isinstance(name, str)):
             raise Exception("Name cannot be not str object")
-        if(name == self.turing_machines.keys()):
+        if(name in self.turing_machines.keys()):
             raise Exception("Turing machine with this name already exists in the dict")
         turing_machine.name = name
         self.turing_machines[name] = turing_machine
@@ -82,6 +83,13 @@ class TuringMachineController:
         user_input = "start"
         index=0
         step_counter=0
+
+        # remove steps with tape [] 
+        for s in steps:
+            if(not isinstance(s,str)):
+                if(len(s.tape) == 0):
+                    steps.remove(s)
+
         while user_input.lower() !="stop":
             step_counter=self.display_step_at_index(steps,index,step_counter)
             if(step_counter==-1):
@@ -97,9 +105,13 @@ class TuringMachineController:
         if (isinstance(steps[index], str)):
             if index<len(steps)-1:
                 print(steps[index])
+                time.sleep(1)
+                clear_output(wait=True)
                 return step_counter + 1
             else:
                 print(steps[index])
+                time.sleep(1)
+                clear_output(wait=True)
                 return -1
         self.print_step(steps[index], step_counter)
         clear_output(wait=True)
@@ -115,6 +127,8 @@ class TuringMachineController:
             # Display the tape as an array
             if(isinstance(step, str)):
                 print(step)
+                time.sleep(1)
+                clear_output(wait=True)
                 continue
             self.print_step(step,steps_counter)
             clear_output(wait=True)
@@ -128,10 +142,12 @@ class TuringMachineController:
         # Display current state and step number
         state_step_info = f"State: {step.state} | Step: {step_counter + 1}"
         if (len(step.tape) == 0):
-            print("proceeding to next turing machine")
-            print(f"Step: {step_counter + 1}")
-            time.sleep(1)  # Pause for a short duration to visualize each step
-            #clear_output(wait=True)
+            # print("proceeding to next turing machine")
+            # time.sleep(0.5)  # Pause for a short duration to visualize each step
+            # clear_output(wait=True)
+            # print(f"Step: {step_counter + 1}")
+            # time.sleep(1)  # Pause for a short duration to visualize each step
+            # clear_output(wait=True)
             return
         # Print the visualization
         print(tape_str)
@@ -139,7 +155,7 @@ class TuringMachineController:
         print(state_step_info)
         print('-' * (2 * len(step.tape) + 1))  # Separator line
         time.sleep(1)  # Pause for a short duration to visualize each step
-        #clear_output(wait=True)
+        clear_output(wait=True)
 
 
     def validate_turing_machineTA(self, name, test_count=100,max_input_length=20):
@@ -245,8 +261,14 @@ class TuringMachineController:
             try:
                 if(not isinstance(function_object(""),bool)):
                     raise Exception()
+                str_msg = self.validateFuncReturnOnlyBool(function_object)
+                if(len(str_msg) > 0):
+                    raise Exception("found error in func at line value: "+str_msg+" , func should return only True/False")
             except Exception as e:
-                raise Exception("func cannot be function object that doesnt get string input and output True/False (boolean)")
+                if(len(str(e)) > 0 and "found error in func at line value: " in str(e)):
+                    raise e
+                else:
+                    raise Exception("func cannot be function object that doesnt get string input and output True/False (boolean)")
             is_all_strings = lambda my_list: all(isinstance(item, str) and len(item) >= 1 for item in my_list)
             if(extreme_cases == None):
                 raise Exception("extreme_cases cannot be None")
@@ -330,6 +352,25 @@ class TuringMachineController:
             print(f"description: {self.challenges[key].description}\n")
             index = index + 1
 
+    def validateFuncReturnOnlyBool(self, func):
+        # Get the source code of the function
+        source_lines, _ = inspect.getsourcelines(func)
+        source_code = ''.join(source_lines)
 
+        # Parse the source code into an AST (Abstract Syntax Tree)
+        tree = ast.parse(source_code)
+
+        # Extract return statements from the AST
+        for node in ast.walk(tree):
+            if isinstance(node, ast.Return):
+                # Get the value of the return statement if it exists
+                if node.value is not None:
+                    return_stmt = ast.unparse(node).strip()
+                    if return_stmt not in ["return True", "return False"]:
+                        return return_stmt
+                else:
+                    return "return"  # Empty return statement
+
+        return ""  # All return statements are valid
 
 

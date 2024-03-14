@@ -616,8 +616,102 @@ from turing_machine_tutor.IFTuringMachine import IFTuringMachine
 
 
 
-# language 0^n_1^n_2_0^n_1^n
-step1 = TuringMachine( 
+# # language 0^n_1^n_2_0^n_1^n
+# step1 = TuringMachine( 
+#             states={'q0', 'q1', 'q2', 'q3', 'q4', 'q5'},
+#             input_alphabet={'0', '1', '2', 'X', 'Y', 'B','Z'},
+#             tape_symbols={'0', '1', '2', 'X', 'Y', 'B','Z'},
+#             transitions={
+#                 ('q0', '0'): Configuration('q1', 'X', 'R'),  # Step 1 change 0 to X
+#                 ('q0', 'Y'): Configuration('q3', 'Y', 'R'),
+#                 ('q1', '0'): Configuration('q1', '0', 'R'),
+#                 ('q1', '1'): Configuration('q2', 'Y', 'L'),
+#                 ('q1', 'Y'): Configuration('q1', 'Y', 'R'),
+#                 ('q2', '0'): Configuration('q2', '0', 'L'),
+#                 ('q2', 'X'): Configuration('q0', 'X', 'R'),
+#                 ('q2', 'Y'): Configuration('q2', 'Y', 'L'),
+#                 ('q3', 'Y'): Configuration('q3', 'Y', 'R'),
+#                 ('q3', 'B'): Configuration('q4', 'B', 'S'),
+
+#                 ('q3', '2'): Configuration('q4', '2', 'S')
+#             },
+#             initial_state='q0',
+#             accept_states={'q4'},
+#             reject_states={'q5'}
+#         )
+# cond = TuringMachine( #current head pos equals 0
+#             states={'q0', 'q1', 'q2', 'q3'},
+#             input_alphabet={'0', '1','2' , 'X', 'Y', 'B','Z'},
+#             tape_symbols={'0', '1','2', 'X', 'Y', 'B','Z'},
+#             transitions={
+#                 ('q0', 'X'): Configuration('q0', 'X', 'R'),
+#                 ('q0', 'Y'): Configuration('q0', 'Y', 'R'),
+#                 ('q0', '2'): Configuration('q2', 'Z', 'R'),
+#                 ('q0', 'Z'): Configuration('q0', 'Z', 'R')
+#             },
+#             initial_state='q0',
+#             accept_states={'q2'},
+#             reject_states={'q3'}
+#         )
+
+# combined_tm = CombinedTuringMachine({'0', '1', '2'})
+# combined_tm.add('find_a_n_b_n', step1)
+# #combined_tm.add('Move Left to Leftmost 0', step4)
+
+# #you want to repeat steps number 01 to 04 until no more 0 and 1 remain in the input tape
+# combined_tm.setTuringMachineWhileCondition("2 still in tape", cond)
+# controller = TuringMachineController()
+# ####################important step!!!! dont forget!!!##########################
+# controller.add_turing_machine('OccurenceOf0==1',combined_tm)
+# ###############################################################################
+
+# controller.run_turing_machine('OccurenceOf0==1', "01201")
+
+# # def check_zeros_equal_ones(input_str):
+# #     if(len(input_str) == 0):
+# #       return False
+# #     if(str(input_str[0]) != "0"):
+# #         return False
+# #     count_0 = input_str.count('0')
+# #     count_1 = input_str.count('1')
+# #     return count_0 == count_1
+
+# # controller.validate_turing_machine('OccurenceOf0==1', check_zeros_equal_ones)
+
+##########################################################################
+
+controller = TuringMachineController()
+
+# def is_0n1n(s):
+#     if(len(s) < 2):
+#         return False
+#     elif(len(s) == 2 and s != "01"):
+#         return False
+#     elif(len(s) == 2 and s == "01"):
+#         return True
+#     st = s.split('01')
+#     if(len(st) != 2):
+#         return False
+#     if(len(st[0]) != len(st[1])):
+#         return False
+#     for i in st[0]:
+#         if i != '0':
+#             return False
+#     for i in st[1]:
+#         if i != '1':
+#             return False
+#     return True
+
+# controller.add_challenge("0n1n","turing machine that accepts 0n1n",is_0n1n,{"02","01"});
+
+# controller.get_challenges()
+
+
+##########################################################################
+
+
+# language 0^n_1^n_2_0^n_1^n (2_0^n_1^n_2_0^n_1^n)*
+step1 = TuringMachine(
             states={'q0', 'q1', 'q2', 'q3', 'q4', 'q5'},
             input_alphabet={'0', '1', '2', 'X', 'Y', 'B','Z'},
             tape_symbols={'0', '1', '2', 'X', 'Y', 'B','Z'},
@@ -653,27 +747,16 @@ cond = TuringMachine( #current head pos equals 0
             accept_states={'q2'},
             reject_states={'q3'}
         )
-
 combined_tm = CombinedTuringMachine({'0', '1', '2'})
 combined_tm.add('find_a_n_b_n', step1)
 #combined_tm.add('Move Left to Leftmost 0', step4)
 
-#you want to repeat steps number 01 to 04 until no more 0 and 1 remain in the input tape
+#you want to repeat steps number 01 until no more 2 remain in the tape
 combined_tm.setTuringMachineWhileCondition("2 still in tape", cond)
-controller = TuringMachineController()
 ####################important step!!!! dont forget!!!##########################
-controller.add_turing_machine('OccurenceOf0==1',combined_tm)
-###############################################################################
+controller.add_turing_machine('WhileCombined',combined_tm)
 
-controller.run_turing_machine('OccurenceOf0==1', "01201")
 
-# def check_zeros_equal_ones(input_str):
-#     if(len(input_str) == 0):
-#       return False
-#     if(str(input_str[0]) != "0"):
-#         return False
-#     count_0 = input_str.count('0')
-#     count_1 = input_str.count('1')
-#     return count_0 == count_1
+#controller.run_turing_machine('WhileCombined', "001120011")
 
-# controller.validate_turing_machine('OccurenceOf0==1', check_zeros_equal_ones)
+controller.visualize('WhileCombined',"01201")

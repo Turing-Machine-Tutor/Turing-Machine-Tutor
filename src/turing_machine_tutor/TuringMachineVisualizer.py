@@ -29,7 +29,7 @@ class TuringMachineVisualizer:
             # Reset visualization steps
             self.steps = []
             if not self.tm.contains_chars(input_string):
-                self.steps.append("input string contains char not from the alphabet.")
+                self.steps.append("rejected input, input string contains char not from the alphabet.")
                 return self.steps
             self.tm.reset_turing_machine()
             self.tm.current_machine_state.head_position=head_position
@@ -66,41 +66,57 @@ class TuringMachineVisualizer:
         self.tm.turing_machines[0].reset_turing_machine() ## only reset first machine
         cond = False
         #index = 0
+        index_tm_name = 0
         while not cond:
             for turing_machine in self.tm.turing_machines:
                 visualizer = TuringMachineVisualizer(turing_machine)
                 if not turing_machine.contains_chars(input_string):
-                    self.steps.append("input string contains char not from the alphabet.")
+                    self.steps.append("rejected input, input string contains char not from the alphabet.")
                     return self.steps
                 if first_step_is_over_flag==0:
                     try:
+                        self.steps.append("starting with turing machine with the name: "+self.tm.turing_machines[index_tm_name].name)
                         self.steps=self.steps+visualizer.run_and_visualize(input_string, 5000,head_position)
+                        index_tm_name += 1
+                        if(index_tm_name < len(self.tm.turing_machines) and self.steps[-1] == "reached accept state"):
+                            self.steps.append("proceeding to next turing machine with the name: "+self.tm.turing_machines[index_tm_name].name)
                         turing_machine.reset_turing_machine()
                         machine_run_state=turing_machine.run(input_string,head_position)
                     except Exception as e:
+                        self.steps.append("reached reject state")
                         return self.steps
                     first_step_is_over_flag=1
                 else:
                     try:
                         self.steps=self.steps+visualizer.run_and_visualize(machine_run_state.tape, 5000,machine_run_state.head_position)
+                        index_tm_name += 1
+                        if(index_tm_name < len(self.tm.turing_machines) and self.steps[-1] == "reached accept state"):
+                            self.steps.append("proceeding to next turing machine with the name: "+self.tm.turing_machines[index_tm_name].name)
                         turing_machine.reset_turing_machine()
                         machine_run_state = turing_machine.run(machine_run_state.tape,machine_run_state.head_position)
                     except Exception as e:
+                        self.steps.append("reached reject state")
                         return self.steps
                 # self.steps.append("halted on "+self.tm.turing_machines_names[index] + " on acceptance state")
                 # index += 1
             #index = 0
 
+            # remove steps with tape [] 
+            for s in self.steps:
+                if(not isinstance(s,str)):
+                    if(len(s.tape) == 0):
+                        self.steps.remove(s)
+
             if (self.tm.while_condition == None):
                 return self.steps
 
-
+            self.steps.append("proceeding to next cond turing machine with the name: "+self.tm.while_condition.name)
             # self.tm.while_condition.run_and_visualize()
             ## run and visulaize While Condition Turing machine
             turing_machine = self.tm.while_condition
             visualizer = TuringMachineVisualizer(turing_machine)
             if not turing_machine.contains_chars(input_string):
-                self.steps.append("input string contains char not from the alphabet.")
+                self.steps.append("rejected input, input string contains char not from the alphabet.")
                 return self.steps
             if first_step_is_over_flag==0:
                 try:
@@ -108,6 +124,7 @@ class TuringMachineVisualizer:
                     turing_machine.reset_turing_machine()
                     machine_run_state=turing_machine.run(input_string,head_position)
                 except Exception as e:
+                    self.steps.append("reached reject state")
                     return self.steps
                 first_step_is_over_flag=1
             else:
@@ -116,11 +133,16 @@ class TuringMachineVisualizer:
                     turing_machine.reset_turing_machine()
                     machine_run_state = turing_machine.run(machine_run_state.tape,machine_run_state.head_position)
                 except Exception as e:
+                    self.steps.append("reached reject state")
                     return self.steps
             if(self.tm.while_condition != None):
                 cond = not self.tm.while_condition.given_state_is_in_acceptance(machine_run_state.state)
             else:
                 cond = True
+            if not cond:
+                index_tm_name = 0
+                self.steps.append("starting again with turing machine with the name: "+self.tm.turing_machines[index_tm_name].name)
+
         return self.steps
 
 
@@ -130,9 +152,9 @@ class TuringMachineVisualizer:
         if if_visualizer.tm.current_machine_state.state in if_visualizer.tm.accept_states:
             then_visualizer = TuringMachineVisualizer(self.tm.thenTm)
             then_visualizer.run_and_visualize(input_string, 5000)
-            return if_visualizer.steps + then_visualizer.steps
+            return ["starting with turing machine with the name: "+self.tm.ifTm.name] + if_visualizer.steps + ["proceeding to next turing machine with the name: "+self.tm.thenTm.name] + then_visualizer.steps
         else:
             else_visualizer = TuringMachineVisualizer(self.tm.elseTm)
             else_visualizer.run_and_visualize(input_string, 5000)
-            return if_visualizer.steps + else_visualizer.steps
+            return ["starting with turing machine with the name: "+self.tm.ifTm.name] + if_visualizer.steps  + ["proceeding to next turing machine with the name: "+self.tm.elseTm.name] + else_visualizer.steps
 

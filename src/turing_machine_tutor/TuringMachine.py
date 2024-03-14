@@ -33,13 +33,14 @@ class TuringMachine:
     def isValidTM(self, states, input_alphabet, tape_symbols, transitions, initial_state, accept_states, reject_states):
         # lambda function that checks all list items are string
         is_all_strings = lambda my_list: all(isinstance(item, str) and len(item) >= 1 for item in my_list)
+        is_all_strings_of_len1 = lambda my_list: all(isinstance(item, str) and len(item) == 1 for item in my_list)
         try:
             if(states == None or len(states) == 0 or (not isinstance(states, (list,set))) or (not is_all_strings(states))):
                 raise Exception("states cannot be None / empty list, and must be all string in list of len > 1")
-            if(input_alphabet == None or len(input_alphabet) == 0 or (not isinstance(input_alphabet, (list,set))) or (not is_all_strings(input_alphabet))):
-                raise Exception("input_alphabet cannot be None / empty list, and must be all string in list of len > 1")
-            if(tape_symbols == None or len(tape_symbols) == 0 or (not isinstance(tape_symbols, (list,set))) or (not is_all_strings(tape_symbols))):
-                raise Exception("tape_symbols cannot be None / empty list, and must be all string in list of len > 1")
+            if(input_alphabet == None or len(input_alphabet) == 0 or (not isinstance(input_alphabet, (list,set))) or (not is_all_strings_of_len1(input_alphabet))):
+                raise Exception("input_alphabet cannot be None / empty list, and must be all string in list of len = 1")
+            if(tape_symbols == None or len(tape_symbols) == 0 or (not isinstance(tape_symbols, (list,set))) or (not is_all_strings_of_len1(tape_symbols))):
+                raise Exception("tape_symbols cannot be None / empty list, and must be all string in list of len = 1")
             
             all_transitions_str = transitions == None or len(transitions) == 0 or (not isinstance(transitions, dict))
             if(all_transitions_str):
@@ -123,7 +124,7 @@ class TuringMachine:
     def contains_chars(self, input_string):
         for ch in input_string:
             if(ch not in self.input_alphabet):
-                print(ch)
+                #print(ch)
                 return False
         return True
 
@@ -150,7 +151,7 @@ class TuringMachine:
         steps = 0
 
         if not self.contains_chars(input_string):
-            raise Exception("input string contains char not from the alphabet.")
+            raise Exception("rejected input, input string contains char not from the alphabet.")
             ##return Configuration(''.join(tape), head_position,current_state in self.accept_states) ## @@@@ current_state in self.accept_states why boolean it should be state?
 
 
