@@ -34,7 +34,29 @@ def is_leap_year(w: Word):
 def _challenge() -> Challenge:
     return Challenge(
         short_name="leap_years",
-        description="returns whether a number (in decimal) is a leap year",
+        description="""
+        Write a machine that accepts a number (in decimal) if and only if it is a leap year.
+        Note:
+            Despite common misconception, not every year divisible by 4 is a leap year.
+            For example, 2100 will not be a leap year. 
+            The actual rule is:
+            if N%4 == 0, it's a leap year, (ex: 2004, 1996)
+            EXCEPT if N%100 == 0, then it's not a leap year (1900, 2100),
+            EXCEPT if N%400 == 0, then it is a leap year (1600, 2000, 2400).
+        Examples:
+            2015, 2023 were not leap years (N % 4 != 0).
+            2004 and 1996 were leap years (N % 4 == 0, N % 100 != 0)
+            1900 and 1800 were not leap years (N % 100 == 0, N % 400 != 0)
+            1600 and 2000 were leap years (N % 400 == 0)
+        Note:
+            You may assume the input has at least 4 digits. Years before 1000
+            will be padded, such as 4 -> 0004, 14 -> 0014, 980 -> 0980.
+            You will NOT be tested against un-padded inputs like 980, 014, 15, 09, 8.
+        Note:
+            As far as we are concerned, this is also true for years that were before this
+            rule was introduces, for example 856 (which we write 0856). This is also true
+            for year 0, which did not exist, but if it would exist, it should have been a leap year. 
+        """,
         alphabet=alphabet,
         validator=is_leap_year
     )
@@ -126,14 +148,18 @@ def _machine() -> TuringMachine:
 
 _cases = (
     1981, 1901, 1903, 1993, 1997, 1924, 1934, 1962,
-    1936, 1910, 1920, 1300, 1900, 1400, 1200, 2000, 2800, 1600, 2200)
+    1936, 1910, 1920, 1300, 1900, 1400, 1200, 2000, 2800, 1600, 2200,
+    0,  # year 0 did not exist, but if it would, it should have been a leap year
+    *range(1, 17),
+    23, 24, 100, 156, 142, 980
+)
 
 
 def _example() -> Example:
     return Example(
         challenge=_challenge(),
         machine=_machine(),
-        words=tuple(map(str, _cases)) + (EMPTY,)
+        words=tuple(map(lambda x: f'{x:04}', _cases)) + (EMPTY,)
     )
 
 
@@ -150,8 +176,4 @@ if __name__ == '__main__':
     print(tabulate(results, headers=["word", "expected", "actual", "test"]))
     print("---")
 
-    run = TuringMachineRun(leap_years.machine, Word("1200"))
-    while not run.is_terminal:
-        run.step()
-        print(run.pretty_str())
-    print(run.pretty_str())
+    print(leap_years.challenge.description)
