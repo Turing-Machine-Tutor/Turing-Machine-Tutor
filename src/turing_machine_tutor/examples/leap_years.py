@@ -85,51 +85,40 @@ def _machine() -> TuringMachine:
     builder.rejecting_state = rej
 
     # q0
-    for d in alphabet:
-        builder.delta[q[0], d] = q[0], d, RIGHT
+    builder.delta.on_state(q[0]).on_letters(*alphabet).skip_right()
     builder.delta[q[0], B] = q[1], B, LEFT
 
     # q1
     odds = tuple(alphabet[i] for i in range(1, 10, 2))
     evens = tuple(alphabet[i] for i in range(0, 10, 2))
 
-    for d in odds:
-        builder.delta[q[1], d] = rej, d, STAY  # 1981
+    builder.delta.on_state(q[1]).on_letters(*odds).change_state(rej)
 
-    map_ = {
-        # 0 -> q4; 4 | 8 -> q2; 2 | 6 -> q3
-        i: (q[4] if i == ZERO else q[2] if int(i) % 4 == 0 else q[3])
-        for i in evens
-    }
-    for (d, q_next) in map_.items():
-        builder.delta[q[1], d] = q_next, d, LEFT
+    builder.delta.on_state(q[1]).on_letters('0').change_state(q[4], LEFT)
+    builder.delta.on_state(q[1]).on_letters('4', '8').change_state(q[2], LEFT)
+    builder.delta.on_state(q[1]).on_letters('2', '6').change_state(q[3], LEFT)
 
     # q2
-    for d in evens:
-        builder.delta[q[2], d] = acc, d, STAY  # 1924
-    for d in odds:
-        builder.delta[q[2], d] = rej, d, STAY  # 1934
+    builder.delta.on_state(q[2]).on_letters(*evens).change_state(acc)  # 1924
+    builder.delta.on_state(q[2]).on_letters(*odds).change_state(rej)  # 1934
 
     # q3
-    for d in evens:
-        builder.delta[q[3], d] = rej, d, STAY  # 1962
-    for d in odds:
-        builder.delta[q[3], d] = acc, d, STAY  # 1936
+    builder.delta.on_state(q[3]).on_letters(*evens).change_state(rej)  # 1962
+    builder.delta.on_state(q[3]).on_letters(*odds).change_state(acc)  # 1936
 
     # q4 (that's the interesting one!)
-    for d in evens:
-        if d != ZERO:
-            builder.delta[q[4], d] = acc, d, STAY  # 1920
-    for d in odds:
-        builder.delta[q[4], d] = rej, d, STAY  # 1910
+
+    non_zero_evens = tuple(d for d in evens if d != ZERO)
+    builder.delta.on_state(q[4]).on_letters(*non_zero_evens).change_state(acc)  # 1920
+    builder.delta.on_state(q[4]).on_letters(*odds).change_state(rej)  # 1910
 
     builder.delta[q[4], ZERO] = q[5], ZERO, LEFT
 
     # q5 (interesting-er)
-    for d in odds:
-        builder.delta[q[5], d] = rej, d, STAY  # 1900, 1300
-    for d in evens:
-        builder.delta[q[5], d] = q[6 if int(d) % 4 == 0 else 7], d, LEFT  # 0,4,8 -> q6, 6,2->q7
+
+    builder.delta.on_state(q[5]).on_letters(*odds).change_state(rej)  # 1900, 1300
+    builder.delta.on_state(q[5]).on_letters('0', '4', '8').change_state('q6', LEFT)
+    builder.delta.on_state(q[5]).on_letters('2', '6').change_state('q7', LEFT)
 
     # q6
     for d in odds:
@@ -137,11 +126,12 @@ def _machine() -> TuringMachine:
     for d in evens:
         builder.delta[q[6], d] = acc, d, STAY  # 2000, 2800
 
+    builder.delta.on_state(q[6]).on_letters(*odds).change_state(rej)  # 1400
+    builder.delta.on_state(q[6]).on_letters(*evens).change_state(acc)  # 2000, 2800
+
     # q7
-    for d in odds:
-        builder.delta[q[7], d] = acc, d, STAY  # 1600
-    for d in evens:
-        builder.delta[q[7], d] = rej, d, STAY  # 2200
+    builder.delta.on_state(q[7]).on_letters(*odds).change_state(acc)  # 1600
+    builder.delta.on_state(q[7]).on_letters(*evens).change_state(rej)  # 2200
 
     return builder.build(fill_missing_transitions=True)
 
@@ -159,7 +149,7 @@ def _example() -> Example:
     return Example(
         challenge=_challenge(),
         machine=_machine(),
-        words=tuple(map(lambda x: f'{x:04}', _cases)) + (EMPTY,)
+        words=tuple(map(lambda x: f'{x:04}', _cases))
     )
 
 
@@ -174,6 +164,6 @@ if __name__ == '__main__':
         res = run.accepted
         results.append([w, exp, res, "SUCCESS" if res == exp else "FAILURE"])
     print(tabulate(results, headers=["word", "expected", "actual", "test"]))
-    print("---")
+    #print("---")
 
-    print(leap_years.challenge.description)
+    #print(leap_years.challenge.descr iption)

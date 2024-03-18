@@ -4,7 +4,7 @@ from frozendict import frozendict
 
 from turing_machine_tutor.domain import State, Letter
 from turing_machine_tutor.transition_table import TransitionTableEntryKey, TransitionTableEntryValue, Direction, \
-    TransitionTable, S
+    TransitionTable, RIGHT, LEFT, STAY
 from turing_machine_tutor.turing_machine import TuringMachine
 
 _State = Union[str, State]
@@ -23,6 +23,34 @@ def _ensure_value(v: _VT):
     if not isinstance(v, TransitionTableEntryValue):
         v = TransitionTableEntryValue(*v)
     return v
+
+
+class _TransitionTableBuilderStateHelper:
+    def __init__(self, builder: 'TransitionTableBuilder', state: State):
+        self._builder = builder
+        self._state = state
+
+    def on_letters(self, *letters: Letter):
+        return _TransitionTableBuilderStateLettersHelper(self._builder, self._state, letters)
+
+
+class _TransitionTableBuilderStateLettersHelper:
+    def __init__(self, builder: 'TransitionTableBuilder', state: State, letters: tuple[Letter]):
+        self._builder = builder
+        self._state = state
+        self._letters = letters
+
+    def skip_right(self):
+        for sigma in self._letters:
+            self._builder[self._state, sigma] = self._state, sigma, RIGHT
+
+    def skip_left(self):
+        for sigma in self._letters:
+            self._builder[self._state, sigma] = self._state, sigma, LEFT
+
+    def change_state(self, state: State, direction: Direction = STAY):
+        for sigma in self._letters:
+            self._builder[self._state, sigma] = state, sigma, direction
 
 
 class TransitionTableBuilder(MutableMapping[TransitionTableEntryKey, TransitionTableEntryValue]):
@@ -70,8 +98,18 @@ class TransitionTableBuilder(MutableMapping[TransitionTableEntryKey, TransitionT
             for q in states:
                 for sigma in letters:
                     if (q, sigma) not in self:
-                        self[(q, sigma)] = TransitionTableEntryValue(state=rej, letter=sigma, direction=S)
+                        self[(q, sigma)] = TransitionTableEntryValue(state=rej, letter=sigma, direction=STAY)
         return frozendict({k: v for k, v in self.items()})
+
+    def on_state(self, state: Union[str, State]):
+        """
+        Note: if you want to use this with .accept_on or .reject_on,
+        make sure you have set .accepting_state and .rejecting_state for
+        this builder before doing so!
+        """
+        if not isinstance(state, State):
+            state = State(state)
+        return _TransitionTableBuilderStateHelper(self, state)
 
 
 class TuringMachineBuilder:
