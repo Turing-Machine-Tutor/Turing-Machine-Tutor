@@ -90,9 +90,9 @@ def _machine() -> TuringMachine:
 
     # q3
     for d in evens:
-        builder.delta[q[2], d] = rej, d, STAY  # 1962
+        builder.delta[q[3], d] = rej, d, STAY  # 1962
     for d in odds:
-        builder.delta[q[2], d] = acc, d, STAY  # 1936
+        builder.delta[q[3], d] = acc, d, STAY  # 1936
 
     # q4 (that's the interesting one!)
     for d in evens:
@@ -117,9 +117,9 @@ def _machine() -> TuringMachine:
 
     # q7
     for d in odds:
-        builder.delta[q[6], d] = acc, d, STAY  # 1600
+        builder.delta[q[7], d] = acc, d, STAY  # 1600
     for d in evens:
-        builder.delta[q[6], d] = rej, d, STAY  # 2200
+        builder.delta[q[7], d] = rej, d, STAY  # 2200
 
     return builder.build(fill_missing_transitions=True)
 
@@ -133,8 +133,9 @@ def _example() -> Example:
     return Example(
         challenge=_challenge(),
         machine=_machine(),
-        words=tuple(map(str, _cases)) + (EMPTY, )
+        words=tuple(map(str, _cases)) + (EMPTY,)
     )
+
 
 leap_years = _example()
 
@@ -147,3 +148,10 @@ if __name__ == '__main__':
         res = run.accepted
         results.append([w, exp, res, "SUCCESS" if res == exp else "FAILURE"])
     print(tabulate(results, headers=["word", "expected", "actual", "test"]))
+    print("---")
+
+    run = TuringMachineRun(leap_years.machine, Word("1200"))
+    while not run.is_terminal:
+        run.step()
+        print(run.pretty_str())
+    print(run.pretty_str())
