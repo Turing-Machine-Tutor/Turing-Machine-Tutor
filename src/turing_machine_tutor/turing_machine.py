@@ -15,6 +15,17 @@ _to_frozenset_of_letters = _to_frozenset_with_cast(Letter)
 _to_frozenset_of_states = _to_frozenset_with_cast(State)
 
 
+def find_missing_transitions(non_terminal_states, tape_alphabet, delta):
+    return set(
+            k for k in (
+                TransitionTableEntryKey(state, letter)
+                for state in non_terminal_states
+                for letter in tape_alphabet
+            )
+            if k not in delta
+        )
+
+
 @define(frozen=True, kw_only=True)
 class TuringMachine:
     input_alphabet: frozenset[Letter] = field(converter=_to_frozenset_of_letters)
@@ -36,12 +47,13 @@ class TuringMachine:
 
     def get_transition(self, *args: Union[tuple[Any, Any], tuple[tuple], TransitionTableEntryKey]):
         k: TransitionTableEntryKey
+        arg = args[0]
         if len(args) > 1:
-            k = TransitionTableEntryKey(state=args[0], letter=args[1])
-        elif not isinstance(args[0], TransitionTableEntryKey):
-            k = TransitionTableEntryKey(state=args[0][0], letter=args[0][1])
-        elif isinstance(args[0], TransitionTableEntryKey):
-            k = args[0]
+            k = TransitionTableEntryKey(*args)
+        elif not isinstance(arg, TransitionTableEntryKey):
+            k = TransitionTableEntryKey(*arg)
+        elif isinstance(arg, TransitionTableEntryKey):
+            k = arg
         else:
             raise ValueError(f"not understood: get_transition{args}")
         if k.state in self.terminal_states:
@@ -98,14 +110,7 @@ class TuringMachine:
                     f"but {v.state} is not in tape_alphabet set {self.states}"
                 )
 
-        missing_transitions = set(
-            k for k in (
-                TransitionTableEntryKey(state, letter)
-                for state in self.non_terminal_states
-                for letter in self.tape_alphabet
-            )
-            if k not in self.delta
-        )
+        missing_transitions = find_missing_transitions(self.non_terminal_states, self.tape_alphabet, self.delta)
 
         if missing_transitions:
             raise ValueError(f"missing transitions: {missing_transitions}")

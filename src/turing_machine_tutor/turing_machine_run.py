@@ -1,7 +1,8 @@
+from typing import Optional
 
 from attr import define
 
-from turing_machine_tutor.domain import State, Letter, Word
+from turing_machine_tutor.domain import State, Letter, Word, EMPTY
 from turing_machine_tutor.transition_table import TransitionTableEntryKey, Direction, R, L, S, transition_table
 from turing_machine_tutor.turing_machine import TuringMachine
 from tabulate import *
@@ -21,8 +22,10 @@ class TuringMachineRunConfiguration:
 
     def pretty_str(self):
         first_row = [""] * len(self.tape)
-        first_row[self.head_index] = self.state + "\n🔽"
-        return tabulate([first_row, self.tape], tablefmt="grid", stralign="center")
+        second_row = [""] * len(self.tape)
+        first_row[self.head_index] = self.state
+        second_row[self.head_index] = "🔽"
+        return tabulate([first_row, second_row, self.tape], tablefmt="pretty", stralign="center")
 
     @property
     def letter_on_head(self):
@@ -78,6 +81,26 @@ class TuringMachineRun:
             head_index=new_index
         )
 
+    @property
+    def accepted(self) -> Optional[bool]:
+        """
+        Note: if not is_terminal, this will return None!
+        """
+        return self._config.state == self._machine.accepting_state if self.is_terminal else None
+
+    @property
+    def rejected(self) -> Optional[bool]:
+        """
+        Note: if not is_terminal, this will return None!
+        """
+        return self._config.state == self._machine.rejecting_state if self.is_terminal else None
+
+    def run_until_terminated(self, limit: Optional[int]=None):
+        while not self.is_terminal and (limit is None or limit > 0):
+            self.step()
+            if limit is not None:
+                limit -= 1
+
     def undo(self):
         self._config = self._history.pop()
 
@@ -112,9 +135,11 @@ if __name__ == '__main__':
         rejecting_state='rej',
         delta=table
     )
-    run = TuringMachineRun(machine, Word(*map(Letter, "011100010")))
+    words = [Word(*map(Letter, s)) for s in ("", "01010101")]
+    run = TuringMachineRun(machine, words[1])
     while not run.is_terminal:
         print(run.pretty_str())
         run.step()
         print()
-    print(run.configuration.pretty_str())
+    run.step()
+    print(run.pretty_str())

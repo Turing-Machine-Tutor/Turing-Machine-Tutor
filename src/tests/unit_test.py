@@ -5,7 +5,7 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
 from turing_machine_tutor.TuringMachine import TuringMachine
 from turing_machine_tutor.machine_run_state import Machine_Run_State
-from turing_machine_tutor.configuration import Configuration
+from turing_machine_tutor.turing_machine_run import Configuration
 
 import unittest
 # Purpose: Verify that individual units of code (functions, methods, or classes) work as intended.

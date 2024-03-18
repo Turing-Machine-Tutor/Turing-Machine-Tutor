@@ -1,11 +1,12 @@
 from typing import Union, Mapping, Any
 
 from attr import define, field
-from frozendict import frozendict
 
 from turing_machine_tutor.domain import State, Letter
+from turing_machine_tutor.util.FrozenDict import FrozenDict
 
 R, L, S = "R", "L", "S"
+RIGHT, LEFT, STAY = R, L, S
 Direction = Union[R, L, S]
 DIRECTIONS = frozenset({R, L, S})
 
@@ -28,7 +29,7 @@ class TransitionTableEntryValue:
     direction: Union[R, L, S] = field(validator=_validate_direction)
 
 
-TransitionTable = frozendict[TransitionTableEntryKey, TransitionTableEntryValue]
+TransitionTable = FrozenDict[TransitionTableEntryKey, TransitionTableEntryValue]
 
 
 def _key(k: Union[TransitionTableEntryKey, tuple[Any, Any]]) -> TransitionTableEntryKey:
@@ -36,14 +37,14 @@ def _key(k: Union[TransitionTableEntryKey, tuple[Any, Any]]) -> TransitionTableE
 
 
 def _value(v: Union[TransitionTableEntryValue, tuple[Any, Any]]) -> TransitionTableEntryKey:
-    return v if isinstance(v, TransitionTableEntryKey) \
+    return v if isinstance(v, TransitionTableEntryValue) \
         else TransitionTableEntryValue(state=v[0], letter=v[1], direction=v[2])
 
 
 def transition_table(
         entries: Mapping[TransitionTableEntryKey, TransitionTableEntryValue]
 ) -> TransitionTable:
-    return frozendict({
+    return FrozenDict({
         _key(k): _value(v)
         for k, v in entries.items()
     })

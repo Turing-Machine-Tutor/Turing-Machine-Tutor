@@ -1,5 +1,5 @@
 from dataclasses import *
-from typing import Iterable, Mapping
+from typing import Iterable, Mapping, Union
 
 from attr import define
 
@@ -11,12 +11,14 @@ class Letter(str):
 
 
 class Word(tuple[Letter]):
-    def __new__(cls, *args: Letter):
-        assert_types(Letter, args)
+    def __new__(cls, *args: Union[tuple[Letter, ...], tuple[str]]):
+        if len(args) == 1:
+            arg = args[0]
+            if isinstance(arg, Word):
+                return arg
+            elif isinstance(arg, str):
+                args = tuple(map(Letter, arg))  # arg -> split to letters
         return super().__new__(cls, args)
-
-    def __init__(self, *args: Letter):
-        pass
 
     @property
     def is_empty(self):

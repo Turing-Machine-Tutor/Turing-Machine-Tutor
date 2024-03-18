@@ -6,7 +6,7 @@ import unittest
 from turing_machine_tutor.IFTuringMachine import IFTuringMachine
 from turing_machine_tutor.TuringMachine import TuringMachine
 from turing_machine_tutor.TuringMachineVisualizer import TuringMachineVisualizer
-from turing_machine_tutor.configuration import Configuration
+from turing_machine_tutor.turing_machine_run import Configuration
 from turing_machine_tutor.machine_run_state import Machine_Run_State
 from turing_machine_tutor.CombinedTuringMachine import CombinedTuringMachine
 
