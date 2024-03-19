@@ -30,6 +30,13 @@ def is_leap_year(w: Word):
         return True
     return as_int % 400 == 0
 
+_cases = (
+    1981, 1901, 1903, 1993, 1997, 1924, 1934, 1962,
+    1936, 1910, 1920, 1300, 1900, 1400, 1200, 2000, 2800, 1600, 2200,
+    0,  # year 0 did not exist, but if it would, it should have been a leap year
+    *range(1, 17),
+    23, 24, 100, 156, 142, 980
+)
 
 def _challenge() -> Challenge:
     return Challenge(
@@ -58,7 +65,8 @@ def _challenge() -> Challenge:
             for year 0, which did not exist, but if it would exist, it should have been a leap year. 
         """,
         alphabet=alphabet,
-        validator=is_leap_year
+        validator=is_leap_year,
+        words=tuple(map(lambda x: f'{x:04}', _cases))
     )
 
 
@@ -136,34 +144,17 @@ def _machine() -> TuringMachine:
     return builder.build(fill_missing_transitions=True)
 
 
-_cases = (
-    1981, 1901, 1903, 1993, 1997, 1924, 1934, 1962,
-    1936, 1910, 1920, 1300, 1900, 1400, 1200, 2000, 2800, 1600, 2200,
-    0,  # year 0 did not exist, but if it would, it should have been a leap year
-    *range(1, 17),
-    23, 24, 100, 156, 142, 980
-)
+
 
 
 def _example() -> Example:
     return Example(
         challenge=_challenge(),
         machine=_machine(),
-        words=tuple(map(lambda x: f'{x:04}', _cases))
     )
 
 
 leap_years = _example()
 
 if __name__ == '__main__':
-    results = []
-    for w in leap_years.words:
-        run = TuringMachineRun(leap_years.machine, w)
-        run.run_until_terminated()
-        exp = leap_years.challenge.validator(w)
-        res = run.accepted
-        results.append([w, exp, res, "SUCCESS" if res == exp else "FAILURE"])
-    print(tabulate(results, headers=["word", "expected", "actual", "test"]))
-    #print("---")
-
-    #print(leap_years.challenge.descr iption)
+    print(leap_years.challenge.test_machine(leap_years.machine).pretty_str())

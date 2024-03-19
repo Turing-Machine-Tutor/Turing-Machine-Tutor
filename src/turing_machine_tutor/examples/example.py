@@ -13,7 +13,6 @@ from turing_machine_tutor.turing_machine import TuringMachine
 class Example:
     challenge: Challenge
     machine: TuringMachine
-    words: tuple[Word] = field(converter=lambda x: tuple(map(Word, x)))
 
 """
 def _0n1n() -> Example: ...
