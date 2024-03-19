@@ -1,3 +1,4 @@
+from simple_chalk import chalk
 from tabulate import tabulate
 
 from turing_machine_tutor.challenge import Challenge
@@ -31,24 +32,26 @@ def is_leap_year(w: Word):
         return True
     return as_int % 400 == 0
 
-_cases = (
+
+_cases = tuple(sorted((
     1981, 1901, 1903, 1993, 1997, 1924, 1934, 1962,
     1936, 1910, 1920, 1300, 1900, 1400, 1200, 2000, 2800, 1600, 2200,
     0,  # year 0 did not exist, but if it would, it should have been a leap year
     *range(1, 17),
     23, 24, 100, 156, 142, 980
-)
+)))
+
 
 def _challenge() -> Challenge:
     return Challenge(
         short_name="leap_years",
-        description="""
+        description=f"""
         Write a machine that accepts a number (in decimal) if and only if it is a leap year.
         Note:
-            Despite common misconception, not every year divisible by 4 is a leap year.
-            For example, 2100 will not be a leap year. 
-            The actual rule is:
-            if N%4 == 0, it's a leap year, (ex: 2004, 1996)
+            {chalk.bold.red('Despite common misconception')}, not every year divisible by 4 is a leap year.
+            For example, 2100 will {chalk.bold.red('not')} be a leap year. 
+            {chalk.bold.cyan('The actual rule is')}:
+            If N%4 == 0, it's a leap year, (ex: 2004, 1996)
             EXCEPT if N%100 == 0, then it's not a leap year (1900, 2100),
             EXCEPT if N%400 == 0, then it is a leap year (1600, 2000, 2400).
         Examples:
@@ -57,7 +60,7 @@ def _challenge() -> Challenge:
             1900 and 1800 were not leap years (N % 100 == 0, N % 400 != 0)
             1600 and 2000 were leap years (N % 400 == 0)
         Note:
-            You may assume the input has at least 4 digits. Years before 1000
+            {chalk.bold('You may assume the input has at least 4 digits.')} Years before 1000
             will be padded, such as 4 -> 0004, 14 -> 0014, 980 -> 0980.
             You will NOT be tested against un-padded inputs like 980, 014, 15, 09, 8.
         Note:
@@ -69,8 +72,6 @@ def _challenge() -> Challenge:
         validator=is_leap_year,
         words=tuple(map(lambda x: f'{x:04}', _cases))
     )
-
-
 
 
 def _machine() -> TuringMachine:
@@ -103,9 +104,13 @@ def _machine() -> TuringMachine:
     odds = tuple(alphabet[i] for i in range(1, 10, 2))
     evens = tuple(alphabet[i] for i in range(0, 10, 2))
 
+    @intentional_bug()
+    def remove_from_input_alphabet():
+        builder.input_alphabet.remove('9')
+
     builder.delta.on_state(q[1]).on_letters(*odds).change_state(rej)
 
-    @intentional_bug(activated=True)
+    @intentional_bug()
     def create_loop():
         builder.delta.on_state(q[1]).on_letters(*odds).change_state(q[1])
 
@@ -117,7 +122,7 @@ def _machine() -> TuringMachine:
     builder.delta.on_state(q[2]).on_letters(*evens).change_state(acc)  # 1924
     builder.delta.on_state(q[2]).on_letters(*odds).change_state(rej)  # 1934
 
-    @intentional_bug(activated=False)
+    @intentional_bug()
     def flip_q2():
         builder.delta.on_state(q[2]).on_letters(*evens).change_state(rej)  # 1924
 
@@ -152,10 +157,12 @@ def _machine() -> TuringMachine:
     builder.delta.on_state(q[7]).on_letters(*odds).change_state(acc)  # 1600
     builder.delta.on_state(q[7]).on_letters(*evens).change_state(rej)  # 2200
 
+    @intentional_bug(activated=False)
+    def wrong_alphabet():
+        builder.input_alphabet.append(",")
+        builder.tape_alphabet.append(",")
+
     return builder.build(fill_missing_transitions=True)
-
-
-
 
 
 def _example() -> Example:
@@ -168,4 +175,5 @@ def _example() -> Example:
 leap_years = _example()
 
 if __name__ == '__main__':
-    print(leap_years.challenge.test_machine(leap_years.machine).pretty_str(sort_column=3, sort_desc=True))
+    print(leap_years.challenge.test_machine(leap_years.machine).pretty_str())
+    print(leap_years.challenge.description)

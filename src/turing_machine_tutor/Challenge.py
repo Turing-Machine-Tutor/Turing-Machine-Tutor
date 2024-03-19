@@ -3,7 +3,7 @@ from typing import Callable, Union, Optional
 from attr import define, field
 from tabulate import tabulate
 
-from turing_machine_tutor.domain import Word
+from turing_machine_tutor.domain import Word, Letter
 
 from inspect import cleandoc as trim_indent  # use to trim multiline string
 
@@ -78,6 +78,31 @@ class MultiTestResult:
         return '\n'.join([table_str, bottom1, bottom2])
 
 
+
+class WrongAlphabet(MultiTestResult):
+    def __init__(self, expected: set[str], actual: set[str]):
+        super(WrongAlphabet, self).__init__(())
+        self._expected = expected
+        self._actual = actual
+
+    @property
+    def did_pass(self):
+        return False
+
+    def pretty_str(self, sort_column: Optional[int] = None, sort_desc=False, word_as_str=True):
+        fix_steps = []
+        remove = self._actual.difference(self._expected)
+        add = self._expected.difference(self._actual)
+        if remove:
+            fix_steps.append(f"remove {remove}")
+        if add:
+            fix_steps.append(f"add {add}")
+        return f"{_FAILED}: Machine {chalk.bold('does not have correct alphabet')}\n" \
+               f"{chalk.red.bold('should be: ')}{self._expected}\n" \
+               f"{chalk.red.bold('but was: ')}{self._actual}\n" \
+               f"({', '.join(fix_steps)})"
+
+
 @define(frozen=True)
 class Challenge:
     short_name: str
@@ -87,6 +112,10 @@ class Challenge:
     words: tuple[Word] = field(converter=lambda x: tuple(map(Word, x)))
 
     def test_machine(self, machine: TuringMachine, step_limit=10000) -> MultiTestResult:
+        expected_alphabet = {sigma for sigma in self.alphabet}
+        actual_alphabet = {sigma for sigma in machine.input_alphabet}
+        if expected_alphabet != actual_alphabet:
+            return WrongAlphabet(expected=expected_alphabet, actual=actual_alphabet)
         return MultiTestResult(tuple(self._test_machine_on_word(machine, word, step_limit) for word in self.words))
 
     def _test_machine_on_word(self, machine: TuringMachine, word: Word, step_limit=10000) -> SingleTestResult:

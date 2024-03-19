@@ -7,7 +7,8 @@ from tabulate import tabulate
 from turing_machine_tutor.challenge import Challenge
 from turing_machine_tutor.domain import Word, Letter
 from turing_machine_tutor.examples.example import Example
-from turing_machine_tutor.transition_table import RIGHT, LEFT
+from turing_machine_tutor.examples.intentional_bug import intentional_bug
+from turing_machine_tutor.transition_table import RIGHT, LEFT, STAY
 from turing_machine_tutor.turing_machine import TuringMachine
 from turing_machine_tutor.turing_machine_builder import TuringMachineBuilder
 from turing_machine_tutor.turing_machine_run import TuringMachineRun
@@ -33,10 +34,15 @@ def is_anagram(word: Word):
 
 _CASES = [
     Word(w.upper()) for w in (
+        # DJKPQWXYZ
         "|ELVIS|LIVES", "|THE EYES|THEY SEE",
         "|NOT AN|ANAGRAM", "|the engine of a film|the fine game of nil",
         "|the meaning of life|the fine game of nil",
         "|Turing Machine|Chaim Retuning",
+        "|Dijon|Ketchup",
+        "|pro war fox|fax or prow",
+        "|The quite zone|Quiz teen theo",
+        "|Quiz to war|write atom quiz",
         "|sub|subset", "|subset|sub",
         "|bus|subset", "|subset|bets"
     )
@@ -47,7 +53,7 @@ LANGUAGE_ALPHABET = AZ + (SEPARATOR, SPACE)
 challenge = Challenge(
     short_name="anagram",
     description=f"""
-    Write a machine over the alphabet {'A', ..., 'Z', ' ', '|'}
+    Write a machine over the alphabet {{'A', ..., 'Z', ' ', '|'}}
     Which accepts inputs of the form '|w1|w2' if w1 is an anagram of w2.
     Anagrams are phrases that can be rearranged into each other, such as
     "ELVIS|LIVES", "THE EYES|THEY SEE". Spaces are ignored, so you should
@@ -65,7 +71,7 @@ def _machine() -> TuringMachine:
 
     builder = TuringMachineBuilder()
 
-    BLANK = "`"
+    BLANK = "_"
 
     builder.blank_character = BLANK
     builder.input_alphabet.extend(LANGUAGE_ALPHABET)
@@ -85,7 +91,7 @@ def _machine() -> TuringMachine:
 
     # seeking_start
     builder.initial_state = seeking_start
-    builder.delta.on_state(seeking_start).on_letters('|').change_state(finding_next, direction=RIGHT)
+    builder.delta.on_state(seeking_start).on_letters(SEPARATOR).change_state(finding_next, direction=RIGHT)
     builder.delta.on_state(seeking_start).on_letters(*AZ, ' ').skip_left()
 
     builder.delta.on_state(seek_start).on_letters(*AZ, SPACE).skip_left()
@@ -110,6 +116,14 @@ def _machine() -> TuringMachine:
         builder.delta.on_state(looking_for[sigma]).on_letters(*space_and_letters_excl_sigma).skip_right()
         builder.delta.on_state(looking_for[sigma]).on_letters(sigma).change_state(seek_start, write=SPACE)
 
+    @intentional_bug(activated=False)
+    def _():
+        builder.delta.on_state(look_for['M']).on_letters(SEPARATOR).change_state(looking_for['N'], RIGHT)
+
+    @intentional_bug(activated=False)
+    def introduce_loop():
+        builder.delta.on_state(look_for['M']).on_letters(SEPARATOR).change_state(look_for['M'], STAY)
+
     # ensuring_right_done
     builder.delta.on_state(ensuring_right_done).on_letters(SPACE, SEPARATOR).skip_right()
     builder.delta.on_state(ensuring_right_done).on_letters(BLANK).change_state(acc)
@@ -132,4 +146,11 @@ if __name__ == '__main__':
 
     print(run.pretty_str())
 
-    print(anagram.challenge.test_machine(anagram.machine).pretty_str(sort_column=3, sort_desc=True))
+    print(anagram.challenge.test_machine(anagram.machine).pretty_str())
+    print(anagram.challenge.description)
+    print(len(machine.delta), len(machine.states), len(machine.tape_alphabet))
+
+    all_text = "".join(map(str, _CASES))
+    for sigma in AZ:
+        if sigma not in all_text:
+            print(sigma)
