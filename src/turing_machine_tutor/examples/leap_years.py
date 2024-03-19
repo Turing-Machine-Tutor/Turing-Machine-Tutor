@@ -3,6 +3,7 @@ from tabulate import tabulate
 from turing_machine_tutor.challenge import Challenge
 from turing_machine_tutor.domain import Word, Letter, EMPTY
 from turing_machine_tutor.examples.example import Example
+from turing_machine_tutor.examples.intentional_bug import intentional_bug
 from turing_machine_tutor.transition_table import RIGHT, LEFT, STAY
 from turing_machine_tutor.turing_machine import TuringMachine
 from turing_machine_tutor.turing_machine_builder import TuringMachineBuilder
@@ -70,6 +71,8 @@ def _challenge() -> Challenge:
     )
 
 
+
+
 def _machine() -> TuringMachine:
     B = "*"
     ZERO = alphabet[0]
@@ -102,6 +105,10 @@ def _machine() -> TuringMachine:
 
     builder.delta.on_state(q[1]).on_letters(*odds).change_state(rej)
 
+    @intentional_bug(activated=True)
+    def create_loop():
+        builder.delta.on_state(q[1]).on_letters(*odds).change_state(q[1])
+
     builder.delta.on_state(q[1]).on_letters('0').change_state(q[4], LEFT)
     builder.delta.on_state(q[1]).on_letters('4', '8').change_state(q[2], LEFT)
     builder.delta.on_state(q[1]).on_letters('2', '6').change_state(q[3], LEFT)
@@ -109,6 +116,10 @@ def _machine() -> TuringMachine:
     # q2
     builder.delta.on_state(q[2]).on_letters(*evens).change_state(acc)  # 1924
     builder.delta.on_state(q[2]).on_letters(*odds).change_state(rej)  # 1934
+
+    @intentional_bug(activated=False)
+    def flip_q2():
+        builder.delta.on_state(q[2]).on_letters(*evens).change_state(rej)  # 1924
 
     # q3
     builder.delta.on_state(q[3]).on_letters(*evens).change_state(rej)  # 1962
@@ -157,4 +168,4 @@ def _example() -> Example:
 leap_years = _example()
 
 if __name__ == '__main__':
-    print(leap_years.challenge.test_machine(leap_years.machine).pretty_str())
+    print(leap_years.challenge.test_machine(leap_years.machine).pretty_str(sort_column=3, sort_desc=True))

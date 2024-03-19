@@ -1,4 +1,4 @@
-from typing import Callable, Union
+from typing import Callable, Union, Optional
 
 from attr import define, field
 from tabulate import tabulate
@@ -15,6 +15,7 @@ _PASSED = chalk.green.bold("✔ PASSED")
 _FAILED = chalk.red.bold("❌ FAILED")
 
 DID_NOT_TERMINATE = "Did not terminate"
+
 
 @define(frozen=True)
 class SingleTestResult:
@@ -57,17 +58,20 @@ class MultiTestResult:
     def passed_ratio(self):
         return self.amount_passed / self.test_amount
 
-    def pretty_str(self):
-        table = tabulate([
-            [res.word, as_acc_rej(res.expected), as_acc_rej(res.actual), res.correctness_pretty_str()]
-            for res in self.results
-        ], headers=["word", "expected", "actual", "result"], tablefmt="grid")
+    def pretty_str(self, sort_column: Optional[int] = None, sort_desc=False):
+        table = [
+            [i, res.word, as_acc_rej(res.expected), as_acc_rej(res.actual), res.correctness_pretty_str()]
+            for (i, res) in enumerate(self.results)
+        ]
+        if sort_column is not None:
+            table.sort(key=lambda row: row[sort_column], reverse=sort_desc)
+        table_str = tabulate(table, headers=["#", "word", "expected", "actual", "result"], tablefmt="grid")
         bottom1 = f"passed {self.amount_passed}/{self.test_amount} tests ({self.passed_ratio * 100:.2f}%)"
         if self.did_pass:
             bottom2 = _PASSED + ": all tests passed. Good job!"
         else:
             bottom2 = _FAILED + f": some tests didn't pass. Must pass {chalk.bold.underline('all')} tests."
-        return '\n'.join([table, bottom1, bottom2])
+        return '\n'.join([table_str, bottom1, bottom2])
 
 
 @define(frozen=True)
