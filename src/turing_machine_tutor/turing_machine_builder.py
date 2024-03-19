@@ -48,9 +48,9 @@ class _TransitionTableBuilderStateLettersHelper:
         for sigma in self._letters:
             self._builder[self._state, sigma] = self._state, sigma, LEFT
 
-    def change_state(self, state: State, direction: Direction = STAY):
+    def change_state(self, state: State, direction: Direction = STAY, write: Union[str, Letter, None]=None):
         for sigma in self._letters:
-            self._builder[self._state, sigma] = state, sigma, direction
+            self._builder[self._state, sigma] = state, (sigma if write is None else write), direction
 
 
 class TransitionTableBuilder(MutableMapping[TransitionTableEntryKey, TransitionTableEntryValue]):

@@ -1,10 +1,4 @@
-from dataclasses import *
 from typing import Iterable, Mapping, Union
-
-from attr import define
-
-from turing_machine_tutor.util.input_validation import assert_types
-
 
 class Letter(str):
     ...

@@ -58,9 +58,13 @@ class MultiTestResult:
     def passed_ratio(self):
         return self.amount_passed / self.test_amount
 
-    def pretty_str(self, sort_column: Optional[int] = None, sort_desc=False):
+    def pretty_str(self, sort_column: Optional[int] = None, sort_desc=False, word_as_str=True):
         table = [
-            [i, res.word, as_acc_rej(res.expected), as_acc_rej(res.actual), res.correctness_pretty_str()]
+            [i,
+             ''.join(res.word) if word_as_str else str(res.word),
+             as_acc_rej(res.expected), as_acc_rej(res.actual),
+             res.correctness_pretty_str()
+             ]
             for (i, res) in enumerate(self.results)
         ]
         if sort_column is not None:
