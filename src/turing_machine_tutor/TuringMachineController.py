@@ -254,11 +254,14 @@ class TuringMachineController:
 
     def send_mail(self,ID):
         port = 465  # For SSL
+        subject = "Test Results"
+        body = f"Student with ID: {ID} passed the tests"
+        message = 'Subject: {}\n\n{}'.format(subject, body)
         # Create a secure SSL context
         context = ssl.create_default_context()
         with smtplib.SMTP_SSL("smtp.gmail.com", port, context=context) as server:
-         server.login("sendermail921@gmail.com", "aoao vbgp losb yrxd")
-         server.sendmail("sendermail921@gmail.com", "sendermail921@gmail.com", "student with ID: "+ID+" passed tests")
+            server.login("sendermail921@gmail.com", "aoao vbgp losb yrxd")
+            server.sendmail("sendermail921@gmail.com", "sendermail921@gmail.com", message)
 
 
     # user can use this function
