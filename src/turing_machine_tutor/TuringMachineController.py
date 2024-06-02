@@ -2,6 +2,7 @@ import random
 import time
 import os
 import sys
+import smtplib, ssl
 # Add the parent directory of mypackage to the Python path
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 from turing_machine_tutor.TuringMachine import TuringMachine
@@ -12,6 +13,10 @@ from turing_machine_tutor.Challenge import Challenge
 from IPython.display import display, clear_output
 import ast
 import inspect
+
+
+
+
 
 class TuringMachineController:
     def __init__(self):
@@ -158,7 +163,7 @@ class TuringMachineController:
         clear_output(wait=True)
 
 
-    def validate_turing_machineTA(self, name, test_count=100,max_input_length=20):
+    def validate_turing_machineTA(self, ID,name, test_count=100,max_input_length=20):
         turing_name = name
         
         if(turing_name == None or turing_name == ""):
@@ -244,7 +249,17 @@ class TuringMachineController:
                 print(f"Validation passed for input: {extreme_case}")
 
         print("Validation passed for all Turing machines.")
+        self.send_mail(ID);
         return True
+
+    def send_mail(self,ID):
+        port = 465  # For SSL
+        # Create a secure SSL context
+        context = ssl.create_default_context()
+        with smtplib.SMTP_SSL("smtp.gmail.com", port, context=context) as server:
+         server.login("sendermail921@gmail.com", "aoao vbgp losb yrxd")
+         server.sendmail("sendermail921@gmail.com", "sendermail921@gmail.com", "student with ID: "+ID+" passed tests")
+
 
     # user can use this function
     def validate_turing_machine(self,turing_name,function_object,extreme_cases=[],test_count=100,max_input_length=20):
@@ -372,5 +387,4 @@ class TuringMachineController:
                     return "return"  # Empty return statement
 
         return ""  # All return statements are valid
-
 

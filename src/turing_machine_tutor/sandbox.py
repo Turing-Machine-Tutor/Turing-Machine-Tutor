@@ -747,16 +747,17 @@ cond = TuringMachine( #current head pos equals 0
             accept_states={'q2'},
             reject_states={'q3'}
         )
-combined_tm = CombinedTuringMachine({'0', '1', '2'})
-combined_tm.add('find_a_n_b_n', step1)
-#combined_tm.add('Move Left to Leftmost 0', step4)
-
-#you want to repeat steps number 01 until no more 2 remain in the tape
-combined_tm.setTuringMachineWhileCondition("2 still in tape", cond)
-####################important step!!!! dont forget!!!##########################
-controller.add_turing_machine('WhileCombined',combined_tm)
-
-
-#controller.run_turing_machine('WhileCombined', "001120011")
-
-controller.visualize('WhileCombined',"01201")
+# combined_tm = CombinedTuringMachine({'0', '1', '2'})
+# combined_tm.add('find_a_n_b_n', step1)
+# #combined_tm.add('Move Left to Leftmost 0', step4)
+#
+# #you want to repeat steps number 01 until no more 2 remain in the tape
+# combined_tm.setTuringMachineWhileCondition("2 still in tape", cond)
+# ####################important step!!!! dont forget!!!##########################
+# controller.add_turing_machine('WhileCombined',combined_tm)
+#
+#
+# #controller.run_turing_machine('WhileCombined', "001120011")
+#
+# controller.visualize('WhileCombined',"01201")
+controller.try_me();
