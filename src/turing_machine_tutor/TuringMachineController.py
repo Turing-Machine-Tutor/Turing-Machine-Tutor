@@ -20,12 +20,6 @@ from google.colab import auth
 from oauth2client.client import GoogleCredentials
 from google.auth import default
 
-
-# Authorize the Google Sheets API
-auth.authenticate_user()
-creds, _ = default()
-gc = gspread.authorize(creds)
-
 class TuringMachineController:
     def __init__(self):
         self.turing_machines = {}
@@ -387,7 +381,12 @@ class TuringMachineController:
         return ""  # All return statements are valid
 
 
+
     def log_results(self, TM, spreadsheet_url):
+        # Authorize the Google Sheets API
+        auth.authenticate_user()
+        creds, _ = default()
+        gc = gspread.authorize(creds)
         sheet = gc.open_by_url(spreadsheet_url).sheet1
         # Get User ID
         user_id = input("Please enter your ID number: ")
