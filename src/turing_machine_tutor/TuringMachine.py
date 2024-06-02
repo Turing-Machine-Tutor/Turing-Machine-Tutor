@@ -202,7 +202,20 @@ class TuringMachine:
     #       #return ''.join(tape), current_state in self.accept_states, head_position
     #      ## return ''.join(tape), current_state, head_position
 
-
+def __str__(self):
+        transitions_str = ",\n        ".join(
+            f"('{state}', '{symbol}'): {str(config)}"
+            for (state, symbol), config in self.transitions.items()
+        )
+        return (f"TuringMachine(\n"
+                f"    states={self.states},\n"
+                f"    input_alphabet={self.input_alphabet},\n"
+                f"    tape_symbols={self.tape_symbols},\n"
+                f"    transitions={{\n        {transitions_str}\n    }},\n"
+                f"    initial_state='{self.initial_state}',\n"
+                f"    accept_states={self.accept_states},\n"
+                f"    reject_states={self.reject_states}\n"
+                f")")
 
 
 

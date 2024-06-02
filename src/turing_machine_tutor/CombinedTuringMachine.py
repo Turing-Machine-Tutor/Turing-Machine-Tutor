@@ -106,3 +106,16 @@ class CombinedTuringMachine:
                 else:
                      machine_run_state = machine_run_state2
         
+
+
+def __str__(self):
+        st = ""
+        index = 1
+        for tm in self.turing_machines:
+            st += "TM"+str(index)
+            st += ":::\n" + tm.__str__()
+            index += 1
+        if self.while_condition != None:
+            st += "TM While"
+            st += ":::\n" + tm.__str__() + "\n"
+        

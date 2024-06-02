@@ -78,4 +78,14 @@ class IFTuringMachine:
             raise Exception("Cannot get input alphabet, Missing IF TM. Please Use SetIFtm to set the turing machine")
         return self.setIfTM.input_alphabet
     
-        
+def __str__(self):
+        st = ""
+        if self.ifTm != None and TuringMachine(self.ifTm,TuringMachine):
+            st += "IF TM"
+            st += ":::\n" + self.ifTm.__str__() + "\n"
+        if self.thenTm != None and TuringMachine(self.thenTm,TuringMachine):
+            st += "THEN TM"
+            st += ":::\n" + self.thenTm.__str__() + "\n"
+        if self.elseTm != None and TuringMachine(self.elseTm,TuringMachine):
+            st += "ELSE TM"
+            st += ":::\n" + self.elseTm.__str__() + "\n"
