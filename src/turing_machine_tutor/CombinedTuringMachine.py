@@ -108,7 +108,7 @@ class CombinedTuringMachine:
         
 
 
-def __str__(self):
+    def __str__(self):
         st = ""
         index = 1
         for tm in self.turing_machines:
@@ -118,4 +118,5 @@ def __str__(self):
         if self.while_condition != None:
             st += "TM While"
             st += ":::\n" + tm.__str__() + "\n"
+        return st
         

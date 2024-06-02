@@ -14,7 +14,7 @@ import ast
 import inspect
 
 
-# imports for submission
+imports for submission
 import gspread
 from google.colab import auth
 from oauth2client.client import GoogleCredentials

@@ -759,4 +759,8 @@ controller.add_turing_machine('WhileCombined',combined_tm)
 
 #controller.run_turing_machine('WhileCombined', "001120011")
 
-controller.visualize('WhileCombined',"01201")
+#controller.visualize('WhileCombined',"01201")
+
+
+controller.add_turing_machine('temp', step1)
+print(controller.get_turing_machine('temp').__str__())
