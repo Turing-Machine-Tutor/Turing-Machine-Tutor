@@ -391,4 +391,4 @@ def log_results(self, TM, spreadsheet_url):
     # Get User ID
     user_id = input("Please enter your ID number: ")
     #"""Log the test results to Google Sheets."""
-    sheet.append_row([user_id, self.get_turing_machine(TM), "Passed" if self.validate_turing_machineTA('0n1n') else "Failed"])
+    sheet.append_row([user_id, self.get_turing_machine(TM).__str__(), "Passed" if self.validate_turing_machineTA('0n1n') else "Failed"])
