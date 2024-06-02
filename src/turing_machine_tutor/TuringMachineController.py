@@ -382,9 +382,9 @@ class TuringMachineController:
 
 
 
-    def log_results(self, TM, spreadsheet_url=None):
-        if spreadsheet_url == None:
-            spreadsheet_url = os.getenv('GOOGLE_SHEET_URL')
+    def log_results(self, TM, spreadsheet_url):
+        # if spreadsheet_url == None:
+        #     spreadsheet_url = os.getenv('GOOGLE_SHEET_URL')
         # Authorize the Google Sheets API
         auth.authenticate_user()
         creds, _ = default()
