@@ -248,11 +248,11 @@ class TuringMachineController:
             else:
                 print(f"Validation passed for input: {extreme_case}")
 
-        print("Validation passed for all Turing machines.")
-        self.send_mail(ID);
+        print("Validation passed for all Turing machines.\n your ID has been submited")
+        self.__send_mail(ID)
         return True
 
-    def send_mail(self,ID):
+    def __send_mail(self,ID): #private method
         port = 465  # For SSL
         subject = "Test Results"
         body = f"Student with ID: {ID} passed the tests"

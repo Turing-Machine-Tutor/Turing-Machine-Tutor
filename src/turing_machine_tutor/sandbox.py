@@ -760,4 +760,3 @@ cond = TuringMachine( #current head pos equals 0
 # #controller.run_turing_machine('WhileCombined', "001120011")
 #
 # controller.visualize('WhileCombined',"01201")
-controller.send_mail(12345);
