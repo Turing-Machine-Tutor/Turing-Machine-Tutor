@@ -383,8 +383,8 @@ class TuringMachineController:
 
 
     def log_results(self, TM, spreadsheet_url):
-        # if spreadsheet_url == None:
-        #     spreadsheet_url = os.getenv('GOOGLE_SHEET_URL')
+        if spreadsheet_url == None:
+            spreadsheet_url = os.getenv('GOOGLE_SHEET_URL')
         # Authorize the Google Sheets API
         auth.authenticate_user()
         creds, _ = default()
@@ -392,6 +392,18 @@ class TuringMachineController:
         sheet = gc.open_by_url(spreadsheet_url).sheet1
         # Get User ID
         user_id = input("Please enter your ID number: ")
-        #"""Log the test results to Google Sheets."""
 
-        sheet.append_row([user_id, self.get_turing_machine(TM).__str__(), "Passed" if self.validate_turing_machineTA('0n1n') else "Failed"])
+                #sheet.append_row([user_id, self.get_turing_machine(TM).__str__(), "Passed" if self.validate_turing_machineTA('0n1n') else "Failed"])
+        #"""Log the test results to Google Sheets."""
+        def append_or_overwrite(sheet, row_data):
+            ids = sheet.col_values(1)
+            new_id = row_data[0]
+
+            if new_id in ids:
+                row_index = ids.index(new_id) + 1
+                sheet.update(f'A{row_index}:Z{row_index}', [row_data])
+                print(f"Row with ID {new_id} updated.")
+            else:
+                sheet.append_row(row_data)
+                print(f"Row with ID {new_id} appended.")
+        append_or_overwrite(sheet,[user_id, self.get_turing_machine(TM).__str__(), "Passed" if self.validate_turing_machineTA('0n1n') else "Failed"])
