@@ -19,6 +19,8 @@ import gspread
 from google.colab import auth
 from oauth2client.client import GoogleCredentials
 from google.auth import default
+import requests
+import json
 
 class TuringMachineController:
     def __init__(self):
@@ -382,6 +384,16 @@ class TuringMachineController:
 
 
 
+
+    # URL of your Google Apps Script web app
+    web_app_url = 'https://script.google.com/a/macros/post.bgu.ac.il/s/AKfycbw5fZTPDVxk1IGrMGQWA3F5ENLAsXI2QyOkht7drz6riJz1uKdbU0XLqUuW5S_My3n09g/exec'
+
+
+
+    def append_or_update_row(self, data):
+        headers = {'Content-Type': 'application/json'}
+        response = requests.post(web_app_url, data=json.dumps(data), headers=headers)
+        return response.text
     def log_results(self, TM, spreadsheet_url):
         if spreadsheet_url == None:
             spreadsheet_url = os.getenv('GOOGLE_SHEET_URL')
@@ -406,4 +418,6 @@ class TuringMachineController:
             else:
                 sheet.append_row(row_data)
                 print(f"Row with ID {new_id} appended.")
-        append_or_overwrite(sheet,[user_id, self.get_turing_machine(TM).__str__(), "Passed" if self.validate_turing_machineTA('0n1n') else "Failed"])
+        #append_or_overwrite(sheet,[user_id, self.get_turing_machine(TM).__str__(), "Passed" if self.validate_turing_machineTA('0n1n') else "Failed"])
+        self.append_or_update_row([user_id, self.get_turing_machine(TM).__str__(), "Passed" if self.validate_turing_machineTA('0n1n') else "Failed"])
+
