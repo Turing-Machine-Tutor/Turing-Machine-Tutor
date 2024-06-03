@@ -392,16 +392,16 @@ class TuringMachineController:
 
     def append_or_update_row(self, data):
         headers = {'Content-Type': 'application/json'}
-        response = requests.post(web_app_url, data=json.dumps(data), headers=headers)
+        response = requests.post(self.web_app_url, data=json.dumps(data), headers=headers)
         return response.text
-    def log_results(self, TM, spreadsheet_url):
-        if spreadsheet_url == None:
-            spreadsheet_url = os.getenv('GOOGLE_SHEET_URL')
-        # Authorize the Google Sheets API
-        auth.authenticate_user()
-        creds, _ = default()
-        gc = gspread.authorize(creds)
-        sheet = gc.open_by_url(spreadsheet_url).sheet1
+    def log_results(self, TM):
+        # if spreadsheet_url == None:
+        #     spreadsheet_url = os.getenv('GOOGLE_SHEET_URL')
+        # # Authorize the Google Sheets API
+        # auth.authenticate_user()
+        # creds, _ = default()
+        # gc = gspread.authorize(creds)
+        # sheet = gc.open_by_url(spreadsheet_url).sheet1
         # Get User ID
         user_id = input("Please enter your ID number: ")
 
