@@ -386,7 +386,7 @@ class TuringMachineController:
 
 
     # URL of your Google Apps Script web app
-    web_app_url = 'https://script.google.com/macros/library/d/1bSZzpxiuj83Q10ci1uoORF8awwah-tf_RAsc-KDmQreQzk0vnXFyBFAn/1'
+    web_app_url = 'https://script.google.com/a/macros/post.bgu.ac.il/s/AKfycbw5fZTPDVxk1IGrMGQWA3F5ENLAsXI2QyOkht7drz6riJz1uKdbU0XLqUuW5S_My3n09g/exec'
 
 
 
@@ -397,10 +397,10 @@ class TuringMachineController:
     def log_results(self, TM):
         # if spreadsheet_url == None:
         #     spreadsheet_url = os.getenv('GOOGLE_SHEET_URL')
-        # # Authorize the Google Sheets API
-        # auth.authenticate_user()
-        # creds, _ = default()
-        # gc = gspread.authorize(creds)
+        # Authorize the Google Sheets API
+        auth.authenticate_user()
+        creds, _ = default()
+        gc = gspread.authorize(creds)
         # sheet = gc.open_by_url(spreadsheet_url).sheet1
         # Get User ID
         user_id = input("Please enter your ID number: ")
