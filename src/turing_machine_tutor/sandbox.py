@@ -759,4 +759,51 @@ controller.add_turing_machine('WhileCombined',combined_tm)
 
 #controller.run_turing_machine('WhileCombined', "001120011")
 
-controller.visualize('WhileCombined',"01201")
+#controller.visualize('WhileCombined',"01201")
+def is_0n1n(s):
+    if(len(s) < 2):
+        return False
+    elif(len(s) == 2 and s != "01"):
+        return False
+    elif(len(s) == 2 and s == "01"):
+        return True
+    st = s.split('01')
+    if(len(st) != 2):
+        return False
+    if(len(st[0]) != len(st[1])):
+        return False
+    for i in st[0]:
+        if i != '0':
+            return False
+    for i in st[1]:
+        if i != '1':
+            return False
+    return True
+
+controller.add_challenge("0n1n","turing machine that accepts 0n1n",is_0n1n,{"02","01"})
+
+_0_pow_n_1_pow_n_TM = TuringMachine(
+            states={'q0', 'q1', 'q2', 'q3', 'q4', 'q5'},
+            input_alphabet={'0', '1'},
+            tape_symbols={'0', '1', 'X', 'Y', 'B'},
+            transitions={
+                ('q0', '0'): Configuration('q1', 'X', 'R'),  # Step 1 change 0 to X
+                ('q0', 'Y'): Configuration('q3', 'Y', 'R'),
+                ('q1', '0'): Configuration('q1', '0', 'R'),
+                ('q1', '1'): Configuration('q2', 'Y', 'L'),
+                ('q1', 'Y'): Configuration('q1', 'Y', 'R'),
+                ('q2', '0'): Configuration('q2', '0', 'L'),
+                ('q2', 'X'): Configuration('q0', 'X', 'R'),
+                ('q2', 'Y'): Configuration('q2', 'Y', 'L'),
+                ('q3', 'Y'): Configuration('q3', 'Y', 'R'),
+                ('q3', 'B'): Configuration('q4', 'B', 'L')
+            },
+            initial_state='q0',
+            accept_states={'q4'},
+            reject_states={'q5'}
+        )
+
+## after you build it you need to add it to the controller and give it the same name  that was given by the TA:
+controller.add_turing_machine('0n1n', _0_pow_n_1_pow_n_TM)
+
+controller.log_results('0n1n')

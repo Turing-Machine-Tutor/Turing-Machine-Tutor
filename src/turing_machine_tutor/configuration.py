@@ -12,3 +12,5 @@ class Configuration:
 
         return function(1)
 
+    def __str__(self):
+        return f"Configuration('{self.state}', '{self.symbol}', '{self.action}')"
