@@ -424,5 +424,5 @@ class TuringMachineController:
         # for ch in self.challenges.keys():
         #     tms += self.get_turing_machine(TM).__str__() + "@@@"
             
-        self.append_or_update_row([user_id, self.get_turing_machine(TM).__str__(), "Passed" if self.validate_turing_machineTA('0n1n') else "Failed"])
+        self.append_or_update_row([user_id, self.get_turing_machine(TM).__str__(), "Passed" if self.validate_turing_machineTA(TM) else "Failed"])
         #self.append_or_update_row([user_id, self.get_turing_machine(TM).__str__(), "Passed"])

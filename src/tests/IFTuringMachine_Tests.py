@@ -137,7 +137,7 @@ class TestIFTuringMachine(unittest.TestCase):
             result.setIfTM(ifTm, "myIf")
             result.run("001")
         except Exception as e:
-            self.assertEqual("Cannot run, Missing Then TM. Please Use SetIFtm to set the turing machine", str(e))
+            self.assertEqual("Cannot run, Missing Then TM. Please Use SetThentm to set the turing machine", str(e))
     ###############################################################################################################
     # test Valid IF_TM Run
     def test_IFTM_Valid1_Run_TuringMachine(self):
