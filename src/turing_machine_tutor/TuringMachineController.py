@@ -386,7 +386,7 @@ class TuringMachineController:
 
 
     # URL of your Google Apps Script web app
-    web_app_url = 'https://script.google.com/a/macros/post.bgu.ac.il/s/AKfycbw5fZTPDVxk1IGrMGQWA3F5ENLAsXI2QyOkht7drz6riJz1uKdbU0XLqUuW5S_My3n09g/exec'
+    web_app_url = 'https://script.google.com/macros/s/AKfycbw5fZTPDVxk1IGrMGQWA3F5ENLAsXI2QyOkht7drz6riJz1uKdbU0XLqUuW5S_My3n09g/exec'
 
 
 
