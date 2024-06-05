@@ -394,7 +394,7 @@ class TuringMachineController:
         headers = {'Content-Type': 'application/json'}
         response = requests.post(self.web_app_url, data=json.dumps(data), headers=headers)
         return response.text
-    def submit(self, TM):
+    def submit(self):
         # if spreadsheet_url == None:
         #     spreadsheet_url = os.getenv('GOOGLE_SHEET_URL')
         # Authorize the Google Sheets API
@@ -404,8 +404,13 @@ class TuringMachineController:
         # sheet = gc.open_by_url(spreadsheet_url).sheet1
         # Get User ID
         user_id = input("Please enter your ID number: ")
-
-                #sheet.append_row([user_id, self.get_turing_machine(TM).__str__(), "Passed" if self.validate_turing_machineTA('0n1n') else "Failed"])
+        if not(isinstance(user_id, str) and user_id.isdigit() and len(user_id) == 9):
+            raise Exception("Not Valid ID, id should be all numbers and of len 9!")
+        user_id_confrim = input("Please Confirm your ID again: ")
+        if(user_id_confrim != user_id):
+            raise Exception("ID and ConfirmID do not match, Try Again!")
+        
+        #sheet.append_row([user_id, self.get_turing_machine(TM).__str__(), "Passed" if self.validate_turing_machineTA('0n1n') else "Failed"])
         #"""Log the test results to Google Sheets."""
         def append_or_overwrite(sheet, row_data):
             ids = sheet.col_values(1)
@@ -419,10 +424,12 @@ class TuringMachineController:
                 sheet.append_row(row_data)
                 print(f"Row with ID {new_id} appended.")
         #append_or_overwrite(sheet,[user_id, self.get_turing_machine(TM).__str__(), "Passed" if self.validate_turing_machineTA('0n1n') else "Failed"])
+        submission = [user_id]
         # tms = ""
         # results = ""
-        # for ch in self.challenges.keys():
-        #     tms += self.get_turing_machine(TM).__str__() + "@@@"
-            
-        self.append_or_update_row([user_id, self.get_turing_machine(TM).__str__(), "Passed" if self.validate_turing_machineTA(TM) else "Failed"])
+        for TM in self.challenges.keys():
+            submission += [self.get_turing_machine(TM).__str__(), "Passed" if self.validate_turing_machineTA(TM) else "Failed"]
+        
+
+        self.append_or_update_row(submission)
         #self.append_or_update_row([user_id, self.get_turing_machine(TM).__str__(), "Passed"])
