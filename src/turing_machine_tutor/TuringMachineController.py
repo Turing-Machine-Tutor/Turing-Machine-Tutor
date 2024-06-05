@@ -1,3 +1,4 @@
+from datetime import datetime
 import random
 import time
 import os
@@ -252,7 +253,7 @@ class TuringMachineController:
             else:
                 print(f"Validation passed for input: {extreme_case}")
 
-        print("Validation passed for all Turing machines.")
+        #print("Validation passed for all Turing machines.")
         return True
 
     # user can use this function
@@ -424,12 +425,19 @@ class TuringMachineController:
                 sheet.append_row(row_data)
                 print(f"Row with ID {new_id} appended.")
         #append_or_overwrite(sheet,[user_id, self.get_turing_machine(TM).__str__(), "Passed" if self.validate_turing_machineTA('0n1n') else "Failed"])
-        submission = [user_id]
+        
+        timeOfSubmission = datetime.now().strftime("%d-%m-%Y %H:%M:%S")
+        submission = [user_id, timeOfSubmission]
         # tms = ""
         # results = ""
         for TM in self.challenges.keys():
             submission += [TM, self.get_turing_machine(TM).__str__(), "Passed" if self.validate_turing_machineTA(TM) else "Failed"]
         
 
-        self.append_or_update_row(submission)
+        res = self.append_or_update_row(submission)
+        if(res == "Success"):
+            print("\n\nSubmited your TMs, id: "+str(user_id)+" , at: "+str(timeOfSubmission))
+        else:
+            print("\n\nFailed To Submit, Try Again!")
+        #if(res == )
         #self.append_or_update_row([user_id, self.get_turing_machine(TM).__str__(), "Passed"])
