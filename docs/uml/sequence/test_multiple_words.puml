@@ -1,0 +1,66 @@
+@startuml
+
+title Running a Turing Machine against a word
+
+actor Student
+participant TuringMachineController
+participant TuringMachineValidator
+
+note over TuringMachineValidator
+Stores a list of words to test,
+as well as a programmatic way
+to test which of them are
+in the formal language.
+The latter is done by a function
+written in Python.
+end note
+
+
+Student -> TuringMachineController: validate(turingMachineName)
+
+activate TuringMachineController
+
+TuringMachineController -> TuringMachineController: findMachine(turingMachineName)
+TuringMachineController -> TuringMachineController: findValidator(turingMachineName)
+
+note left
+For each formal language
+for which the student needs to
+build a Turing machine, the controller
+also stores a validator object.
+end note
+
+TuringMachineController -> TuringMachineValidator: init(machine)
+
+loop over words in validator
+
+TuringMachineValidator --> TuringMachineController: word
+
+TuringMachineController -> TuringMachineController: run(machine, word): rej/acc
+
+note left
+see Diagram 4.1 for
+details on run(machine, word)
+end note
+
+TuringMachineController -> TuringMachineValidator: shouldAccept(word)
+
+TuringMachineValidator --> TuringMachineController: true/false
+
+
+
+end loop
+
+deactivate TuringMachineController
+
+TuringMachineController --> Student: detailed test results
+
+note bottom
+An object that represented the list of words ran,
+the results the Turing Machine gave, and the
+expected result. The object also indicates
+whether all tests passed.
+end note
+
+
+@enduml

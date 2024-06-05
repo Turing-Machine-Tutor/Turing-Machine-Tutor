@@ -1,0 +1,43 @@
+@startuml
+
+title Running a Turing Machine against a word
+
+actor Student
+participant TuringMachineController
+
+
+Student -> TuringMachineController: test(turingMachineName)
+
+activate TuringMachineController
+
+TuringMachineController -> TuringMachineController: find(turingMachineName)
+
+TuringMachineController -> TuringMachineRun: init(turingMachine, word)
+
+TuringMachineController -> TuringMachineRun: runToCompletion()
+
+activate TuringMachineRun
+
+loop until state is acc/rej
+
+TuringMachineRun -> TuringMachine: delta(character, state)
+activate TuringMachine
+TuringMachine --> TuringMachineRun: (character, state, left/right/stay)
+deactivate TuringMachine
+
+TuringMachineRun -> TuringMachineRun: mutate
+
+end
+
+deactivate TuringMachineRun
+
+TuringMachineRun --> TuringMachineController: acc or rej
+
+
+deactivate TuringMachineController
+
+TuringMachineController --> Student: acc or rej
+
+
+
+@enduml
