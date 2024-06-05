@@ -428,7 +428,7 @@ class TuringMachineController:
         # tms = ""
         # results = ""
         for TM in self.challenges.keys():
-            submission += [self.get_turing_machine(TM).__str__(), "Passed" if self.validate_turing_machineTA(TM) else "Failed"]
+            submission += [TM, self.get_turing_machine(TM).__str__(), "Passed" if self.validate_turing_machineTA(TM) else "Failed"]
         
 
         self.append_or_update_row(submission)
