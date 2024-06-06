@@ -129,6 +129,8 @@ class TuringMachine:
         return True
 
     def get_config(self):
+        if self.current_machine_state.tape == '':
+            self.current_machine_state.tape = 'B' # added this to fix bug
         symbol = self.current_machine_state.tape[self.current_machine_state.head_position]
         state=self.current_machine_state.state
         try:
