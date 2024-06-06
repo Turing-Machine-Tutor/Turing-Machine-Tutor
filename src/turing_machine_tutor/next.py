@@ -1,4 +1,4 @@
-class Configuration:
+class next:
     def __init__(self, state, new_symbol,action):
         self.state = state  ## type is State
         self.symbol=new_symbol ## symbol is string - one char

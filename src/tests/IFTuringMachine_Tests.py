@@ -5,7 +5,7 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 from turing_machine_tutor.TuringMachine import TuringMachine
 from turing_machine_tutor.IFTuringMachine import IFTuringMachine
 from turing_machine_tutor.machine_run_state import Machine_Run_State
-from turing_machine_tutor.configuration import Configuration
+from turing_machine_tutor.next import next
 
 import unittest
 # Purpose: Verify that individual units of code (functions, methods, or classes) work as intended.
@@ -48,18 +48,18 @@ class TestIFTuringMachine(unittest.TestCase):
     input_alphabet={'0', '1'},
     tape_symbols={'0', '1', 'B'},
     transitions={
-        ('q0', '0'): Configuration('q1', '0', 'R'),  
-        ('q0', '1'): Configuration('q1', '1', 'R'),
+        ('q0', '0'): next('q1', '0', 'R'),
+        ('q0', '1'): next('q1', '1', 'R'),
 
-        ('q1', '0'): Configuration('q2', '0', 'R'),
-        ('q1', '1'): Configuration('q2', '1', 'R'),
+        ('q1', '0'): next('q2', '0', 'R'),
+        ('q1', '1'): next('q2', '1', 'R'),
 
-        ('q2', '0'): Configuration('q3', '0', 'R'),  
-        ('q2', '1'): Configuration('q3', '0', 'R'),
+        ('q2', '0'): next('q3', '0', 'R'),
+        ('q2', '1'): next('q3', '0', 'R'),
         
-        ('q3', '0'): Configuration('q6', '0', 'R'),
-        ('q3', '1'): Configuration('q6', '1', 'R'),
-        ('q3', 'B'): Configuration('q5', 'B', 'S')
+        ('q3', '0'): next('q6', '0', 'R'),
+        ('q3', '1'): next('q6', '1', 'R'),
+        ('q3', 'B'): next('q5', 'B', 'S')
     },
     initial_state='q0',
     accept_states={'q5'},
@@ -82,18 +82,18 @@ class TestIFTuringMachine(unittest.TestCase):
     input_alphabet={'0', '1'},
     tape_symbols={'0', '1', 'B'},
     transitions={
-        ('q0', '0'): Configuration('q1', '0', 'R'),  
-        ('q0', '1'): Configuration('q1', '1', 'R'),
+        ('q0', '0'): next('q1', '0', 'R'),
+        ('q0', '1'): next('q1', '1', 'R'),
 
-        ('q1', '0'): Configuration('q2', '0', 'R'),
-        ('q1', '1'): Configuration('q2', '1', 'R'),
+        ('q1', '0'): next('q2', '0', 'R'),
+        ('q1', '1'): next('q2', '1', 'R'),
 
-        ('q2', '0'): Configuration('q3', '0', 'R'),  
-        ('q2', '1'): Configuration('q3', '0', 'R'),
+        ('q2', '0'): next('q3', '0', 'R'),
+        ('q2', '1'): next('q3', '0', 'R'),
         
-        ('q3', '0'): Configuration('q6', '0', 'R'),
-        ('q3', '1'): Configuration('q6', '1', 'R'),
-        ('q3', 'B'): Configuration('q5', 'B', 'S')
+        ('q3', '0'): next('q6', '0', 'R'),
+        ('q3', '1'): next('q6', '1', 'R'),
+        ('q3', 'B'): next('q5', 'B', 'S')
     },
     initial_state='q0',
     accept_states={'q5'},
@@ -115,18 +115,18 @@ class TestIFTuringMachine(unittest.TestCase):
     input_alphabet={'0', '1'},
     tape_symbols={'0', '1', 'B'},
     transitions={
-        ('q0', '0'): Configuration('q1', '0', 'R'),  
-        ('q0', '1'): Configuration('q1', '1', 'R'),
+        ('q0', '0'): next('q1', '0', 'R'),
+        ('q0', '1'): next('q1', '1', 'R'),
 
-        ('q1', '0'): Configuration('q2', '0', 'R'),
-        ('q1', '1'): Configuration('q2', '1', 'R'),
+        ('q1', '0'): next('q2', '0', 'R'),
+        ('q1', '1'): next('q2', '1', 'R'),
 
-        ('q2', '0'): Configuration('q3', '0', 'R'),  
-        ('q2', '1'): Configuration('q3', '0', 'R'),
+        ('q2', '0'): next('q3', '0', 'R'),
+        ('q2', '1'): next('q3', '0', 'R'),
         
-        ('q3', '0'): Configuration('q6', '0', 'R'),
-        ('q3', '1'): Configuration('q6', '1', 'R'),
-        ('q3', 'B'): Configuration('q5', 'B', 'S')
+        ('q3', '0'): next('q6', '0', 'R'),
+        ('q3', '1'): next('q6', '1', 'R'),
+        ('q3', 'B'): next('q5', 'B', 'S')
     },
     initial_state='q0',
     accept_states={'q5'},
@@ -146,18 +146,18 @@ class TestIFTuringMachine(unittest.TestCase):
     input_alphabet={'0', '1'},
     tape_symbols={'0', '1', 'B'},
     transitions={
-        ('q0', '0'): Configuration('q1', '0', 'R'),  
-        ('q0', '1'): Configuration('q1', '1', 'R'),
+        ('q0', '0'): next('q1', '0', 'R'),
+        ('q0', '1'): next('q1', '1', 'R'),
 
-        ('q1', '0'): Configuration('q2', '0', 'R'),
-        ('q1', '1'): Configuration('q2', '1', 'R'),
+        ('q1', '0'): next('q2', '0', 'R'),
+        ('q1', '1'): next('q2', '1', 'R'),
 
-        ('q2', '0'): Configuration('q3', '0', 'R'),  
-        ('q2', '1'): Configuration('q3', '0', 'R'),
+        ('q2', '0'): next('q3', '0', 'R'),
+        ('q2', '1'): next('q3', '0', 'R'),
         
-        ('q3', '0'): Configuration('q6', '0', 'R'),
-        ('q3', '1'): Configuration('q6', '1', 'R'),
-        ('q3', 'B'): Configuration('q5', 'B', 'S')
+        ('q3', '0'): next('q6', '0', 'R'),
+        ('q3', '1'): next('q6', '1', 'R'),
+        ('q3', 'B'): next('q5', 'B', 'S')
     },
     initial_state='q0',
     accept_states={'q5'},
@@ -169,9 +169,9 @@ class TestIFTuringMachine(unittest.TestCase):
     input_alphabet={'0', '1'},
     tape_symbols={'0', '1', 'B'},
     transitions={
-        ('q0', '0'): Configuration('q0', '0', 'R'),  
-        ('q0', '1'): Configuration('q0', '0', 'R'),
-        ('q0', 'B'): Configuration('q1', 'B', 'R')
+        ('q0', '0'): next('q0', '0', 'R'),
+        ('q0', '1'): next('q0', '0', 'R'),
+        ('q0', 'B'): next('q1', 'B', 'R')
     },
     initial_state='q0',
     accept_states={'q1'},
@@ -194,18 +194,18 @@ class TestIFTuringMachine(unittest.TestCase):
     input_alphabet={'0', '1'},
     tape_symbols={'0', '1', 'B'},
     transitions={
-        ('q0', '0'): Configuration('q1', '0', 'R'),  
-        ('q0', '1'): Configuration('q1', '1', 'R'),
+        ('q0', '0'): next('q1', '0', 'R'),
+        ('q0', '1'): next('q1', '1', 'R'),
 
-        ('q1', '0'): Configuration('q2', '0', 'R'),
-        ('q1', '1'): Configuration('q2', '1', 'R'),
+        ('q1', '0'): next('q2', '0', 'R'),
+        ('q1', '1'): next('q2', '1', 'R'),
 
-        ('q2', '0'): Configuration('q3', '0', 'R'),  
-        ('q2', '1'): Configuration('q3', '0', 'R'),
+        ('q2', '0'): next('q3', '0', 'R'),
+        ('q2', '1'): next('q3', '0', 'R'),
         
-        ('q3', '0'): Configuration('q6', '0', 'R'),
-        ('q3', '1'): Configuration('q6', '1', 'R'),
-        ('q3', 'B'): Configuration('q5', 'B', 'S')
+        ('q3', '0'): next('q6', '0', 'R'),
+        ('q3', '1'): next('q6', '1', 'R'),
+        ('q3', 'B'): next('q5', 'B', 'S')
     },
     initial_state='q0',
     accept_states={'q5'},
@@ -217,9 +217,9 @@ class TestIFTuringMachine(unittest.TestCase):
     input_alphabet={'0', '1'},
     tape_symbols={'0', '1', 'B'},
     transitions={
-        ('q0', '0'): Configuration('q0', '0', 'R'),  
-        ('q0', '1'): Configuration('q0', '0', 'R'),
-        ('q0', 'B'): Configuration('q1', 'B', 'R')
+        ('q0', '0'): next('q0', '0', 'R'),
+        ('q0', '1'): next('q0', '0', 'R'),
+        ('q0', 'B'): next('q1', 'B', 'R')
     },
     initial_state='q0',
     accept_states={'q1'},
@@ -231,9 +231,9 @@ class TestIFTuringMachine(unittest.TestCase):
     input_alphabet={'0', '1'},
     tape_symbols={'0', '1', 'B'},
     transitions={
-        ('q0', '0'): Configuration('q0', '1', 'R'),  
-        ('q0', '1'): Configuration('q0', '1', 'R'),
-        ('q0', 'B'): Configuration('q1', 'B', 'R')
+        ('q0', '0'): next('q0', '1', 'R'),
+        ('q0', '1'): next('q0', '1', 'R'),
+        ('q0', 'B'): next('q1', 'B', 'R')
     },
     initial_state='q0',
     accept_states={'q1'},

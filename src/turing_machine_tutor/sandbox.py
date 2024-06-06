@@ -6,7 +6,7 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 from turing_machine_tutor.CombinedTuringMachine import CombinedTuringMachine
 from turing_machine_tutor.TuringMachine import TuringMachine
 from turing_machine_tutor.TuringMachineController import TuringMachineController
-from turing_machine_tutor.configuration import Configuration
+from turing_machine_tutor.next import next
 from turing_machine_tutor.IFTuringMachine import IFTuringMachine
 
 
@@ -20,232 +20,224 @@ from turing_machine_tutor.IFTuringMachine import IFTuringMachine
 # #     return
 
 
-# # ok=Configuration(1,2,3)
+# # ok=next(1,2,3)
 # # print(ok.try_me(test_me))
 
-
-# # emptyString = TuringMachine(
-# #     states={'q0', 'q1', 'rej', 'acc'},
-# #     input_alphabet={'0', '1'},
-# #     tape_symbols={'0', '1', '_'},
-# #     blank = '_',
-# #     transitions={
-# #         ('q0', '0'): Configuration('q1', '0', 'R'),
-# #         ('q0', '1'): Configuration('q1', '1', 'R'),
-# #         ('q1', '0'): Configuration('q0', '0', 'R'),
-# #         ('q1', '1'): Configuration('q0', '1', 'R'),
-# #         ('q0', '_'): Configuration('acc', '_', 'R'),
-# #         ('q1', '_'): Configuration('rej', '_', 'R'),
-# #     },
-# #     initial_state='q0',
-# #     accept_states={'acc'},
-# #     reject_states={'rej'}
-# # )
-
-
-# # # Create a Turing machine
-# # tm1 = TuringMachine(
-# #     states={'q0', 'q1', 'q2', 'q3'},
-# #     input_alphabet={'0', '1'},
-# #     tape_symbols={'0', '1', 'B'},
-# #     blank = 'B',
-# #     transitions={
-# #         ('q0', '0'): Configuration('q1', '0', 'R'),
-# #         ('q0', '1'): Configuration('q1', '1', 'R'),
-# #         ('q1', '0'): Configuration('q0', '0', 'R'),
-# #         ('q1', '1'): Configuration('q0', '1', 'R'),
-# #         ('q0', 'B'): Configuration('q3', 'B', 'R'),
-# #         ('q1', 'B'): Configuration('q2', 'B', 'R'),
-# #     },
-# #     initial_state='q0',
-# #     accept_states={'q3'},
-# #     reject_states={'q2'}
-# # )
-
-# anbn_turing_machine = TuringMachine(
-#     states={'q0', 'q1', 'q2', 'q3', 'q4', 'q5'},
+#
+# emptyString = TuringMachine(
+#     states={'q0', 'q1', 'rej', 'acc'},
 #     input_alphabet={'0', '1'},
-#     tape_symbols={'0', '1', 'X', 'Y', 'B'},
+#     tape_symbols={'0', '1', '_'},
+#     blank = '_',
 #     transitions={
-#         ('q0', '0'): Configuration('q1', 'X', 'R'),  # Move right and replace 0 with X
-#         ('q1', '0'): Configuration('q1', '0', 'R'),  # Continue moving right over 0
-#         ('q1', 'Y'): Configuration('q1', 'Y', 'R'),  # Skip Y
-#         ('q1', '1'): Configuration('q2', 'Y', 'L'),  # Move left and replace 1 with Y
-#         ('q2', 'Y'): Configuration('q2', 'Y', 'L'),  # Continue moving left over Y
-#         ('q2', '0'): Configuration('q2', '0', 'L'),  # Continue moving left over 0
-#         ('q2', 'X'): Configuration('q0', 'X', 'R'),  # Move right to find the next 0 after 1s
-#         ('q0', 'Y'): Configuration('q0', 'Y', 'R'),  # Skip Y in the process
-#         ('q0', 'B'): Configuration('q4', 'B', 'R'),   # Accept if B is encountered after checking
-#         ('q0', '1'): Configuration('q5', 'B', 'R'),
-#         ('q1', 'B'): Configuration('q5', 'B', 'L')
+#         ('q0', '0'): next('q1', '0', 'R'),
+#         ('q0', '1'): next('q1', '1', 'R'),
+#         ('q1', '0'): next('q0', '0', 'R'),
+#         ('q1', '1'): next('q0', '1', 'R'),
+#         ('q0', '_'): next('acc', '_', 'R'),
+#         ('q1', '_'): next('rej', '_', 'R'),
 #     },
 #     initial_state='q0',
-#     accept_states={'q4'},
-#     reject_states={'q5'}
+#     accept_states={'acc'},
+#     reject_states={'rej'}
 # )
 
 
-# controller = TuringMachineController()
-# # controller.add_turing_machine('emptyString', emptyString)
-# # controller.add_turing_machine('tm1',tm1)
-# controller.add_turing_machine('0n1n',anbn_turing_machine)
+# Create a Turing machine
+tm1 = TuringMachine(
+    states={'q0', 'q1', 'q2', 'q3'},
+    input_alphabet={'0', '1'},
+    tape_symbols={'0', '1', 'B'},
+    transitions={
+        ('q0', '0'): next('q1', '0', 'R'),
+        ('q0', '1'): next('q1', '1', 'R'),
+        ('q1', '0'): next('q0', '0', 'R'),
+        ('q1', '1'): next('q0', '1', 'R'),
+        ('q0', 'B'): next('q3', 'B', 'R'),
+        ('q1', 'B'): next('q2', 'B', 'R'),
+    },
+    initial_state='q0',
+    accept_states={'q3'},
+    reject_states={'q2'}
+)
 
-# # # # Run the Turing machine from the library
-# # # mrs= controller.run_turing_machine('tm1', '000111')
-# # # print(tm1.given_state_is_in_acceptance(mrs.state))
-# # # mrs= controller.run_turing_machine('0n1n', '0000011111')
-# # # print(anbn_turing_machine.given_state_is_in_acceptance(mrs.state))
+anbn_turing_machine = TuringMachine(
+    states={'q0', 'q1', 'q2', 'q3', 'q4', 'q5'},
+    input_alphabet={'0', '1'},
+    tape_symbols={'0', '1', 'X', 'Y', 'B'},
+    transitions={
+        ('q0', '0'): next('q1', 'X', 'R'),  # Move right and replace 0 with X
+        ('q1', '0'): next('q1', '0', 'R'),  # Continue moving right over 0
+        ('q1', 'Y'): next('q1', 'Y', 'R'),  # Skip Y
+        ('q1', '1'): next('q2', 'Y', 'L'),  # Move left and replace 1 with Y
+        ('q2', 'Y'): next('q2', 'Y', 'L'),  # Continue moving left over Y
+        ('q2', '0'): next('q2', '0', 'L'),  # Continue moving left over 0
+        ('q2', 'X'): next('q0', 'X', 'R'),  # Move right to find the next 0 after 1s
+        ('q0', 'Y'): next('q0', 'Y', 'R'),  # Skip Y in the process
+        ('q0', 'B'): next('q4', 'B', 'R'),   # Accept if B is encountered after checking
+        ('q0', '1'): next('q5', 'B', 'R'),
+        ('q1', 'B'): next('q5', 'B', 'L')
+    },
+    initial_state='q0',
+    accept_states={'q4'},
+    reject_states={'q5'}
+)
 
 
-# def is_0n1n(input_str):
-#     stack = []
+controller = TuringMachineController()
+# controller.add_turing_machine('emptyString', emptyString)
+# controller.add_turing_machine('tm1',tm1)
+controller.add_turing_machine('0n1n',anbn_turing_machine)
 
-#     for symbol in input_str:
-#         if symbol == '0':
-#             stack.append('0')
-#         elif symbol == '1':
-#             if not stack:
-#                 return False  # There are more '1's than '0's
-#             stack.pop()
-#         else:
-#             return False  # Invalid symbol
-
-#     return not stack
-# #
-
-# controller.add_challenge("0n1n","turing machine that accepts 0n1n",is_0n1n,{"0011","01"});
-# controller.add_challenge("random_shit","turing machine that accepts 0n1n",is_0n1n,{"0011","01"});
-# controller.add_challenge("random_shit_2","turing machine that accepts 0n1n",is_0n1n,{"0011","01"});
-# controller.get_challenges()
-# # controller.validate_turing_machine('0n1n',is_0n1n,{"0011"})
-# # # controller.visualize('0n1n',"01")
-# # # controller.visualize_step_by_step('0n1n',"01")
+# # # Run the Turing machine from the library
+# # mrs= controller.run_turing_machine('tm1', '000111')
+# # print(tm1.given_state_is_in_acceptance(mrs.state))
+# # mrs= controller.run_turing_machine('0n1n', '0000011111')
+# # print(anbn_turing_machine.given_state_is_in_acceptance(mrs.state))
 
 
+def is_0n1n(input_str):
+    stack = []
+
+    for symbol in input_str:
+        if symbol == '0':
+            stack.append('0')
+        elif symbol == '1':
+            if not stack:
+                return False  # There are more '1's than '0's
+            stack.pop()
+        else:
+            return False  # Invalid symbol
+
+    return True
+#
+
+controller.add_challenge("0n1n","turing machine that accepts 0n1n",is_0n1n,{"0011","01"});
+controller.add_challenge("random_shit","turing machine that accepts 0n1n",is_0n1n,{"0011","01"});
+controller.add_challenge("random_shit_2","turing machine that accepts 0n1n",is_0n1n,{"0011","01"});
+controller.get_challenges()
+# controller.validate_turing_machine('0n1n',is_0n1n,{"0011"})
+# # controller.visualize('0n1n',"01")
+# # controller.visualize_step_by_step('0n1n',"01")
 
 
 
-# # step1 = TuringMachine(
-# #     states={'q0', 'q1', 'q2'},
-# #     input_alphabet={'0', '1', 'X', 'Y', 'B'},
-# #     tape_symbols={'0', '1', 'X', 'Y', 'B'},
-# #     blank='B',
-# #     transitions={
-# #         ('q0', '0'): Configuration('q2', 'X', 'R'),  # Step 1 change 0 to X
-# #         ('q0', '1'): Configuration('q3', '1', 'S'),
-# #         ('q0', 'X'): Configuration('q3', 'X', 'S'),
-# #         ('q0', 'Y'): Configuration('q3', 'Y', 'S'),
-# #         ('q0', 'B'): Configuration('q3', 'B', 'S')
-# #     },
-# #     initial_state='q0',
-# #     accept_states={'q2'},
-# #     reject_states={'q3'}
-# # )
 
-# # step2 = TuringMachine(
-# #     states={'q0', 'q1', 'q2'},
-# #     input_alphabet={'0', '1', 'X', 'Y', 'B'},
-# #     tape_symbols={'0', '1', 'X', 'Y', 'B'},
-# #     blank='B',
-# #     transitions={
-# #         ('q0', '0'): Configuration('q0', '0', 'R'),  # Step 2 move right to the first 1
-# #         ('q0', '1'): Configuration('q2', '1', 'S'),  # if you do not find symbol 1, reject the language
-# #         ('q0', 'X'): Configuration('q0', 'X', 'R'),
-# #         ('q0', 'Y'): Configuration('q0', 'Y', 'R'),
-# #         ('q0', 'B'): Configuration('q3', 'B', 'S')
-# #     },
-# #     initial_state='q0',
-# #     accept_states={'q2'},
-# #     reject_states={'q3'}
-# # )
 
-# # step3 = TuringMachine(
-# #     states={'q0', 'q1', 'q2'},
-# #     input_alphabet={'0', '1', 'X', 'Y', 'B'},
-# #     tape_symbols={'0', '1', 'X', 'Y', 'B'},
-# #     blank='B',
-# #     transitions={
-# #         ('q0', '0'): Configuration('q3', '0', 'S'),  # Step 3 change 1 to Y
-# #         ('q0', '1'): Configuration('q2', 'Y', 'L'),
-# #         ('q0', 'X'): Configuration('q3', 'X', 'S'),
-# #         ('q0', 'Y'): Configuration('q3', 'Y', 'S'),
-# #         ('q0', 'B'): Configuration('q3', 'B', 'S')
-# #     },
-# #     initial_state='q0',
-# #     accept_states={'q2'},
-# #     reject_states={'q3'}
-# # )
+step1 = TuringMachine(
+    states={'q0', 'q1', 'q2','q3'},
+    input_alphabet={'0', '1', 'X', 'Y', 'B'},
+    tape_symbols={'0', '1', 'X', 'Y', 'B'},
+    transitions={
+        ('q0', '0'): next('q2', 'X', 'R'),  # Step 1 change 0 to X
+        ('q0', '1'): next('q3', '1', 'S'),
+        ('q0', 'X'): next('q3', 'X', 'S'),
+        ('q0', 'Y'): next('q3', 'Y', 'S'),
+        ('q0', 'B'): next('q3', 'B', 'S')
+    },
+    initial_state='q0',
+    accept_states={'q2'},
+    reject_states={'q3'}
+)
 
-# # step4 = TuringMachine(
-# #     states={'q0', 'q1', 'q2'},
-# #     input_alphabet={'0', '1', 'X', 'Y', 'B'},
-# #     tape_symbols={'0', '1', 'X', 'Y', 'B'},
-# #     blank='B',
-# #     transitions={
-# #         ('q0', '0'): Configuration('q0', '0', 'L'),  # Step 4 Move Left to Leftmost 0
-# #         ('q0', '1'): Configuration('q3', '1', 'S'),
-# #         ('q0', 'X'): Configuration('q2', 'X', 'R'),
-# #         ('q0', 'Y'): Configuration('q0', 'Y', 'L'),
-# #         ('q0', 'B'): Configuration('q3', 'B', 'R')
-# #     },
-# #     initial_state='q0',
-# #     accept_states={'q2'},
-# #     reject_states={'q3'}
-# # )
+step2 = TuringMachine(
+    states={'q0', 'q1', 'q2','q3'},
+    input_alphabet={'0', '1', 'X', 'Y', 'B'},
+    tape_symbols={'0', '1', 'X', 'Y', 'B'},
+    transitions={
+        ('q0', '0'): next('q0', '0', 'R'),  # Step 2 move right to the first 1
+        ('q0', '1'): next('q2', '1', 'S'),  # if you do not find symbol 1, reject the language
+        ('q0', 'X'): next('q0', 'X', 'R'),
+        ('q0', 'Y'): next('q0', 'Y', 'R'),
+        ('q0', 'B'): next('q3', 'B', 'S')
+    },
+    initial_state='q0',
+    accept_states={'q2'},
+    reject_states={'q3'}
+)
 
-# # #step 5 repeat steps number 01 to 04 until no more 0 and 1 remain in the input tape
-# # step5 = TuringMachine(
-# #     states={'q0', 'q1', 'q2'},
-# #     input_alphabet={'0', '1', 'X', 'Y', 'B'},
-# #     tape_symbols={'0', '1', 'X', 'Y', 'B'},
-# #     blank='B',
-# #     transitions={
-# #         ('q0', '0'): Configuration('q2', '0', 'S'),  # Step 6 check if all turing machine tape is X and Y ( there is no 1 and 0 left on the tape)
-# #         ('q0', '1'): Configuration('q2', '1', 'S'),
-# #         ('q0', 'X'): Configuration('q0', 'X', 'R'),
-# #         ('q0', 'Y'): Configuration('q0', 'Y', 'R'),
-# #         ('q0', 'B'): Configuration('q3', 'B', 'S')
-# #     },
-# #     initial_state='q0',
-# #     accept_states={'q2'},
-# #     reject_states={'q3'}
-# # )
-# # step6 = TuringMachine(
-# #     states={'q0', 'q1', 'q2'},
-# #     input_alphabet={'0', '1', 'X', 'Y', 'B'},
-# #     tape_symbols={'0', '1', 'X', 'Y', 'B'},
-# #     blank='B',
-# #     transitions={
-# #         ('q0', '0'): Configuration('q3', '0', 'S'),  # Step 6 check if all turing machine tape is X and Y ( there is no 1 and 0 left on the tape)
-# #         ('q0', '1'): Configuration('q3', '1', 'S'),
-# #         ('q0', 'X'): Configuration('q0', 'X', 'R'),
-# #         ('q0', 'Y'): Configuration('q0', 'Y', 'R'),
-# #         ('q0', 'B'): Configuration('q2', 'B', 'S')
-# #     },
-# #     initial_state='q0',
-# #     accept_states={'q2'},
-# #     reject_states={'q3'}
-# # )
+step3 = TuringMachine(
+    states={'q0', 'q1', 'q2','q3'},
+    input_alphabet={'0', '1', 'X', 'Y', 'B'},
+    tape_symbols={'0', '1', 'X', 'Y', 'B'},
+    transitions={
+        ('q0', '0'): next('q3', '0', 'S'),  # Step 3 change 1 to Y
+        ('q0', '1'): next('q2', 'Y', 'L'),
+        ('q0', 'X'): next('q3', 'X', 'S'),
+        ('q0', 'Y'): next('q3', 'Y', 'S'),
+        ('q0', 'B'): next('q3', 'B', 'S')
+    },
+    initial_state='q0',
+    accept_states={'q2'},
+    reject_states={'q3'}
+)
 
-# # combined_tm = CombinedTuringMachine()
-# # combined_tm.add('step1', step1)
-# # combined_tm.add('step2', step2)
-# # combined_tm.add('step3', step3)
-# # combined_tm.add('step4', step4)
-# # combined_tm.setTuringMachineWhileCondition(step5,"myCond")
-# # controller.add_turing_machine('combined_shit',combined_tm)
+step4 = TuringMachine(
+    states={'q0', 'q1', 'q2','q3'},
+    input_alphabet={'0', '1', 'X', 'Y', 'B'},
+    tape_symbols={'0', '1', 'X', 'Y', 'B'},
+    transitions={
+        ('q0', '0'): next('q0', '0', 'L'),  # Step 4 Move Left to Leftmost 0
+        ('q0', '1'): next('q3', '1', 'S'),
+        ('q0', 'X'): next('q2', 'X', 'R'),
+        ('q0', 'Y'): next('q0', 'Y', 'L'),
+        ('q0', 'B'): next('q3', 'B', 'R')
+    },
+    initial_state='q0',
+    accept_states={'q2'},
+    reject_states={'q3'}
+)
+
+#step 5 repeat steps number 01 to 04 until no more 0 and 1 remain in the input tape
+step5 = TuringMachine(
+    states={'q0', 'q1', 'q2','q3'},
+    input_alphabet={'0', '1', 'X', 'Y', 'B'},
+    tape_symbols={'0', '1', 'X', 'Y', 'B'},
+    transitions={
+        ('q0', '0'): next('q2', '0', 'S'),  # Step 6 check if all turing machine tape is X and Y ( there is no 1 and 0 left on the tape)
+        ('q0', '1'): next('q2', '1', 'S'),
+        ('q0', 'X'): next('q0', 'X', 'R'),
+        ('q0', 'Y'): next('q0', 'Y', 'R'),
+        ('q0', 'B'): next('q3', 'B', 'S')
+    },
+    initial_state='q0',
+    accept_states={'q2'},
+    reject_states={'q3'}
+)
+step6 = TuringMachine(
+    states={'q0', 'q1', 'q2','q3'},
+    input_alphabet={'0', '1', 'X', 'Y', 'B'},
+    tape_symbols={'0', '1', 'X', 'Y', 'B'},
+    transitions={
+        ('q0', '0'): next('q3', '0', 'S'),  # Step 6 check if all turing machine tape is X and Y ( there is no 1 and 0 left on the tape)
+        ('q0', '1'): next('q3', '1', 'S'),
+        ('q0', 'X'): next('q0', 'X', 'R'),
+        ('q0', 'Y'): next('q0', 'Y', 'R'),
+        ('q0', 'B'): next('q2', 'B', 'S')
+    },
+    initial_state='q0',
+    accept_states={'q2'},
+    reject_states={'q3'}
+)
+
+combined_tm = CombinedTuringMachine({'0', '1', 'X', 'Y', 'B'})
+combined_tm.add('step1', step1)
+combined_tm.add('step2', step2)
+combined_tm.add('step3', step3)
+combined_tm.add('step4', step4)
+combined_tm.setTuringMachineWhileCondition("myCond",step5)
+controller.add_turing_machine('combined_shit',combined_tm)
 
 # # #----------------------------testing combine_tm_with_conidition---------------------------
 
-# # # controller.validate_combined_turing_machine_with_while_condition('combined_shit',is_0n1n,{"0011"},step6)
-# # # mrs=controller.run_turing_machine_with_while_condition("0011",step6,'combined_shit')
-# # mrs=controller.run_turing_machine('combined_shit', "0011")
-# # print("at end tape is:  ",mrs.tape)
+controller.validate_turing_machine('combined_shit',is_0n1n,{"0011"})
+mrs=controller.run_turing_machine('combined_shit',"0011")
+mrs=controller.run_turing_machine('combined_shit', "0011")
+print("at end tape is:  ",mrs.tape)
 
-# # print(step6.given_state_is_in_acceptance(step6.run(mrs.tape.copy()).state))
-# # #controller.visualize_with_while_condition_machine("0011",step6,'combined_shit')
-# # #controller.visualize('combined_shit', "0011")
-
+print(step6.given_state_is_in_acceptance(step6.run(mrs.tape.copy()).state))
+controller.visualize('combined_shit', "0011")
+controller.submit()
 
 # # #----------------------------------------------------------------------------------------
 
@@ -276,18 +268,18 @@ from turing_machine_tutor.IFTuringMachine import IFTuringMachine
 #     input_alphabet={'0', '1'},
 #     tape_symbols={'0', '1', 'B'},
 #     transitions={
-#         ('q0', '0'): Configuration('q1', '0', 'R'),  
-#         ('q0', '1'): Configuration('q1', '1', 'R'),
+#         ('q0', '0'): next('q1', '0', 'R'),  
+#         ('q0', '1'): next('q1', '1', 'R'),
 
-#         ('q1', '0'): Configuration('q2', '0', 'R'),
-#         ('q1', '1'): Configuration('q2', '1', 'R'),
+#         ('q1', '0'): next('q2', '0', 'R'),
+#         ('q1', '1'): next('q2', '1', 'R'),
 
-#         ('q2', '0'): Configuration('q3', '0', 'R'),  
-#         ('q2', '1'): Configuration('q3', '0', 'R'),
+#         ('q2', '0'): next('q3', '0', 'R'),  
+#         ('q2', '1'): next('q3', '0', 'R'),
         
-#         ('q3', '0'): Configuration('q6', '0', 'R'),
-#         ('q3', '1'): Configuration('q6', '1', 'R'),
-#         ('q3', 'B'): Configuration('q5', 'B', 'S')
+#         ('q3', '0'): next('q6', '0', 'R'),
+#         ('q3', '1'): next('q6', '1', 'R'),
+#         ('q3', 'B'): next('q5', 'B', 'S')
 #     },
 #     initial_state='q0',
 #     accept_states={'q5'},
@@ -307,9 +299,9 @@ from turing_machine_tutor.IFTuringMachine import IFTuringMachine
 #     input_alphabet={'0', '1'},
 #     tape_symbols={'0', '1', 'B'},
 #     transitions={
-#         ('q0', '0'): Configuration('q0', '0', 'R'),  
-#         ('q0', '1'): Configuration('q0', '0', 'R'),
-#         ('q0', 'B'): Configuration('q1', 'B', 'R')
+#         ('q0', '0'): next('q0', '0', 'R'),  
+#         ('q0', '1'): next('q0', '0', 'R'),
+#         ('q0', 'B'): next('q1', 'B', 'R')
 #     },
 #     initial_state='q0',
 #     accept_states={'q1'},
@@ -321,9 +313,9 @@ from turing_machine_tutor.IFTuringMachine import IFTuringMachine
 #     input_alphabet={'0', '1'},
 #     tape_symbols={'0', '1', 'B'},
 #     transitions={
-#         ('q0', '0'): Configuration('q0', '1', 'R'),  
-#         ('q0', '1'): Configuration('q0', '1', 'R'),
-#         ('q0', 'B'): Configuration('q1', 'B', 'R')
+#         ('q0', '0'): next('q0', '1', 'R'),  
+#         ('q0', '1'): next('q0', '1', 'R'),
+#         ('q0', 'B'): next('q1', 'B', 'R')
 #     },
 #     initial_state='q0',
 #     accept_states={'q1'},
@@ -348,12 +340,12 @@ from turing_machine_tutor.IFTuringMachine import IFTuringMachine
 #     input_alphabet={'0', '1'},
 #     tape_symbols={'0', '1', 'B'},
 #     transitions={
-#         ('q0', '0'): Configuration('q1', '1', 'R'),  # if encountered 0 put 1 and move right
-#         ('q0', '1'): Configuration('q0', '1', 'R'),  # if encountered 1 just move right
-#         ('q0', 'B'): Configuration('q1', 'B', 'S'),  # if encountered 1 just move right
-#         ('q1', '0'): Configuration('q1', '0', 'S'),  # after reaching q1 don't do anything
-#         ('q1', '1'): Configuration('q1', '1', 'S'),  # after reaching q1 don't do anything
-#         ('q1', 'B'): Configuration('q1', 'B', 'S'),  # after reaching q1 don't do anything
+#         ('q0', '0'): next('q1', '1', 'R'),  # if encountered 0 put 1 and move right
+#         ('q0', '1'): next('q0', '1', 'R'),  # if encountered 1 just move right
+#         ('q0', 'B'): next('q1', 'B', 'S'),  # if encountered 1 just move right
+#         ('q1', '0'): next('q1', '0', 'S'),  # after reaching q1 don't do anything
+#         ('q1', '1'): next('q1', '1', 'S'),  # after reaching q1 don't do anything
+#         ('q1', 'B'): next('q1', 'B', 'S'),  # after reaching q1 don't do anything
 
 #     },
 #     initial_state='q0',
@@ -367,12 +359,12 @@ from turing_machine_tutor.IFTuringMachine import IFTuringMachine
 #     input_alphabet={'0', '1'},
 #     tape_symbols={'0', '1', 'B'},
 #     transitions={
-#         ('q0', '0'): Configuration('q0', '0', 'R'),  # if encountered 0 put 1 and move right
-#         ('q0', '1'): Configuration('q1', '0', 'R'),  # if encountered 1 just move right
-#         ('q0', 'B'): Configuration('q1', 'B', 'S'),  # if encountered 1 just move right
-#         ('q1', '0'): Configuration('q1', '0', 'S'),  # after reaching q1 don't do anything
-#         ('q1', '1'): Configuration('q1', '1', 'S'),  # after reaching q1 don't do anything
-#         ('q1', 'B'): Configuration('q1', 'B', 'S'),  # after reaching q1 don't do anything
+#         ('q0', '0'): next('q0', '0', 'R'),  # if encountered 0 put 1 and move right
+#         ('q0', '1'): next('q1', '0', 'R'),  # if encountered 1 just move right
+#         ('q0', 'B'): next('q1', 'B', 'S'),  # if encountered 1 just move right
+#         ('q1', '0'): next('q1', '0', 'S'),  # after reaching q1 don't do anything
+#         ('q1', '1'): next('q1', '1', 'S'),  # after reaching q1 don't do anything
+#         ('q1', 'B'): next('q1', 'B', 'S'),  # after reaching q1 don't do anything
 
 #     },
 #     initial_state='q0',
@@ -386,9 +378,9 @@ from turing_machine_tutor.IFTuringMachine import IFTuringMachine
 #     input_alphabet={'0', '1'},
 #     tape_symbols={'0', '1', 'B'},
 #     transitions={
-#         ('q0', '0'): Configuration('q0', '0', 'R'),  # if encountered 0 put 1 and move right
-#         ('q0', '1'): Configuration('q0', '1', 'R'),  # if encountered 1 just move right
-#         ('q0', 'B'): Configuration('q1', 'B', 'S'),  # if encountered 1 just move right
+#         ('q0', '0'): next('q0', '0', 'R'),  # if encountered 0 put 1 and move right
+#         ('q0', '1'): next('q0', '1', 'R'),  # if encountered 1 just move right
+#         ('q0', 'B'): next('q1', 'B', 'S'),  # if encountered 1 just move right
 #     },
 #     initial_state='q0',
 #     accept_states={'q1'},
@@ -401,9 +393,9 @@ from turing_machine_tutor.IFTuringMachine import IFTuringMachine
 #     input_alphabet={'0', '1'},
 #     tape_symbols={'0', '1', 'B'},
 #     transitions={
-#         ('q0', '0'): Configuration('q2', '0', 'S'),
-#         ('q0', '1'): Configuration('q1', '1', 'R'),
-#         ('q0', 'B'): Configuration('q2', 'B', 'S'),
+#         ('q0', '0'): next('q2', '0', 'S'),
+#         ('q0', '1'): next('q1', '1', 'R'),
+#         ('q0', 'B'): next('q2', 'B', 'S'),
 
 #     },
 #     initial_state='q0',
@@ -439,16 +431,16 @@ from turing_machine_tutor.IFTuringMachine import IFTuringMachine
 #             input_alphabet={'0', '1'},
 #             tape_symbols={'0', '1', 'X', 'Y', 'B'},
 #             transitions={
-#                 ('q0', '0'): Configuration('q1', 'X', 'R'),  # Step 1 change 0 to X
-#                 ('q0', 'Y'): Configuration('q3', 'Y', 'R'),
-#                 ('q1', '0'): Configuration('q1', '0', 'R'),
-#                 ('q1', '1'): Configuration('q2', 'Y', 'L'),
-#                 ('q1', 'Y'): Configuration('q1', 'Y', 'R'),
-#                 ('q2', '0'): Configuration('q2', '0', 'L'),
-#                 ('q2', 'X'): Configuration('q0', 'X', 'R'),
-#                 ('q2', 'Y'): Configuration('q2', 'Y', 'L'),
-#                 ('q3', 'Y'): Configuration('q3', 'Y', 'R'),
-#                 ('q3', 'B'): Configuration('q4', 'B', 'L')
+#                 ('q0', '0'): next('q1', 'X', 'R'),  # Step 1 change 0 to X
+#                 ('q0', 'Y'): next('q3', 'Y', 'R'),
+#                 ('q1', '0'): next('q1', '0', 'R'),
+#                 ('q1', '1'): next('q2', 'Y', 'L'),
+#                 ('q1', 'Y'): next('q1', 'Y', 'R'),
+#                 ('q2', '0'): next('q2', '0', 'L'),
+#                 ('q2', 'X'): next('q0', 'X', 'R'),
+#                 ('q2', 'Y'): next('q2', 'Y', 'L'),
+#                 ('q3', 'Y'): next('q3', 'Y', 'R'),
+#                 ('q3', 'B'): next('q4', 'B', 'L')
 #             },
 #             initial_state='q0',
 #             accept_states={'q4'},
@@ -498,11 +490,11 @@ from turing_machine_tutor.IFTuringMachine import IFTuringMachine
 #         input_alphabet={'0', '1', 'X', 'Y', 'B'},
 #         tape_symbols={'0', '1', 'X', 'Y', 'B'},
 #         transitions={
-#             ('q0', '0'): Configuration('q2', 'X', 'R'),  # Step 1 change 0 to X
-#             ('q0', '1'): Configuration('q3', '1', 'S'),
-#             ('q0', 'X'): Configuration('q3', 'X', 'S'),
-#             ('q0', 'Y'): Configuration('q3', 'Y', 'S'),
-#             ('q0', 'B'): Configuration('q3', 'B', 'S')
+#             ('q0', '0'): next('q2', 'X', 'R'),  # Step 1 change 0 to X
+#             ('q0', '1'): next('q3', '1', 'S'),
+#             ('q0', 'X'): next('q3', 'X', 'S'),
+#             ('q0', 'Y'): next('q3', 'Y', 'S'),
+#             ('q0', 'B'): next('q3', 'B', 'S')
 #         },
 #         initial_state='q0',
 #         accept_states={'q2'},
@@ -513,11 +505,11 @@ from turing_machine_tutor.IFTuringMachine import IFTuringMachine
 #     input_alphabet={'0', '1', 'X', 'Y', 'B'},
 #     tape_symbols={'0', '1', 'X', 'Y', 'B'},
 #     transitions={
-#         ('q0', '0'): Configuration('q0', '0', 'R'),  # Step 2 move right to the first 1
-#         ('q0', '1'): Configuration('q2', '1', 'S'),  # if you do not find symbol 1, reject the language
-#         ('q0', 'X'): Configuration('q0', 'X', 'R'),
-#         ('q0', 'Y'): Configuration('q0', 'Y', 'R'),
-#         ('q0', 'B'): Configuration('q3', 'B', 'S')
+#         ('q0', '0'): next('q0', '0', 'R'),  # Step 2 move right to the first 1
+#         ('q0', '1'): next('q2', '1', 'S'),  # if you do not find symbol 1, reject the language
+#         ('q0', 'X'): next('q0', 'X', 'R'),
+#         ('q0', 'Y'): next('q0', 'Y', 'R'),
+#         ('q0', 'B'): next('q3', 'B', 'S')
 #     },
 #     initial_state='q0',
 #     accept_states={'q2'},
@@ -529,11 +521,11 @@ from turing_machine_tutor.IFTuringMachine import IFTuringMachine
 #         input_alphabet={'0', '1', 'X', 'Y', 'B'},
 #         tape_symbols={'0', '1', 'X', 'Y', 'B'},
 #         transitions={
-#             ('q0', '0'): Configuration('q3', '0', 'S'),  # Step 3 change 1 to Y
-#             ('q0', '1'): Configuration('q2', 'Y', 'L'),
-#             ('q0', 'X'): Configuration('q3', 'X', 'S'),
-#             ('q0', 'Y'): Configuration('q3', 'Y', 'S'),
-#             ('q0', 'B'): Configuration('q3', 'B', 'S')
+#             ('q0', '0'): next('q3', '0', 'S'),  # Step 3 change 1 to Y
+#             ('q0', '1'): next('q2', 'Y', 'L'),
+#             ('q0', 'X'): next('q3', 'X', 'S'),
+#             ('q0', 'Y'): next('q3', 'Y', 'S'),
+#             ('q0', 'B'): next('q3', 'B', 'S')
 #         },
 #         initial_state='q0',
 #         accept_states={'q2'},
@@ -545,11 +537,11 @@ from turing_machine_tutor.IFTuringMachine import IFTuringMachine
 #         input_alphabet={'0', '1', 'X', 'Y', 'B'},
 #         tape_symbols={'0', '1', 'X', 'Y', 'B'},
 #         transitions={
-#             ('q0', '0'): Configuration('q0', '0', 'L'),  # Step 4 Move Left to Leftmost 0
-#             ('q0', '1'): Configuration('q3', '1', 'S'),
-#             ('q0', 'X'): Configuration('q2', 'X', 'R'),
-#             ('q0', 'Y'): Configuration('q0', 'Y', 'L'),
-#             ('q0', 'B'): Configuration('q3', 'B', 'R')
+#             ('q0', '0'): next('q0', '0', 'L'),  # Step 4 Move Left to Leftmost 0
+#             ('q0', '1'): next('q3', '1', 'S'),
+#             ('q0', 'X'): next('q2', 'X', 'R'),
+#             ('q0', 'Y'): next('q0', 'Y', 'L'),
+#             ('q0', 'B'): next('q3', 'B', 'R')
 #         },
 #         initial_state='q0',
 #         accept_states={'q2'},
@@ -562,11 +554,11 @@ from turing_machine_tutor.IFTuringMachine import IFTuringMachine
 #         input_alphabet={'0', '1', 'X', 'Y', 'B'},
 #         tape_symbols={'0', '1', 'X', 'Y', 'B'},
 #         transitions={
-#             ('q0', '0'): Configuration('q2', '0', 'S'),  # Step 6 check if all turing machine tape is X and Y ( there is no 1 and 0 left on the tape)
-#             ('q0', '1'): Configuration('q2', '1', 'S'),
-#             ('q0', 'X'): Configuration('q0', 'X', 'R'),
-#             ('q0', 'Y'): Configuration('q0', 'Y', 'R'),
-#             ('q0', 'B'): Configuration('q3', 'B', 'S')
+#             ('q0', '0'): next('q2', '0', 'S'),  # Step 6 check if all turing machine tape is X and Y ( there is no 1 and 0 left on the tape)
+#             ('q0', '1'): next('q2', '1', 'S'),
+#             ('q0', 'X'): next('q0', 'X', 'R'),
+#             ('q0', 'Y'): next('q0', 'Y', 'R'),
+#             ('q0', 'B'): next('q3', 'B', 'S')
 #         },
 #         initial_state='q0',
 #         accept_states={'q2'},
@@ -577,11 +569,11 @@ from turing_machine_tutor.IFTuringMachine import IFTuringMachine
 #         input_alphabet={'0', '1', 'X', 'Y', 'B'},
 #         tape_symbols={'0', '1', 'X', 'Y', 'B'},
 #         transitions={
-#             ('q0', '0'): Configuration('q3', '0', 'S'),  # Step 6 check if all turing machine tape is X and Y ( there is no 1 and 0 left on the tape)
-#             ('q0', '1'): Configuration('q3', '1', 'S'),
-#             ('q0', 'X'): Configuration('q0', 'X', 'R'),
-#             ('q0', 'Y'): Configuration('q0', 'Y', 'R'),
-#             ('q0', 'B'): Configuration('q2', 'B', 'S')
+#             ('q0', '0'): next('q3', '0', 'S'),  # Step 6 check if all turing machine tape is X and Y ( there is no 1 and 0 left on the tape)
+#             ('q0', '1'): next('q3', '1', 'S'),
+#             ('q0', 'X'): next('q0', 'X', 'R'),
+#             ('q0', 'Y'): next('q0', 'Y', 'R'),
+#             ('q0', 'B'): next('q2', 'B', 'S')
 #         },
 #         initial_state='q0',
 #         accept_states={'q2'},
@@ -622,18 +614,18 @@ from turing_machine_tutor.IFTuringMachine import IFTuringMachine
 #             input_alphabet={'0', '1', '2', 'X', 'Y', 'B','Z'},
 #             tape_symbols={'0', '1', '2', 'X', 'Y', 'B','Z'},
 #             transitions={
-#                 ('q0', '0'): Configuration('q1', 'X', 'R'),  # Step 1 change 0 to X
-#                 ('q0', 'Y'): Configuration('q3', 'Y', 'R'),
-#                 ('q1', '0'): Configuration('q1', '0', 'R'),
-#                 ('q1', '1'): Configuration('q2', 'Y', 'L'),
-#                 ('q1', 'Y'): Configuration('q1', 'Y', 'R'),
-#                 ('q2', '0'): Configuration('q2', '0', 'L'),
-#                 ('q2', 'X'): Configuration('q0', 'X', 'R'),
-#                 ('q2', 'Y'): Configuration('q2', 'Y', 'L'),
-#                 ('q3', 'Y'): Configuration('q3', 'Y', 'R'),
-#                 ('q3', 'B'): Configuration('q4', 'B', 'S'),
+#                 ('q0', '0'): next('q1', 'X', 'R'),  # Step 1 change 0 to X
+#                 ('q0', 'Y'): next('q3', 'Y', 'R'),
+#                 ('q1', '0'): next('q1', '0', 'R'),
+#                 ('q1', '1'): next('q2', 'Y', 'L'),
+#                 ('q1', 'Y'): next('q1', 'Y', 'R'),
+#                 ('q2', '0'): next('q2', '0', 'L'),
+#                 ('q2', 'X'): next('q0', 'X', 'R'),
+#                 ('q2', 'Y'): next('q2', 'Y', 'L'),
+#                 ('q3', 'Y'): next('q3', 'Y', 'R'),
+#                 ('q3', 'B'): next('q4', 'B', 'S'),
 
-#                 ('q3', '2'): Configuration('q4', '2', 'S')
+#                 ('q3', '2'): next('q4', '2', 'S')
 #             },
 #             initial_state='q0',
 #             accept_states={'q4'},
@@ -644,10 +636,10 @@ from turing_machine_tutor.IFTuringMachine import IFTuringMachine
 #             input_alphabet={'0', '1','2' , 'X', 'Y', 'B','Z'},
 #             tape_symbols={'0', '1','2', 'X', 'Y', 'B','Z'},
 #             transitions={
-#                 ('q0', 'X'): Configuration('q0', 'X', 'R'),
-#                 ('q0', 'Y'): Configuration('q0', 'Y', 'R'),
-#                 ('q0', '2'): Configuration('q2', 'Z', 'R'),
-#                 ('q0', 'Z'): Configuration('q0', 'Z', 'R')
+#                 ('q0', 'X'): next('q0', 'X', 'R'),
+#                 ('q0', 'Y'): next('q0', 'Y', 'R'),
+#                 ('q0', '2'): next('q2', 'Z', 'R'),
+#                 ('q0', 'Z'): next('q0', 'Z', 'R')
 #             },
 #             initial_state='q0',
 #             accept_states={'q2'},
@@ -716,18 +708,18 @@ step1 = TuringMachine(
             input_alphabet={'0', '1', '2', 'X', 'Y', 'B','Z'},
             tape_symbols={'0', '1', '2', 'X', 'Y', 'B','Z'},
             transitions={
-                ('q0', '0'): Configuration('q1', 'X', 'R'),  # Step 1 change 0 to X
-                ('q0', 'Y'): Configuration('q3', 'Y', 'R'),
-                ('q1', '0'): Configuration('q1', '0', 'R'),
-                ('q1', '1'): Configuration('q2', 'Y', 'L'),
-                ('q1', 'Y'): Configuration('q1', 'Y', 'R'),
-                ('q2', '0'): Configuration('q2', '0', 'L'),
-                ('q2', 'X'): Configuration('q0', 'X', 'R'),
-                ('q2', 'Y'): Configuration('q2', 'Y', 'L'),
-                ('q3', 'Y'): Configuration('q3', 'Y', 'R'),
-                ('q3', 'B'): Configuration('q4', 'B', 'S'),
+                ('q0', '0'): next('q1', 'X', 'R'),  # Step 1 change 0 to X
+                ('q0', 'Y'): next('q3', 'Y', 'R'),
+                ('q1', '0'): next('q1', '0', 'R'),
+                ('q1', '1'): next('q2', 'Y', 'L'),
+                ('q1', 'Y'): next('q1', 'Y', 'R'),
+                ('q2', '0'): next('q2', '0', 'L'),
+                ('q2', 'X'): next('q0', 'X', 'R'),
+                ('q2', 'Y'): next('q2', 'Y', 'L'),
+                ('q3', 'Y'): next('q3', 'Y', 'R'),
+                ('q3', 'B'): next('q4', 'B', 'S'),
 
-                ('q3', '2'): Configuration('q4', '2', 'S')
+                ('q3', '2'): next('q4', '2', 'S')
             },
             initial_state='q0',
             accept_states={'q4'},
@@ -738,10 +730,10 @@ cond = TuringMachine( #current head pos equals 0
             input_alphabet={'0', '1','2' , 'X', 'Y', 'B','Z'},
             tape_symbols={'0', '1','2', 'X', 'Y', 'B','Z'},
             transitions={
-                ('q0', 'X'): Configuration('q0', 'X', 'R'),
-                ('q0', 'Y'): Configuration('q0', 'Y', 'R'),
-                ('q0', '2'): Configuration('q2', 'Z', 'R'),
-                ('q0', 'Z'): Configuration('q0', 'Z', 'R')
+                ('q0', 'X'): next('q0', 'X', 'R'),
+                ('q0', 'Y'): next('q0', 'Y', 'R'),
+                ('q0', '2'): next('q2', 'Z', 'R'),
+                ('q0', 'Z'): next('q0', 'Z', 'R')
             },
             initial_state='q0',
             accept_states={'q2'},
@@ -787,16 +779,16 @@ _0_pow_n_1_pow_n_TM = TuringMachine(
             input_alphabet={'0', '1'},
             tape_symbols={'0', '1', 'X', 'Y', 'B'},
             transitions={
-                ('q0', '0'): Configuration('q1', 'X', 'R'),  # Step 1 change 0 to X
-                ('q0', 'Y'): Configuration('q3', 'Y', 'R'),
-                ('q1', '0'): Configuration('q1', '0', 'R'),
-                ('q1', '1'): Configuration('q2', 'Y', 'L'),
-                ('q1', 'Y'): Configuration('q1', 'Y', 'R'),
-                ('q2', '0'): Configuration('q2', '0', 'L'),
-                ('q2', 'X'): Configuration('q0', 'X', 'R'),
-                ('q2', 'Y'): Configuration('q2', 'Y', 'L'),
-                ('q3', 'Y'): Configuration('q3', 'Y', 'R'),
-                ('q3', 'B'): Configuration('q4', 'B', 'L')
+                ('q0', '0'): next('q1', 'X', 'R'),  # Step 1 change 0 to X
+                ('q0', 'Y'): next('q3', 'Y', 'R'),
+                ('q1', '0'): next('q1', '0', 'R'),
+                ('q1', '1'): next('q2', 'Y', 'L'),
+                ('q1', 'Y'): next('q1', 'Y', 'R'),
+                ('q2', '0'): next('q2', '0', 'L'),
+                ('q2', 'X'): next('q0', 'X', 'R'),
+                ('q2', 'Y'): next('q2', 'Y', 'L'),
+                ('q3', 'Y'): next('q3', 'Y', 'R'),
+                ('q3', 'B'): next('q4', 'B', 'L')
             },
             initial_state='q0',
             accept_states={'q4'},

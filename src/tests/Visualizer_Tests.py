@@ -10,7 +10,7 @@ import unittest
 from turing_machine_tutor.IFTuringMachine import IFTuringMachine
 from turing_machine_tutor.TuringMachine import TuringMachine
 from turing_machine_tutor.TuringMachineVisualizer import TuringMachineVisualizer
-from turing_machine_tutor.configuration import Configuration
+from turing_machine_tutor.next import next
 from turing_machine_tutor.machine_run_state import Machine_Run_State
 from turing_machine_tutor.CombinedTuringMachine import CombinedTuringMachine
 
@@ -23,12 +23,12 @@ class TuringMachineVisualizer_Tests(unittest.TestCase):
             input_alphabet={'0', '1'},
             tape_symbols={'0', '1', 'B'},
             transitions={
-                ('q0', '0'): Configuration('q1', '1', 'R'),  # if encountered 0 put 1 and move right
-                ('q0', '1'): Configuration('q0', '1', 'R'),  # if encountered 1 just move right
-                ('q0', 'B'): Configuration('q1', 'B', 'S'),  # if encountered 1 just move right
-                ('q1', '0'): Configuration('q1', '0', 'S'),  # after reaching q1 don't do anything
-                ('q1', '1'): Configuration('q1', '1', 'S'),  # after reaching q1 don't do anything
-                ('q1', 'B'): Configuration('q1', 'B', 'S'),  # after reaching q1 don't do anything
+                ('q0', '0'): next('q1', '1', 'R'),  # if encountered 0 put 1 and move right
+                ('q0', '1'): next('q0', '1', 'R'),  # if encountered 1 just move right
+                ('q0', 'B'): next('q1', 'B', 'S'),  # if encountered 1 just move right
+                ('q1', '0'): next('q1', '0', 'S'),  # after reaching q1 don't do anything
+                ('q1', '1'): next('q1', '1', 'S'),  # after reaching q1 don't do anything
+                ('q1', 'B'): next('q1', 'B', 'S'),  # after reaching q1 don't do anything
             },
             initial_state='q0',
             accept_states={'q1'},
@@ -53,12 +53,12 @@ class TuringMachineVisualizer_Tests(unittest.TestCase):
             input_alphabet={'0', '1'},
             tape_symbols={'0', '1', 'B'},
             transitions={
-                ('q0', '0'): Configuration('q1', '1', 'R'),  # if encountered 0 put 1 and move right
-                ('q0', '1'): Configuration('q0', '1', 'R'),  # if encountered 1 just move right
-                ('q0', 'B'): Configuration('q1', 'B', 'S'),  # if encountered 1 just move right
-                ('q1', '0'): Configuration('q1', '0', 'S'),  # after reaching q1 don't do anything
-                ('q1', '1'): Configuration('q1', '1', 'S'),  # after reaching q1 don't do anything
-                ('q1', 'B'): Configuration('q1', 'B', 'S'),  # after reaching q1 don't do anything
+                ('q0', '0'): next('q1', '1', 'R'),  # if encountered 0 put 1 and move right
+                ('q0', '1'): next('q0', '1', 'R'),  # if encountered 1 just move right
+                ('q0', 'B'): next('q1', 'B', 'S'),  # if encountered 1 just move right
+                ('q1', '0'): next('q1', '0', 'S'),  # after reaching q1 don't do anything
+                ('q1', '1'): next('q1', '1', 'S'),  # after reaching q1 don't do anything
+                ('q1', 'B'): next('q1', 'B', 'S'),  # after reaching q1 don't do anything
             },
             initial_state='q0',
             accept_states={'q1'},
@@ -69,12 +69,12 @@ class TuringMachineVisualizer_Tests(unittest.TestCase):
             input_alphabet={'0', '1'},
             tape_symbols={'0', '1', 'B'},
             transitions={
-                ('q0', '0'): Configuration('q0', '0', 'R'),  # if encountered 0 just move right
-                ('q0', '1'): Configuration('q1', '0', 'R'),  # if encountered 1 put 0 and move right
-                ('q0', 'B'): Configuration('q1', 'B', 'S'),
-                ('q1', '0'): Configuration('q1', '0', 'S'),  # after reaching q1 don't do anything
-                ('q1', '1'): Configuration('q1', '1', 'S'),  # after reaching q1 don't do anything
-                ('q1', 'B'): Configuration('q1', 'B', 'S'),  # after reaching q1 don't do anything
+                ('q0', '0'): next('q0', '0', 'R'),  # if encountered 0 just move right
+                ('q0', '1'): next('q1', '0', 'R'),  # if encountered 1 put 0 and move right
+                ('q0', 'B'): next('q1', 'B', 'S'),
+                ('q1', '0'): next('q1', '0', 'S'),  # after reaching q1 don't do anything
+                ('q1', '1'): next('q1', '1', 'S'),  # after reaching q1 don't do anything
+                ('q1', 'B'): next('q1', 'B', 'S'),  # after reaching q1 don't do anything
 
             },
             initial_state='q0',
@@ -124,9 +124,9 @@ class TuringMachineVisualizer_Tests(unittest.TestCase):
             input_alphabet={'0', '1'},
             tape_symbols={'0', '1', 'B'},
             transitions={
-                ('q0', '0'): Configuration('q2', '0', 'S'),
-                ('q0', '1'): Configuration('q1', '1', 'R'),
-                ('q0', 'B'): Configuration('q2', 'B', 'S'),
+                ('q0', '0'): next('q2', '0', 'S'),
+                ('q0', '1'): next('q1', '1', 'R'),
+                ('q0', 'B'): next('q2', 'B', 'S'),
 
             },
             initial_state='q0',
@@ -138,12 +138,12 @@ class TuringMachineVisualizer_Tests(unittest.TestCase):
             input_alphabet={'0', '1'},
             tape_symbols={'0', '1', 'B'},
             transitions={
-                ('q0', '0'): Configuration('q1', '1', 'R'),  # if encountered 0 put 1 and move right
-                ('q0', '1'): Configuration('q0', '1', 'R'),  # if encountered 1 just move right
-                ('q0', 'B'): Configuration('q1', 'B', 'S'),  # if encountered 1 just move right
-                ('q1', '0'): Configuration('q1', '0', 'S'),  # after reaching q1 don't do anything
-                ('q1', '1'): Configuration('q1', '1', 'S'),  # after reaching q1 don't do anything
-                ('q1', 'B'): Configuration('q1', 'B', 'S'),  # after reaching q1 don't do anything
+                ('q0', '0'): next('q1', '1', 'R'),  # if encountered 0 put 1 and move right
+                ('q0', '1'): next('q0', '1', 'R'),  # if encountered 1 just move right
+                ('q0', 'B'): next('q1', 'B', 'S'),  # if encountered 1 just move right
+                ('q1', '0'): next('q1', '0', 'S'),  # after reaching q1 don't do anything
+                ('q1', '1'): next('q1', '1', 'S'),  # after reaching q1 don't do anything
+                ('q1', 'B'): next('q1', 'B', 'S'),  # after reaching q1 don't do anything
             },
             initial_state='q0',
             accept_states={'q1'},
@@ -154,12 +154,12 @@ class TuringMachineVisualizer_Tests(unittest.TestCase):
             input_alphabet={'0', '1'},
             tape_symbols={'0', '1', 'B'},
             transitions={
-                ('q0', '0'): Configuration('q0', '0', 'R'),  # if encountered 0 just move right
-                ('q0', '1'): Configuration('q1', '0', 'R'),  # if encountered 1 put 0 and move right
-                ('q0', 'B'): Configuration('q1', 'B', 'S'),
-                ('q1', '0'): Configuration('q1', '0', 'S'),  # after reaching q1 don't do anything
-                ('q1', '1'): Configuration('q1', '1', 'S'),  # after reaching q1 don't do anything
-                ('q1', 'B'): Configuration('q1', 'B', 'S'),  # after reaching q1 don't do anything
+                ('q0', '0'): next('q0', '0', 'R'),  # if encountered 0 just move right
+                ('q0', '1'): next('q1', '0', 'R'),  # if encountered 1 put 0 and move right
+                ('q0', 'B'): next('q1', 'B', 'S'),
+                ('q1', '0'): next('q1', '0', 'S'),  # after reaching q1 don't do anything
+                ('q1', '1'): next('q1', '1', 'S'),  # after reaching q1 don't do anything
+                ('q1', 'B'): next('q1', 'B', 'S'),  # after reaching q1 don't do anything
 
             },
             initial_state='q0',
@@ -212,9 +212,9 @@ class TuringMachineVisualizer_Tests(unittest.TestCase):
                 input_alphabet={'0', '1'},
                 tape_symbols={'0', '1', 'B'},
                 transitions={
-                    ('q0', '0'): Configuration('q2', '0', 'S'),
-                    ('q0', '1'): Configuration('q1', '1', 'R'),
-                    ('q0', 'B'): Configuration('q2', 'B', 'S'),
+                    ('q0', '0'): next('q2', '0', 'S'),
+                    ('q0', '1'): next('q1', '1', 'R'),
+                    ('q0', 'B'): next('q2', 'B', 'S'),
 
                 },
                 initial_state='q0',
@@ -226,12 +226,12 @@ class TuringMachineVisualizer_Tests(unittest.TestCase):
                 input_alphabet={'0', '1'},
                 tape_symbols={'0', '1', 'B'},
                 transitions={
-                    ('q0', '0'): Configuration('q1', '1', 'R'),  # if encountered 0 put 1 and move right
-                    ('q0', '1'): Configuration('q0', '1', 'R'),  # if encountered 1 just move right
-                    ('q0', 'B'): Configuration('q1', 'B', 'S'),  # if encountered 1 just move right
-                    ('q1', '0'): Configuration('q1', '0', 'S'),  # after reaching q1 don't do anything
-                    ('q1', '1'): Configuration('q1', '1', 'S'),  # after reaching q1 don't do anything
-                    ('q1', 'B'): Configuration('q1', 'B', 'S'),  # after reaching q1 don't do anything
+                    ('q0', '0'): next('q1', '1', 'R'),  # if encountered 0 put 1 and move right
+                    ('q0', '1'): next('q0', '1', 'R'),  # if encountered 1 just move right
+                    ('q0', 'B'): next('q1', 'B', 'S'),  # if encountered 1 just move right
+                    ('q1', '0'): next('q1', '0', 'S'),  # after reaching q1 don't do anything
+                    ('q1', '1'): next('q1', '1', 'S'),  # after reaching q1 don't do anything
+                    ('q1', 'B'): next('q1', 'B', 'S'),  # after reaching q1 don't do anything
                 },
                 initial_state='q0',
                 accept_states={'q1'},
@@ -242,12 +242,12 @@ class TuringMachineVisualizer_Tests(unittest.TestCase):
                 input_alphabet={'0', '1'},
                 tape_symbols={'0', '1', 'B'},
                 transitions={
-                    ('q0', '0'): Configuration('q0', '0', 'R'),  # if encountered 0 just move right
-                    ('q0', '1'): Configuration('q1', '0', 'R'),  # if encountered 1 put 0 and move right
-                    ('q0', 'B'): Configuration('q1', 'B', 'S'),
-                    ('q1', '0'): Configuration('q1', '0', 'S'),  # after reaching q1 don't do anything
-                    ('q1', '1'): Configuration('q1', '1', 'S'),  # after reaching q1 don't do anything
-                    ('q1', 'B'): Configuration('q1', 'B', 'S'),  # after reaching q1 don't do anything
+                    ('q0', '0'): next('q0', '0', 'R'),  # if encountered 0 just move right
+                    ('q0', '1'): next('q1', '0', 'R'),  # if encountered 1 put 0 and move right
+                    ('q0', 'B'): next('q1', 'B', 'S'),
+                    ('q1', '0'): next('q1', '0', 'S'),  # after reaching q1 don't do anything
+                    ('q1', '1'): next('q1', '1', 'S'),  # after reaching q1 don't do anything
+                    ('q1', 'B'): next('q1', 'B', 'S'),  # after reaching q1 don't do anything
 
                 },
                 initial_state='q0',
