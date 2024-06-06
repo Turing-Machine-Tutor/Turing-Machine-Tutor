@@ -262,7 +262,7 @@ class TestTuringMachineController(unittest.TestCase):
             try:
                 result.get_turing_machine(n_v) 
             except Exception as e:
-                self.assertEqual("Turing machine with this name doesn't exists in the dict", str(e))
+                self.assertEqual("Turing machine with this name:"+n_v+" doesn't exists in the dict", str(e))
      ###############################################################################################################
     # test TuringMachineController run function with TuringMachine object
     def test_TuringMachineController_Run_withValidTuringMachine(self):
