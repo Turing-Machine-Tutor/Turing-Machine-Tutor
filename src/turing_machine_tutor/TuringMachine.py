@@ -131,7 +131,10 @@ class TuringMachine:
     def get_config(self):
         symbol = self.current_machine_state.tape[self.current_machine_state.head_position]
         state=self.current_machine_state.state
-        config = self.transitions[(state,symbol)]
+        try:
+            config = self.transitions[(state,symbol)]
+        except:
+            return "halt"
         return config
 
 
