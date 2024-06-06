@@ -60,7 +60,7 @@ class TuringMachineController:
         if name in self.turing_machines.keys():
             return self.turing_machines[name]
         else:
-            raise Exception("Turing machine with this name doesn't exists in the dict")
+            raise Exception("Turing machine with this name:"+ str(name) +" doesn't exists in the dict")
 
     def get_all_names(self):
         return self.turing_machines.keys()
@@ -170,7 +170,7 @@ class TuringMachineController:
 
     def validate_turing_machineTA(self, name, test_count=100,max_input_length=20):
         turing_name = name
-        
+
         if(turing_name == None or turing_name == ""):
             raise Exception("Name cannot be None")
         if(not isinstance(turing_name, str)):
@@ -194,11 +194,66 @@ class TuringMachineController:
             raise Exception("extreme_cases cannot be None")
         if((not isinstance(extreme_cases, (list,set))) or not is_all_strings(extreme_cases)):
             raise Exception("extreme_cases cannot contain a non string object")
+        
+        check_alphabet_equal = self.get_turing_machine(name) # to throw exception if turing machine name and challenge doesn't match
+        if(check_alphabet_equal.get_input_alphabet() != self.challenges[turing_name].get_input_alphabet()):
+            raise Exception("TM "+str(name)+" alphabet must be "+ str(self.challenges[turing_name].get_input_alphabet()))
 
+        # first test mustPass and mustFail#############################################################################################
+        if self.challenges[turing_name].mustPass != None:
+            print("testing Must Pass cases:\n ")
+            for case in self.challenges[turing_name].mustPass: ##test must pass cases
+                final_machine_state=None
+                try:
+                    final_machine_state = self.turing_machines[turing_name].run(case)
+                except Exception as e:
+                    print(e)
+
+                function_result = function_object(case)
+                if (final_machine_state == None):
+                    if function_result == False:
+                        print(f"Validation passed for input: {case}")
+                    else:
+                        print(f"Validation failed for input: {case}")
+                        return False
+                    continue
+                is_in_acceptance_checker = self.turing_machines[turing_name].given_state_is_in_acceptance(final_machine_state.state)
+                if function_result != is_in_acceptance_checker:
+                    print(f"Validation failed for input: {case}")
+                    return False
+                else:
+                    print(f"Validation passed for input: {case}")
+
+        if self.challenges[turing_name].mustFail != None:
+            print("testing Must Fail cases:\n ")
+            for case in self.challenges[turing_name].mustFail: ##test must Fail cases
+                final_machine_state=None
+                try:
+                    final_machine_state = self.turing_machines[turing_name].run(case)
+                except Exception as e:
+                    print(e)
+
+                function_result = function_object(case)
+                if (final_machine_state == None):
+                    if function_result == False:
+                        print(f"Validation passed for input: {case}")
+                    else:
+                        print(f"Validation failed for input: {case}")
+                        return False
+                    continue
+                is_in_acceptance_checker = self.turing_machines[turing_name].given_state_is_in_acceptance(final_machine_state.state)
+                if function_result != is_in_acceptance_checker:
+                    print(f"Validation failed for input: {case}")
+                    return False
+                else:
+                    print(f"Validation passed for input: {case}")
+
+        ###############################################################################################################################
+        # then run generated test
         for _ in range(test_count): ## generate random words and test them
             for input_length in range(1,max_input_length):
                 #print("My alphabet is : " + str(self.turing_machines[turing_name].get_input_alphabet()))
-                alphabet = ''.join(self.turing_machines[turing_name].get_input_alphabet())
+                alphabet = ''.join(self.challenges[turing_name].get_input_alphabet())
                 input_string = ''.join(random.choice(alphabet) for _ in range(input_length))
                 print("testing on input: "+input_string)
                 final_machine_state=None
@@ -347,9 +402,9 @@ class TuringMachineController:
             return True
     
 
-    def add_challenge(self, turing_machine_name, turing_machine_description, function_that_accepts_the_language_of_tm,
+    def add_challenge(self, turing_machine_name, input_alphabet, turing_machine_description, function_that_accepts_the_language_of_tm,
                       edge_cases_list):
-        challenge = Challenge(turing_machine_name, turing_machine_description, function_that_accepts_the_language_of_tm, edge_cases_list)
+        challenge = Challenge(turing_machine_name, input_alphabet, turing_machine_description, function_that_accepts_the_language_of_tm, edge_cases_list)
         if(turing_machine_name in self.challenges.keys()):
             raise Exception("challenge with this name already exists")
         self.challenges[turing_machine_name] = challenge
@@ -437,6 +492,9 @@ class TuringMachineController:
         res = self.append_or_update_row(submission)
         if(res == "Success"):
             print("\n\nSubmited your TMs, id: "+str(user_id)+" , at: "+str(timeOfSubmission))
+            print("Your result:")
+            for i in range(2,len(submission)-1,3):
+                print(submission[i] + ": "+submission[i+2])
         else:
             print("\n\nFailed To Submit, Try Again!")
         #if(res == )

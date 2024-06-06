@@ -2,11 +2,15 @@ import ast
 import inspect
 
 class Challenge:
-    def __init__(self, name ,turing_machine_description, function_that_accepts_the_language_of_tm, edge_cases_list):
+    def __init__(self, name, input_alphabet ,turing_machine_description, function_that_accepts_the_language_of_tm, edge_cases_list):
+        is_all_strings_of_len1 = lambda my_list: all(isinstance(item, str) and len(item) == 1 for item in my_list)
+
         if(name == None or name == ""):
                 raise Exception("Name cannot be None")
         if(not isinstance(name, str)):
             raise Exception("Name cannot be not str object")
+        if(input_alphabet == None or len(input_alphabet) == 0 or (not isinstance(input_alphabet, (list,set))) or (not is_all_strings_of_len1(input_alphabet))):
+                raise Exception("input_alphabet cannot be None / empty list, and must be all string in list of len = 1")
         if(turing_machine_description == None or turing_machine_description == ""):
             raise Exception("turing_machine_description cannot be None")
         if(not isinstance(turing_machine_description, str)):
@@ -33,9 +37,42 @@ class Challenge:
             raise Exception("edge_cases_list cannot contain a non string object")
         
         self.name = name
+        self.input_alphabet = set(input_alphabet)
         self.description=turing_machine_description
         self.function=function_that_accepts_the_language_of_tm
         self.edge_cases=edge_cases_list
+
+        self.mustPass = None
+        self.mustFail = None
+
+    def get_input_alphabet(self):
+        if(self.input_alphabet == None):
+            raise Exception("Cannot get input alphabet, please construct the challenge first")
+        return self.input_alphabet
+        
+    def MustPass(self, pass_list):
+        is_all_strings = lambda my_list: all(isinstance(item, str) and len(item) >= 1 for item in my_list)
+        if(pass_list == None):
+            raise Exception("pass_list cannot be None")
+        if((not isinstance(pass_list, (list,set))) or not is_all_strings(pass_list)):
+            raise Exception("pass_list cannot contain a non string object")
+
+        for l in pass_list:
+            if(self.function(l) == False):
+                raise Exception("the word: "+str(l)+", return false instead of true with the challege's fucntion.")
+        self.mustPass = pass_list
+
+    def MustFail(self, fail_list):
+        is_all_strings = lambda my_list: all(isinstance(item, str) and len(item) >= 1 for item in my_list)
+        if(fail_list == None):
+            raise Exception("fail_list cannot be None")
+        if((not isinstance(fail_list, (list,set))) or not is_all_strings(fail_list)):
+            raise Exception("fail_list cannot contain a non string object")
+
+        for l in fail_list:
+            if(self.function(l) == True):
+                raise Exception("the word: "+str(l)+", return true instead of false with the challege's fucntion.")
+        self.mustFail = fail_list
 
 
     def validateFuncReturnOnlyBool(self, func):

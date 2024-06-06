@@ -46,14 +46,21 @@ class TuringMachineVisualizer:
                     self.steps.append(self.tm.current_machine_state)
                     break
                 current_config = self.tm.get_config()
-                self.steps.append(self.tm.run_step(current_config))
+                # new change here
+                if current_config == "halt":
+                    symbol = self.tm.current_machine_state.tape[self.tm.current_machine_state.head_position]
+                    state=self.tm.current_machine_state.state
+                    self.steps.append("TM halted at (state: "+str(state)+", symbol: "+str(symbol)+") with no valid transition.")
+                    break
+                else:
+                    self.steps.append(self.tm.run_step(current_config))
 
             if self.tm.current_machine_state.state in self.tm.accept_states:
                 self.steps.append("reached accept state") # To do: add name at the first of line
             elif self.tm.current_machine_state.state in self.tm.reject_states:
                 self.steps.append("reached reject state") # To do: add name at the first of line
             else:
-                self.steps.append("turing machine stoped before finishing the run on the given input")
+                self.steps.append("turing machine halted at non accepting state")
             return self.steps
 
 
