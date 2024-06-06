@@ -195,10 +195,61 @@ class TuringMachineController:
         if((not isinstance(extreme_cases, (list,set))) or not is_all_strings(extreme_cases)):
             raise Exception("extreme_cases cannot contain a non string object")
 
+        # first test mustPass and mustFail#############################################################################################
+        if self.challenges[turing_name].mustPass != None:
+            print("testing Must Pass cases:\n ")
+            for case in self.challenges[turing_name].mustPass: ##test must pass cases
+                final_machine_state=None
+                try:
+                    final_machine_state = self.turing_machines[turing_name].run(case)
+                except Exception as e:
+                    print(e)
+
+                function_result = function_object(case)
+                if (final_machine_state == None):
+                    if function_result == False:
+                        print(f"Validation passed for input: {case}")
+                    else:
+                        print(f"Validation failed for input: {case}")
+                        return False
+                    continue
+                is_in_acceptance_checker = self.turing_machines[turing_name].given_state_is_in_acceptance(final_machine_state.state)
+                if function_result != is_in_acceptance_checker:
+                    print(f"Validation failed for input: {case}")
+                    return False
+                else:
+                    print(f"Validation passed for input: {case}")
+
+        if self.challenges[turing_name].mustFail != None:
+            print("testing Must Fail cases:\n ")
+            for case in self.challenges[turing_name].mustFail: ##test must Fail cases
+                final_machine_state=None
+                try:
+                    final_machine_state = self.turing_machines[turing_name].run(case)
+                except Exception as e:
+                    print(e)
+
+                function_result = function_object(case)
+                if (final_machine_state == None):
+                    if function_result == False:
+                        print(f"Validation passed for input: {case}")
+                    else:
+                        print(f"Validation failed for input: {case}")
+                        return False
+                    continue
+                is_in_acceptance_checker = self.turing_machines[turing_name].given_state_is_in_acceptance(final_machine_state.state)
+                if function_result != is_in_acceptance_checker:
+                    print(f"Validation failed for input: {case}")
+                    return False
+                else:
+                    print(f"Validation passed for input: {case}")
+
+        ###############################################################################################################################
+        # then run generated test
         for _ in range(test_count): ## generate random words and test them
             for input_length in range(1,max_input_length):
                 #print("My alphabet is : " + str(self.turing_machines[turing_name].get_input_alphabet()))
-                alphabet = ''.join(self.turing_machines[turing_name].get_input_alphabet())
+                alphabet = ''.join(self.challenges[turing_name].get_input_alphabet())
                 input_string = ''.join(random.choice(alphabet) for _ in range(input_length))
                 print("testing on input: "+input_string)
                 final_machine_state=None
