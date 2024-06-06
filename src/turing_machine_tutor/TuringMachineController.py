@@ -60,7 +60,7 @@ class TuringMachineController:
         if name in self.turing_machines.keys():
             return self.turing_machines[name]
         else:
-            raise Exception("Turing machine with this name doesn't exists in the dict")
+            raise Exception("Turing machine with this name:"+ str(name) +" doesn't exists in the dict")
 
     def get_all_names(self):
         return self.turing_machines.keys()
@@ -170,7 +170,7 @@ class TuringMachineController:
 
     def validate_turing_machineTA(self, name, test_count=100,max_input_length=20):
         turing_name = name
-        
+
         if(turing_name == None or turing_name == ""):
             raise Exception("Name cannot be None")
         if(not isinstance(turing_name, str)):
@@ -194,6 +194,10 @@ class TuringMachineController:
             raise Exception("extreme_cases cannot be None")
         if((not isinstance(extreme_cases, (list,set))) or not is_all_strings(extreme_cases)):
             raise Exception("extreme_cases cannot contain a non string object")
+        
+        check_alphabet_equal = self.get_turing_machine(name) # to throw exception if turing machine name and challenge doesn't match
+        if(check_alphabet_equal.get_input_alphabet() != self.challenges[turing_name].get_input_alphabet()):
+            raise Exception("TM "+str(name)+" alphabet must be "+ str(self.challenges[turing_name].get_input_alphabet()))
 
         # first test mustPass and mustFail#############################################################################################
         if self.challenges[turing_name].mustPass != None:
@@ -489,7 +493,7 @@ class TuringMachineController:
         if(res == "Success"):
             print("\n\nSubmited your TMs, id: "+str(user_id)+" , at: "+str(timeOfSubmission))
             print("Your result:")
-            for i in range(2,len(submission)-2,2):
+            for i in range(2,len(submission)-1,3):
                 print(submission[i] + ": "+submission[i+2])
         else:
             print("\n\nFailed To Submit, Try Again!")
