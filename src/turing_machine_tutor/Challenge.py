@@ -70,7 +70,7 @@ class Challenge:
             raise Exception("fail_list cannot contain a non string object")
 
         for l in fail_list:
-            if(self.function(l) == False):
+            if(self.function(l) == True):
                 raise Exception("the word: "+str(l)+", return true instead of false with the challege's fucntion.")
         self.mustFail = fail_list
 
