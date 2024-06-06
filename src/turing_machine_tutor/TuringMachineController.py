@@ -398,9 +398,9 @@ class TuringMachineController:
             return True
     
 
-    def add_challenge(self, turing_machine_name, turing_machine_description, function_that_accepts_the_language_of_tm,
+    def add_challenge(self, turing_machine_name, input_alphabet, turing_machine_description, function_that_accepts_the_language_of_tm,
                       edge_cases_list):
-        challenge = Challenge(turing_machine_name, turing_machine_description, function_that_accepts_the_language_of_tm, edge_cases_list)
+        challenge = Challenge(turing_machine_name, input_alphabet, turing_machine_description, function_that_accepts_the_language_of_tm, edge_cases_list)
         if(turing_machine_name in self.challenges.keys()):
             raise Exception("challenge with this name already exists")
         self.challenges[turing_machine_name] = challenge
