@@ -488,6 +488,9 @@ class TuringMachineController:
         res = self.append_or_update_row(submission)
         if(res == "Success"):
             print("\n\nSubmited your TMs, id: "+str(user_id)+" , at: "+str(timeOfSubmission))
+            print("Your result:")
+            for i in range(2,len(submission)-2,2):
+                print(submission[i] + ": "+submission[i+2])
         else:
             print("\n\nFailed To Submit, Try Again!")
         #if(res == )
