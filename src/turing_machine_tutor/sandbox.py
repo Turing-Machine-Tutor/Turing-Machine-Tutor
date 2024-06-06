@@ -237,7 +237,7 @@ print("at end tape is:  ",mrs.tape)
 
 print(step6.given_state_is_in_acceptance(step6.run(mrs.tape.copy()).state))
 controller.visualize('combined_shit', "0011")
-
+controller.submit()
 
 # # #----------------------------------------------------------------------------------------
 
