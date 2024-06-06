@@ -806,4 +806,4 @@ _0_pow_n_1_pow_n_TM = TuringMachine(
 ## after you build it you need to add it to the controller and give it the same name  that was given by the TA:
 controller.add_turing_machine('0n1n', _0_pow_n_1_pow_n_TM)
 
-controller.log_results('0n1n')
+controller.submit()
