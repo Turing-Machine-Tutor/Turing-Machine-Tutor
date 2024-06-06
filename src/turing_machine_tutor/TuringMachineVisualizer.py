@@ -60,7 +60,7 @@ class TuringMachineVisualizer:
             elif self.tm.current_machine_state.state in self.tm.reject_states:
                 self.steps.append("reached reject state") # To do: add name at the first of line
             else:
-                self.steps.append("turing machine stoped before finishing the run on the given input")
+                self.steps.append("turing machine halted at non accepting state")
             return self.steps
 
 
