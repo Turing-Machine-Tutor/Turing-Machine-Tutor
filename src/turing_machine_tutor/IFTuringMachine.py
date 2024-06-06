@@ -59,7 +59,7 @@ class IFTuringMachine:
         if(self.ifTm == None or (not isinstance(self.ifTm, TuringMachine))):
             raise Exception("Cannot run, Missing IF TM. Please Use SetIFtm to set the turing machine")
         if(self.thenTm == None or (not isinstance(self.thenTm, TuringMachine))):
-            raise Exception("Cannot run, Missing Then TM. Please Use SetIFtm to set the turing machine")
+            raise Exception("Cannot run, Missing Then TM. Please Use SetThentm to set the turing machine")
         # first run ifTm
         machine_run_state = self.ifTm.run(input_str)
         if (machine_run_state.state in self.ifTm.accept_states):
