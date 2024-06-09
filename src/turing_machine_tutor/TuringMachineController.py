@@ -42,6 +42,20 @@ class TuringMachineController:
         turing_machine.name = name
         self.turing_machines[name] = turing_machine
 
+    def update_turing_machine(self, name, turing_machine):
+        if(turing_machine == None):
+            raise Exception("TM cannot be None")
+        if not(isinstance(turing_machine, TuringMachine) or isinstance(turing_machine, IFTuringMachine) or isinstance(turing_machine, CombinedTuringMachine) ):
+            raise Exception("TM cannot be Not (TuringMachine / IFTuringMachine / CombinedTuringMachine) Object")
+        if(name == None or name == ""):
+            raise Exception("Name cannot be None")
+        if(not isinstance(name, str)):
+            raise Exception("Name cannot be not str object")
+        if not (name in self.turing_machines.keys()):
+            raise Exception("Turing machine with this name doesn't exists in the dict")
+        turing_machine.name = name
+        self.turing_machines[name] = turing_machine
+
     def remove(self,name):
         if(name == None or name == ""):
             raise Exception("Name cannot be None")
