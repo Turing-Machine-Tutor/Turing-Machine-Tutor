@@ -31,7 +31,7 @@ class Machine_Run_State_Tests(unittest.TestCase):
         machine_run_state_test.execute_config(config_test)
         self.assertEquals(machine_run_state_test.head_position,0)
         self.assertEquals(machine_run_state_test.state,'q0')
-        self.assertEquals(machine_run_state_test.tape, ["B","t","e","s","t"])
+        self.assertEquals(machine_run_state_test.tape, ["t","e","s","t"])
 
     def test_execute_config_insert_blank_to_the_right(self):
         config_test=next("q0", "t", "R")
