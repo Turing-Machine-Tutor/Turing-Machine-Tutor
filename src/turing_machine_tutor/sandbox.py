@@ -10,6 +10,8 @@ from turing_machine_tutor.next import next
 from turing_machine_tutor.IFTuringMachine import IFTuringMachine
 
 
+
+
 # # def test_me(number):
 # #     if number==1:
 # #         return "one"
@@ -674,6 +676,24 @@ from turing_machine_tutor.IFTuringMachine import IFTuringMachine
 
 controller = TuringMachineController()
 
+ifTm = TuringMachine(  # condition if input legth is less than 4 accept else reject
+        states={'q0', 'q1', 'q2', 'q3', 'q4', 'q5', 'q6'},
+        input_alphabet={'0', '1'},
+        tape_symbols={'0', '1', 'B'},
+        transitions={
+            ('q0', '0'): next('q1', '0', 'R'),
+            ('q1', '1'): next('q3', '1', 'R'),
+            ('q3', 'B'): next('q3', 'B', 'L'),
+            ('q3', '1'): next('q3', '1', 'L'),
+            ('q3', '0'): next('q3', '0', 'L'),
+        },
+        initial_state='q0',
+        accept_states={'q5'},
+        reject_states={'q6'}
+    )
+
+controller.add_turing_machine("shit",ifTm)
+controller.visualize("shit","01")
 # def is_0n1n(s):
 #     if(len(s) < 2):
 #         return False
@@ -751,7 +771,7 @@ controller.add_turing_machine('WhileCombined',combined_tm)
 
 #controller.run_turing_machine('WhileCombined', "001120011")
 
-#controller.visualize('WhileCombined',"01201")
+controller.visualize('WhileCombined',"01201")
 def is_0n1n(s):
     if(len(s) < 2):
         return False
