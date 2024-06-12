@@ -694,6 +694,7 @@ ifTm = TuringMachine(  # condition if input legth is less than 4 accept else rej
 
 controller.add_turing_machine("shit",ifTm)
 controller.visualize("shit","01")
+
 # def is_0n1n(s):
 #     if(len(s) < 2):
 #         return False
