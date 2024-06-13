@@ -28,6 +28,14 @@ class TuringMachineController:
         self.__turing_machines = {}
         self.__challenges = dict()
 
+    @property
+    def turing_machines(self):
+        return self.__turing_machines
+
+    @property
+    def challenges(self):
+        return self.__challenges
+
     def add_turing_machine(self, name, turing_machine):
         if(turing_machine == None):
             raise Exception("TM cannot be None")
