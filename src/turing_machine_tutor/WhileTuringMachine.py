@@ -7,7 +7,7 @@ from turing_machine_tutor.CombinedTuringMachine import CombinedTuringMachine
 
 class WhileTuringMachine(CombinedTuringMachine):
     def __init__(self, condTMName:str,condTM : TuringMachine, doTMName:str, doTM : TuringMachine):
-        self = CombinedTuringMachine(condTM.input_alphabet)
+        super().__init__(condTM.input_alphabet)
         self.setTuringMachineWhileCondition(condTMName,condTM)
         self.add(doTMName, doTM)
     

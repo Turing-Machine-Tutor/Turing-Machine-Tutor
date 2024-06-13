@@ -14,7 +14,9 @@ class ConcatenateTM(CombinedTuringMachine):
         for l in ls:
             if not isinstance(l, tuple(str, TuringMachine)):
                 raise Exception("every parameter in the list should be tuple(string TM name, TuringMachine object)")
-        self = CombinedTuringMachine(ls[0][1].input_alphabet)
+        
+        super().__init__(ls[0][1].input_alphabet)
+        #self = CombinedTuringMachine(ls[0][1].input_alphabet)
         for l in ls:
             self.add(l[0], l[1])
         
