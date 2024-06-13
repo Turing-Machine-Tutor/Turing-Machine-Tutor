@@ -10,6 +10,9 @@ from turing_machine_tutor.CombinedTuringMachine import CombinedTuringMachine
 from turing_machine_tutor.TuringMachine import TuringMachine
 from turing_machine_tutor.machine_run_state import Machine_Run_State
 from turing_machine_tutor.IFTuringMachine import IFTuringMachine
+from turing_machine_tutor.WhileTuringMachine import WhileTuringMachine
+from turing_machine_tutor.ConcatenateTM import ConcatenateTM
+
 
 class TuringMachineVisualizer:
     def __init__(self, turing_machine):
@@ -22,7 +25,7 @@ class TuringMachineVisualizer:
     def run_and_visualize(self, input_string, max_steps=10,head_position=0):
         if(isinstance(self.tm,IFTuringMachine)):
             return self.run_and_visualize_if_turing_machine(input_string)
-        elif(isinstance(self.tm,CombinedTuringMachine)):
+        elif(isinstance(self.tm,CombinedTuringMachine) or isinstance(self.tm,WhileTuringMachine) or isinstance(self.tm,ConcatenateTM)):
             return self.run_and_visualize_combined_turing_machine(input_string)
         elif(isinstance(self.tm,TuringMachine)):
             #clear_output(wait=True)  # clear first output of getting user input

@@ -13,7 +13,8 @@ from turing_machine_tutor.Challenge import Challenge
 from IPython.display import display, clear_output
 import ast
 import inspect
-
+from turing_machine_tutor.WhileTuringMachine import WhileTuringMachine
+from turing_machine_tutor.ConcatenateTM import ConcatenateTM
 
 #imports for submission
 # import gspread
@@ -39,8 +40,8 @@ class TuringMachineController:
     def add_turing_machine(self, name, turing_machine):
         if(turing_machine == None):
             raise Exception("TM cannot be None")
-        if not(isinstance(turing_machine, TuringMachine) or isinstance(turing_machine, IFTuringMachine) or isinstance(turing_machine, CombinedTuringMachine) ):
-            raise Exception("TM cannot be Not (TuringMachine / IFTuringMachine / CombinedTuringMachine) Object")
+        if not(isinstance(turing_machine, TuringMachine) or isinstance(turing_machine, IFTuringMachine) or isinstance(turing_machine, CombinedTuringMachine) or isinstance(turing_machine, WhileTuringMachine) or isinstance(turing_machine, ConcatenateTM)):
+            raise Exception("TM cannot be Not (TuringMachine / IFTuringMachine / CombinedTuringMachine / WhileTuringMachine / ConcatenateTM) Object")
         if(name == None or name == ""):
             raise Exception("Name cannot be None")
         if(not isinstance(name, str)):
@@ -53,8 +54,8 @@ class TuringMachineController:
     def update_turing_machine(self, name, turing_machine):
         if(turing_machine == None):
             raise Exception("TM cannot be None")
-        if not(isinstance(turing_machine, TuringMachine) or isinstance(turing_machine, IFTuringMachine) or isinstance(turing_machine, CombinedTuringMachine) ):
-            raise Exception("TM cannot be Not (TuringMachine / IFTuringMachine / CombinedTuringMachine) Object")
+        if not(isinstance(turing_machine, TuringMachine) or isinstance(turing_machine, IFTuringMachine) or isinstance(turing_machine, CombinedTuringMachine) or isinstance(turing_machine, WhileTuringMachine) or isinstance(turing_machine, ConcatenateTM)):
+            raise Exception("TM cannot be Not (TuringMachine / IFTuringMachine / CombinedTuringMachine / WhileTuringMachine / ConcatenateTM) Object")
         if(name == None or name == ""):
             raise Exception("Name cannot be None")
         if(not isinstance(name, str)):
@@ -95,7 +96,7 @@ class TuringMachineController:
                 print(e)
             return output
         except Exception as e:
-            print(e)
+            print(str(e) + ", there is no TM with this name")
 
 
     def visualize(self,turing_name,input):
