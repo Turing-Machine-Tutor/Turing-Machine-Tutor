@@ -5,13 +5,13 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 from turing_machine_tutor.TuringMachine import TuringMachine
 
 class IFTuringMachine:
-    def __init__(self):
+    def __init__(self, ifTM, ThenTM, elseTM):
         self.name = ""
-        self.ifTm = None
+        self.ifTm = self.setIfTM(ifTM)
         #self.ifName = ""
-        self.thenTm = None
+        self.thenTm = self.setThenTM(ThenTM)
         #self.thenName = ""
-        self.elseTm = None
+        self.elseTm = self.setElseTM(elseTM)
         #self.elseName = ""
         self.resultTM = None
 

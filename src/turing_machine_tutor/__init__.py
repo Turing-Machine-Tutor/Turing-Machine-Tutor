@@ -6,14 +6,17 @@ from . import machine_run_state
 from . import TuringMachine
 from . import TuringMachineController
 from . import TuringMachineVisualizer
-
+from . import WhileTuringMachine
+from . import ConcatenateTM
 __all__ = [
     'Challenge',
     'CombinedTuringMachine',
-    'next.py',
+    'next',
     'IFTuringMachine',
     'machine_run_state',
     'TuringMachine',
     'TuringMachineController',
-    'TuringMachineVisualizer'
+    'TuringMachineVisualizer',
+    'WhileTuringMachine',
+    'ConcatenateTM'
 ]

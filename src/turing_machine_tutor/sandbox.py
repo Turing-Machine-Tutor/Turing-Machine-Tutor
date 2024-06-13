@@ -8,7 +8,8 @@ from turing_machine_tutor.TuringMachine import TuringMachine
 from turing_machine_tutor.TuringMachineController import TuringMachineController
 from turing_machine_tutor.next import next
 from turing_machine_tutor.IFTuringMachine import IFTuringMachine
-
+from turing_machine_tutor.WhileTuringMachine import WhileTuringMachine
+from turing_machine_tutor.ConcatenateTM import ConcatenateTM
 
 
 
@@ -676,24 +677,24 @@ from turing_machine_tutor.IFTuringMachine import IFTuringMachine
 
 controller = TuringMachineController()
 
-ifTm = TuringMachine(  # condition if input legth is less than 4 accept else reject
-        states={'q0', 'q1', 'q2', 'q3', 'q4', 'q5', 'q6'},
-        input_alphabet={'0', '1'},
-        tape_symbols={'0', '1', 'B'},
-        transitions={
-            ('q0', '0'): next('q1', '0', 'R'),
-            ('q1', '1'): next('q3', '1', 'R'),
-            ('q3', 'B'): next('q3', 'B', 'L'),
-            ('q3', '1'): next('q3', '1', 'L'),
-            ('q3', '0'): next('q3', '0', 'L'),
-        },
-        initial_state='q0',
-        accept_states={'q5'},
-        reject_states={'q6'}
-    )
+# ifTm = TuringMachine(  # condition if input legth is less than 4 accept else reject
+#         states={'q0', 'q1', 'q2', 'q3', 'q4', 'q5', 'q6'},
+#         input_alphabet={'0', '1'},
+#         tape_symbols={'0', '1', 'B'},
+#         transitions={
+#             ('q0', '0'): next('q1', '0', 'R'),
+#             ('q1', '1'): next('q3', '1', 'R'),
+#             ('q3', 'B'): next('q3', 'B', 'L'),
+#             ('q3', '1'): next('q3', '1', 'L'),
+#             ('q3', '0'): next('q3', '0', 'L'),
+#         },
+#         initial_state='q0',
+#         accept_states={'q5'},
+#         reject_states={'q6'}
+#     )
 
-controller.add_turing_machine("shit",ifTm)
-controller.visualize("shit","01")
+# controller.add_turing_machine("shit",ifTm)
+# controller.visualize("shit","01")
 
 # def is_0n1n(s):
 #     if(len(s) < 2):
@@ -721,6 +722,121 @@ controller.visualize("shit","01")
 
 
 ##########################################################################
+
+
+# # language 0^n_1^n_2_0^n_1^n (2_0^n_1^n_2_0^n_1^n)*
+# step1 = TuringMachine(
+#             states={'q0', 'q1', 'q2', 'q3', 'q4', 'q5'},
+#             input_alphabet={'0', '1', '2', 'X', 'Y', 'B','Z'},
+#             tape_symbols={'0', '1', '2', 'X', 'Y', 'B','Z'},
+#             transitions={
+#                 ('q0', '0'): next('q1', 'X', 'R'),  # Step 1 change 0 to X
+#                 ('q0', 'Y'): next('q3', 'Y', 'R'),
+#                 ('q1', '0'): next('q1', '0', 'R'),
+#                 ('q1', '1'): next('q2', 'Y', 'L'),
+#                 ('q1', 'Y'): next('q1', 'Y', 'R'),
+#                 ('q2', '0'): next('q2', '0', 'L'),
+#                 ('q2', 'X'): next('q0', 'X', 'R'),
+#                 ('q2', 'Y'): next('q2', 'Y', 'L'),
+#                 ('q3', 'Y'): next('q3', 'Y', 'R'),
+#                 ('q3', 'B'): next('q4', 'B', 'S'),
+
+#                 ('q3', '2'): next('q4', '2', 'S')
+#             },
+#             initial_state='q0',
+#             accept_states={'q4'},
+#             reject_states={'q5'}
+#         )
+# cond = TuringMachine( #current head pos equals 0
+#             states={'q0', 'q1', 'q2', 'q3'},
+#             input_alphabet={'0', '1','2' , 'X', 'Y', 'B','Z'},
+#             tape_symbols={'0', '1','2', 'X', 'Y', 'B','Z'},
+#             transitions={
+#                 ('q0', 'X'): next('q0', 'X', 'R'),
+#                 ('q0', 'Y'): next('q0', 'Y', 'R'),
+#                 ('q0', '2'): next('q2', 'Z', 'R'),
+#                 ('q0', 'Z'): next('q0', 'Z', 'R')
+#             },
+#             initial_state='q0',
+#             accept_states={'q2'},
+#             reject_states={'q3'}
+#         )
+# combined_tm = CombinedTuringMachine({'0', '1', '2'})
+# combined_tm.add('find_a_n_b_n', step1)
+# #combined_tm.add('Move Left to Leftmost 0', step4)
+
+# #you want to repeat steps number 01 until no more 2 remain in the tape
+# combined_tm.setTuringMachineWhileCondition("2 still in tape", cond)
+# ####################important step!!!! dont forget!!!##########################
+# controller.add_turing_machine('WhileCombined',combined_tm)
+
+
+# #controller.run_turing_machine('WhileCombined', "001120011")
+
+# controller.visualize('WhileCombined',"01201")
+# def is_0n1n(s):
+#     if(len(s) < 2):
+#         return False
+#     elif(len(s) == 2 and s != "01"):
+#         return False
+#     elif(len(s) == 2 and s == "01"):
+#         return True
+#     st = s.split('01')
+#     if(len(st) != 2):
+#         return False
+#     if(len(st[0]) != len(st[1])):
+#         return False
+#     for i in st[0]:
+#         if i != '0':
+#             return False
+#     for i in st[1]:
+#         if i != '1':
+#             return False
+#     return True
+
+# controller.add_challenge("0n1n", {'0','1'},"turing machine that accepts 0n1n",is_0n1n,{"02","01"})
+
+# _0_pow_n_1_pow_n_TM = TuringMachine(
+#             states={'q0', 'q1', 'q2', 'q3', 'q4', 'q5', 'q6', 'q7', 'q8', 'q9'},
+#             input_alphabet={'a', 'b'},
+#             tape_symbols={'a', 'b', 'X', 'Y', 'B'},
+#             transitions={
+#                 ('q0', 'a'): next('q1', 'B', 'R'),  
+#                 ('q0', 'b'): next('q2', 'B', 'R'),
+#                 ('q0', 'B'): next('q8', 'B', 'S'),
+#                 ('q1', 'a'): next('q3', 'a', 'R'),
+#                 ('q1', 'b'): next('q3', 'b', 'R'),
+#                 ('q1', 'B'): next('q8', 'B', 'S'),
+#                 ('q2', 'a'): next('q4', 'a', 'R'),
+#                 ('q2', 'b'): next('q4', 'b', 'R'),
+#                 ('q2', 'B'): next('q8', 'B', 'S'),
+#                 ('q3', 'a'): next('q3', 'a', 'R'),
+#                 ('q3', 'b'): next('q3', 'b', 'R'),
+#                 ('q3', 'B'): next('q5', 'B', 'L'),
+#                 ('q4', 'a'): next('q4', 'a', 'R'),
+#                 ('q4', 'b'): next('q4', 'b', 'R'),
+#                 ('q4', 'B'): next('q6', 'B', 'L'),
+#                 ('q5', 'a'): next('q7', 'B', 'L'),
+#                 ('q6', 'b'): next('q7', 'B', 'L'),
+#                 ('q7', 'a'): next('q7', 'a', 'L'),
+#                 ('q7', 'b'): next('q7', 'b', 'L'),
+#                 ('q7', 'B'): next('q0', 'B', 'R')
+
+#             },
+#             initial_state='q0',
+#             accept_states={'q8'},
+#             reject_states={'q9'}
+#         )
+
+# ## after you build it you need to add it to the controller and give it the same name  that was given by the TA:
+# controller.add_turing_machine('0n1n', _0_pow_n_1_pow_n_TM)
+
+# controller.visualize('0n1n','')
+# #controller.submit()
+
+
+
+
 
 
 # language 0^n_1^n_2_0^n_1^n (2_0^n_1^n_2_0^n_1^n)*
@@ -760,75 +876,14 @@ cond = TuringMachine( #current head pos equals 0
             accept_states={'q2'},
             reject_states={'q3'}
         )
-combined_tm = CombinedTuringMachine({'0', '1', '2'})
-combined_tm.add('find_a_n_b_n', step1)
+dowhile = WhileTuringMachine("My Cond", cond, "My Do While", step1)
+# combined_tm.add('find_a_n_b_n', step1)
 #combined_tm.add('Move Left to Leftmost 0', step4)
 
 #you want to repeat steps number 01 until no more 2 remain in the tape
-combined_tm.setTuringMachineWhileCondition("2 still in tape", cond)
+# combined_tm.setTuringMachineWhileCondition("2 still in tape", cond)
 ####################important step!!!! dont forget!!!##########################
-controller.add_turing_machine('WhileCombined',combined_tm)
+controller.add_turing_machine('doWhile',dowhile)
 
 
-#controller.run_turing_machine('WhileCombined', "001120011")
-
-controller.visualize('WhileCombined',"01201")
-def is_0n1n(s):
-    if(len(s) < 2):
-        return False
-    elif(len(s) == 2 and s != "01"):
-        return False
-    elif(len(s) == 2 and s == "01"):
-        return True
-    st = s.split('01')
-    if(len(st) != 2):
-        return False
-    if(len(st[0]) != len(st[1])):
-        return False
-    for i in st[0]:
-        if i != '0':
-            return False
-    for i in st[1]:
-        if i != '1':
-            return False
-    return True
-
-controller.add_challenge("0n1n", {'0','1'},"turing machine that accepts 0n1n",is_0n1n,{"02","01"})
-
-_0_pow_n_1_pow_n_TM = TuringMachine(
-            states={'q0', 'q1', 'q2', 'q3', 'q4', 'q5', 'q6', 'q7', 'q8', 'q9'},
-            input_alphabet={'a', 'b'},
-            tape_symbols={'a', 'b', 'X', 'Y', 'B'},
-            transitions={
-                ('q0', 'a'): next('q1', 'B', 'R'),  
-                ('q0', 'b'): next('q2', 'B', 'R'),
-                ('q0', 'B'): next('q8', 'B', 'S'),
-                ('q1', 'a'): next('q3', 'a', 'R'),
-                ('q1', 'b'): next('q3', 'b', 'R'),
-                ('q1', 'B'): next('q8', 'B', 'S'),
-                ('q2', 'a'): next('q4', 'a', 'R'),
-                ('q2', 'b'): next('q4', 'b', 'R'),
-                ('q2', 'B'): next('q8', 'B', 'S'),
-                ('q3', 'a'): next('q3', 'a', 'R'),
-                ('q3', 'b'): next('q3', 'b', 'R'),
-                ('q3', 'B'): next('q5', 'B', 'L'),
-                ('q4', 'a'): next('q4', 'a', 'R'),
-                ('q4', 'b'): next('q4', 'b', 'R'),
-                ('q4', 'B'): next('q6', 'B', 'L'),
-                ('q5', 'a'): next('q7', 'B', 'L'),
-                ('q6', 'b'): next('q7', 'B', 'L'),
-                ('q7', 'a'): next('q7', 'a', 'L'),
-                ('q7', 'b'): next('q7', 'b', 'L'),
-                ('q7', 'B'): next('q0', 'B', 'R')
-
-            },
-            initial_state='q0',
-            accept_states={'q8'},
-            reject_states={'q9'}
-        )
-
-## after you build it you need to add it to the controller and give it the same name  that was given by the TA:
-controller.add_turing_machine('0n1n', _0_pow_n_1_pow_n_TM)
-
-controller.visualize('0n1n','')
-#controller.submit()
+controller.run_turing_machine('doWhile', "001120011")
