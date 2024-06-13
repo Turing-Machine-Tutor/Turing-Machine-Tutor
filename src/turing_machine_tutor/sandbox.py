@@ -839,51 +839,55 @@ controller = TuringMachineController()
 
 
 
-# language 0^n_1^n_2_0^n_1^n (2_0^n_1^n_2_0^n_1^n)*
-step1 = TuringMachine(
-            states={'q0', 'q1', 'q2', 'q3', 'q4', 'q5'},
-            input_alphabet={'0', '1', '2', 'X', 'Y', 'B','Z'},
-            tape_symbols={'0', '1', '2', 'X', 'Y', 'B','Z'},
-            transitions={
-                ('q0', '0'): next('q1', 'X', 'R'),  # Step 1 change 0 to X
-                ('q0', 'Y'): next('q3', 'Y', 'R'),
-                ('q1', '0'): next('q1', '0', 'R'),
-                ('q1', '1'): next('q2', 'Y', 'L'),
-                ('q1', 'Y'): next('q1', 'Y', 'R'),
-                ('q2', '0'): next('q2', '0', 'L'),
-                ('q2', 'X'): next('q0', 'X', 'R'),
-                ('q2', 'Y'): next('q2', 'Y', 'L'),
-                ('q3', 'Y'): next('q3', 'Y', 'R'),
-                ('q3', 'B'): next('q4', 'B', 'S'),
+# # language 0^n_1^n_2_0^n_1^n (2_0^n_1^n_2_0^n_1^n)*
+# step1 = TuringMachine(
+#             states={'q0', 'q1', 'q2', 'q3', 'q4', 'q5'},
+#             input_alphabet={'0', '1', '2', 'X', 'Y', 'B','Z'},
+#             tape_symbols={'0', '1', '2', 'X', 'Y', 'B','Z'},
+#             transitions={
+#                 ('q0', '0'): next('q1', 'X', 'R'),  # Step 1 change 0 to X
+#                 ('q0', 'Y'): next('q3', 'Y', 'R'),
+#                 ('q1', '0'): next('q1', '0', 'R'),
+#                 ('q1', '1'): next('q2', 'Y', 'L'),
+#                 ('q1', 'Y'): next('q1', 'Y', 'R'),
+#                 ('q2', '0'): next('q2', '0', 'L'),
+#                 ('q2', 'X'): next('q0', 'X', 'R'),
+#                 ('q2', 'Y'): next('q2', 'Y', 'L'),
+#                 ('q3', 'Y'): next('q3', 'Y', 'R'),
+#                 ('q3', 'B'): next('q4', 'B', 'S'),
 
-                ('q3', '2'): next('q4', '2', 'S')
-            },
-            initial_state='q0',
-            accept_states={'q4'},
-            reject_states={'q5'}
-        )
-cond = TuringMachine( #current head pos equals 0
-            states={'q0', 'q1', 'q2', 'q3'},
-            input_alphabet={'0', '1','2' , 'X', 'Y', 'B','Z'},
-            tape_symbols={'0', '1','2', 'X', 'Y', 'B','Z'},
-            transitions={
-                ('q0', 'X'): next('q0', 'X', 'R'),
-                ('q0', 'Y'): next('q0', 'Y', 'R'),
-                ('q0', '2'): next('q2', 'Z', 'R'),
-                ('q0', 'Z'): next('q0', 'Z', 'R')
-            },
-            initial_state='q0',
-            accept_states={'q2'},
-            reject_states={'q3'}
-        )
-dowhile = WhileTuringMachine("My Cond", cond, "My Do While", step1)
-# combined_tm.add('find_a_n_b_n', step1)
-#combined_tm.add('Move Left to Leftmost 0', step4)
+#                 ('q3', '2'): next('q4', '2', 'S')
+#             },
+#             initial_state='q0',
+#             accept_states={'q4'},
+#             reject_states={'q5'}
+#         )
+# cond = TuringMachine( #current head pos equals 0
+#             states={'q0', 'q1', 'q2', 'q3'},
+#             input_alphabet={'0', '1','2' , 'X', 'Y', 'B','Z'},
+#             tape_symbols={'0', '1','2', 'X', 'Y', 'B','Z'},
+#             transitions={
+#                 ('q0', 'X'): next('q0', 'X', 'R'),
+#                 ('q0', 'Y'): next('q0', 'Y', 'R'),
+#                 ('q0', '2'): next('q2', 'Z', 'R'),
+#                 ('q0', 'Z'): next('q0', 'Z', 'R')
+#             },
+#             initial_state='q0',
+#             accept_states={'q2'},
+#             reject_states={'q3'}
+#         )
+# dowhile = WhileTuringMachine("My Cond", cond, "My Do While", step1)
+# # combined_tm.add('find_a_n_b_n', step1)
+# #combined_tm.add('Move Left to Leftmost 0', step4)
 
-#you want to repeat steps number 01 until no more 2 remain in the tape
-# combined_tm.setTuringMachineWhileCondition("2 still in tape", cond)
-####################important step!!!! dont forget!!!##########################
-controller.add_turing_machine('doWhile',dowhile)
+# #you want to repeat steps number 01 until no more 2 remain in the tape
+# # combined_tm.setTuringMachineWhileCondition("2 still in tape", cond)
+# ####################important step!!!! dont forget!!!##########################
+# controller.add_turing_machine('doWhile',dowhile)
 
 
-controller.run_turing_machine('doWhile', "001120011")
+# controller.run_turing_machine('doWhile', "001120011")
+
+
+
+# multi tape tm example
