@@ -10,6 +10,7 @@ from turing_machine_tutor.next import next
 from turing_machine_tutor.IFTuringMachine import IFTuringMachine
 from turing_machine_tutor.WhileTuringMachine import WhileTuringMachine
 from turing_machine_tutor.ConcatenateTM import ConcatenateTM
+from turing_machine_tutor.MultiTapeTuringMachine import MultiTapeTuringMachine
 
 
 
@@ -891,3 +892,37 @@ controller = TuringMachineController()
 
 
 # multi tape tm example
+
+# Example usage: Copy a binary string from tape 1 to tape 2
+
+states = {'q0', 'q1', 'q2', 'qa', 'qr'}
+input_alphabet = {'0', '1'}
+tape_alphabet = {'0', '1', 'B'}
+transition_function = {
+    # (current_state, tape1_symbol, tape2_symbol): (new_state, tape1_new_symbol, tape2_new_symbol, direction1, direction2)
+    ('q0', '0', 'B'): ('q1', '0', '0', 'R', 'R'),
+    ('q0', '1', 'B'): ('q1', '1', '1', 'R', 'R'),
+    ('q0', 'B', 'B'): ('qa', 'B', 'B', 'S', 'S'),
+
+    ('q1', '0', 'B'): ('q1', '0', '0', 'R', 'R'),
+    ('q1', '1', 'B'): ('q1', '1', '1', 'R', 'R'),
+    ('q1', 'B', 'B'): ('qa', 'B', 'B', 'S', 'S'),
+}
+start_state = 'q0'
+accept_state = 'qa'
+reject_state = 'qr'
+
+tm = MultiTapeTuringMachine(
+    states=states,
+    input_alphabet=input_alphabet,
+    tape_alphabet=tape_alphabet,
+    transition_function=transition_function,
+    start_state=start_state,
+    accept_state=accept_state,
+    reject_state=reject_state,
+    num_tapes=2
+)
+
+inputs = ['1101', '']
+result = tm.run(inputs)
+#tm.visualize(['1101', ''])
