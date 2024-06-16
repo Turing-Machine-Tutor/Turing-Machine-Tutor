@@ -86,9 +86,10 @@ class MultiTapeTuringMachine:
         print("Final Tapes:")
         for i in range(self.num_tapes):
             print(f"Tape {i+1}: {''.join(self.tapes[i])}")
+        print("state: "+str(self.current_state))
         return result
 
-    def visualize(self, inputs):
+    def visualize(self, inputs,delay=1):
         self.initialize_tapes(inputs)
         def display():
             for i in range(self.num_tapes):
@@ -102,9 +103,9 @@ class MultiTapeTuringMachine:
         while self.current_state != self.accept_state and self.current_state != self.reject_state:
             clear_output(wait=True)
             display()
-            time.sleep(0.5)
+            time.sleep(delay)
             self.step()
-            time.sleep(0.5)
+            time.sleep(delay)
         
         clear_output(wait=True)
         display()

@@ -6,19 +6,38 @@ from turing_machine_tutor.TuringMachine import TuringMachine
 from turing_machine_tutor.CombinedTuringMachine import CombinedTuringMachine
 
 class ConcatenateTM(CombinedTuringMachine):
-    def __init__(self, ls : list):
-        if not isinstance(ls,list):
-            raise Exception("constructor parameter should be list!")
-        if len(ls) == 0:
-            raise Exception("constructor parameter should be list of minimum len of 1!")
-        for l in ls:
-            if not isinstance(l, tuple(str, TuringMachine)):
-                raise Exception("every parameter in the list should be tuple(string TM name, TuringMachine object)")
+    def __init__(self, tm1name: str, TMObj1:TuringMachine, *additionalTMs):
+        # if not isinstance(tm1name,str):
+        #     raise Exception("tm name cannot be not str")
+        # if len(ls) == 0:
+        #     raise Exception("constructor parameter should be list of minimum len of 1!")
+        index = 0
+        for l in additionalTMs:
+            if index % 2 == 0:
+                if not isinstance(l, str):
+                    raise Exception("parameter should be str of tm name!")
+            else:
+                if not isinstance(l, TuringMachine):
+                    raise Exception("parameter should be TuringMachine Object!")
+            index += 1
         
-        super().__init__(ls[0][1].input_alphabet)
+        if index%2 != 0:
+            raise Exception("parameters number of TM name and TuringMachine should be equal!")
+        super().__init__(TMObj1.input_alphabet)
         #self = CombinedTuringMachine(ls[0][1].input_alphabet)
-        for l in ls:
-            self.add(l[0], l[1])
+
+        index = 0
+        names = [tm1name]
+        objs = [TMObj1]
+        for l in additionalTMs:
+            if index % 2 == 0:
+                names.append(l)
+            else:
+                objs.append(l)
+            index += 1
+        
+        for l in range(len(names)):
+            self.add(names[l], objs[l])
         
     # def run(self, input_str,head_position=0):
     #     self.run(input_str,head_position)

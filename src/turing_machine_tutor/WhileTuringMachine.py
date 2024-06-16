@@ -21,3 +21,19 @@ class WhileTuringMachine(CombinedTuringMachine):
     
     # def __str__(self):
     #     return self.__str__()
+
+    def run(self, input_str,head_position=0): ##if it is not given then it is 0, this what means the '=0'
+        result_tm = input_str
+        first_step_is_over_flag = 0
+        machine_run_state=None
+
+        cond = False
+        while not cond:
+            machine_run_state2 = self.while_condition.run(result_tm)
+            cond = not self.while_condition.given_state_is_in_acceptance(machine_run_state2.state)
+            if(cond):
+                return machine_run_state
+            else:
+                machine_run_state = machine_run_state2 # if need to save changes after the CondTM else put this line as a comment
+            machine_run_state, first_step_is_over_flag , result_tm = self.runHelper(self.turing_machines, head_position, result_tm, first_step_is_over_flag, machine_run_state)
+                

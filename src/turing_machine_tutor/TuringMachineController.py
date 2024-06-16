@@ -92,6 +92,7 @@ class TuringMachineController:
             try:
                 print("tape:= " + ''.join(output.tape.copy()))
                 print("accepted:= " + str(self.__turing_machines[name].given_state_is_in_acceptance(output.state)))
+                print("state:= "+str(output.state))
             except Exception as e:
                 print(e)
             return output
@@ -99,12 +100,12 @@ class TuringMachineController:
             print(str(e) + ", there is no TM with this name")
 
 
-    def visualize(self,turing_name,input):
+    def visualize(self,turing_name,input, delay=1):
         #self.__turing_machines[turing_name].reset_turing_machine()
         visualizer =TuringMachineVisualizer(self.__turing_machines[turing_name])
         steps = visualizer.run_and_visualize(input,5000)
 
-        self.display_steps_of_visualizer(steps)
+        self.display_steps_of_visualizer(steps,delay)
 
 
     def visualize_step_by_step(self,turing_name,machine_input):
@@ -152,21 +153,21 @@ class TuringMachineController:
 
 
 
-    def display_steps_of_visualizer(self,steps):
+    def display_steps_of_visualizer(self,steps, delay=1):
         steps_counter=0
         for step in steps:
             # Display the tape as an array
             if(isinstance(step, str)):
                 print(step)
-                time.sleep(1)
+                time.sleep(delay)
                 clear_output(wait=True)
                 continue
-            self.print_step(step,steps_counter)
+            self.print_step(step,steps_counter,delay)
             clear_output(wait=True)
             steps_counter=steps_counter+1
     
 
-    def print_step(self, step, step_counter):
+    def print_step(self, step, step_counter,delay=1):
         tape_str = ' '.join(step.tape)
 
         head_position_str = ' ' * (2 * step.head_position) + '^'
@@ -185,7 +186,7 @@ class TuringMachineController:
         print(head_position_str)
         print(state_step_info)
         print('-' * (2 * len(step.tape) + 1))  # Separator line
-        time.sleep(1)  # Pause for a short duration to visualize each step
+        time.sleep(delay)  # Pause for a short duration to visualize each step
         clear_output(wait=True)
 
 
