@@ -8,6 +8,7 @@ from . import TuringMachineController
 from . import TuringMachineVisualizer
 from . import WhileTuringMachine
 from . import ConcatenateTM
+from . import MultiTapeTuringMachine
 __all__ = [
     'Challenge',
     'CombinedTuringMachine',
@@ -18,5 +19,6 @@ __all__ = [
     'TuringMachineController',
     'TuringMachineVisualizer',
     'WhileTuringMachine',
-    'ConcatenateTM'
+    'ConcatenateTM', 
+    'MultiTapeTuringMachine'
 ]

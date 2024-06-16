@@ -7,11 +7,11 @@ from turing_machine_tutor.TuringMachine import TuringMachine
 class IFTuringMachine:
     def __init__(self, ifTM, ThenTM, elseTM):
         self.name = ""
-        self.ifTm = self.setIfTM(ifTM)
+        self.ifTm = self.setIfTM(ifTM, "IfTM")
         #self.ifName = ""
-        self.thenTm = self.setThenTM(ThenTM)
+        self.thenTm = self.setThenTM(ThenTM, "thenTM")
         #self.thenName = ""
-        self.elseTm = self.setElseTM(elseTM)
+        self.elseTm = self.setElseTM(elseTM, "ElseTM")
         #self.elseName = ""
         self.resultTM = None
 
