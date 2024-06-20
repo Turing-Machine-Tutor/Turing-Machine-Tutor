@@ -36,4 +36,3 @@ class WhileTuringMachine(CombinedTuringMachine):
             else:
                 machine_run_state = machine_run_state2 # if need to save changes after the CondTM else put this line as a comment
             machine_run_state, first_step_is_over_flag , result_tm = self.runHelper(self.turing_machines, head_position, result_tm, first_step_is_over_flag, machine_run_state)
-                

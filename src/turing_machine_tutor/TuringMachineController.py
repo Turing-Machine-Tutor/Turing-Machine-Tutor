@@ -121,12 +121,14 @@ class TuringMachineController:
             if(not isinstance(s,str)):
                 if(len(s.tape) == 0):
                     steps.remove(s)
-
+        step_counter=self.display_step_at_index(steps,index,step_counter)
+        if(step_counter==-1):
+            return
         while user_input.lower() !="stop":
+            user_input = input("Press Enter to continue or type 'stop' to end: ")
             step_counter=self.display_step_at_index(steps,index,step_counter)
             if(step_counter==-1):
                 return
-            user_input = input("Press Enter to continue or type 'stop' to end: ")
             #clear_output(wait=True)
             index=index+1
             
