@@ -121,14 +121,13 @@ class TuringMachineController:
             if(not isinstance(s,str)):
                 if(len(s.tape) == 0):
                     steps.remove(s)
-        step_counter=self.display_step_at_index(steps,index,step_counter)
-        if(step_counter==-1):
-            return
+
         while user_input.lower() !="stop":
-            user_input = input("Press Enter to continue or type 'stop' to end: ")
+            clear_output(wait=True)
             step_counter=self.display_step_at_index(steps,index,step_counter)
             if(step_counter==-1):
                 return
+            user_input = input("Press Enter to continue or type 'stop' to end: ")
             #clear_output(wait=True)
             index=index+1
             
@@ -148,7 +147,7 @@ class TuringMachineController:
                 clear_output(wait=True)
                 return -1
         self.print_step(steps[index], step_counter)
-        clear_output(wait=True)
+        #clear_output(wait=True)
         return step_counter + 1
 
 
@@ -170,6 +169,7 @@ class TuringMachineController:
     
 
     def print_step(self, step, step_counter,delay=1):
+        clear_output(wait=True)
         tape_str = ' '.join(step.tape)
 
         head_position_str = ' ' * (2 * step.head_position) + '^'
@@ -189,7 +189,7 @@ class TuringMachineController:
         print(state_step_info)
         print('-' * (2 * len(step.tape) + 1))  # Separator line
         time.sleep(delay)  # Pause for a short duration to visualize each step
-        clear_output(wait=True)
+        #clear_output(wait=True)
 
 
     def validate_turing_machineTA(self, name, test_count=100,max_input_length=20):
