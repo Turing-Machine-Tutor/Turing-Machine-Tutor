@@ -4,6 +4,11 @@ class next:
         self.symbol=new_symbol ## symbol is string - one char
         self.action=action ## Action is string - one char L,R,S
 
+class multi_next:
+    def __init__(self, *nextItems):
+        self.items = []
+        for l in nextItems:
+            self.items.append(l)
 
 
 

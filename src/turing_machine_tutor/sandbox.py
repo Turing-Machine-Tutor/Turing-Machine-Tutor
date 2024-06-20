@@ -11,7 +11,7 @@ from turing_machine_tutor.IFTuringMachine import IFTuringMachine
 from turing_machine_tutor.WhileTuringMachine import WhileTuringMachine
 from turing_machine_tutor.ConcatenateTM import ConcatenateTM
 from turing_machine_tutor.MultiTapeTuringMachine import MultiTapeTuringMachine
-
+from turing_machine_tutor.next import multi_next
 
 
 # # def test_me(number):
@@ -896,37 +896,37 @@ controller = TuringMachineController()
 
 # # Example usage: Copy a binary string from tape 1 to tape 2
 
-# states = {'q0', 'q1', 'q2', 'qa', 'qr'}
-# input_alphabet = {'0', '1'}
-# tape_alphabet = {'0', '1', 'B'}
-# transition_function = {
-#     # (current_state, tape1_symbol, tape2_symbol): (new_state, tape1_new_symbol, tape2_new_symbol, direction1, direction2)
-#     ('q0', '0', 'B'): ('q1', '0', '0', 'R', 'R'),
-#     ('q0', '1', 'B'): ('q1', '1', '1', 'R', 'R'),
-#     ('q0', 'B', 'B'): ('qa', 'B', 'B', 'S', 'S'),
+states = {'q0', 'q1', 'q2', 'qa', 'qr'}
+input_alphabet = {'0', '1'}
+tape_alphabet = {'0', '1', 'B'}
+transition_function = {
+    # (current_state, tape1_symbol, tape2_symbol): (new_state, tape1_new_symbol, tape2_new_symbol, direction1, direction2)
+    ('q0', '0', 'B'): multi_next('q1', '0', '0', 'R', 'R'),
+    ('q0', '1', 'B'): multi_next('q1', '1', '1', 'R', 'R'),
+    ('q0', 'B', 'B'): multi_next('qa', 'B', 'B', 'S', 'S'),
 
-#     ('q1', '0', 'B'): ('q1', '0', '0', 'R', 'R'),
-#     ('q1', '1', 'B'): ('q1', '1', '1', 'R', 'R'),
-#     ('q1', 'B', 'B'): ('qa', 'B', 'B', 'S', 'S'),
-# }
-# start_state = 'q0'
-# accept_state = 'qa'
-# reject_state = 'qr'
+    ('q1', '0', 'B'): multi_next('q1', '0', '0', 'R', 'R'),
+    ('q1', '1', 'B'): multi_next('q1', '1', '1', 'R', 'R'),
+    ('q1', 'B', 'B'): multi_next('qa', 'B', 'B', 'S', 'S'),
+}
+start_state = 'q0'
+accept_state = 'qa'
+reject_state = 'qr'
 
-# tm = MultiTapeTuringMachine(
-#     states=states,
-#     input_alphabet=input_alphabet,
-#     tape_alphabet=tape_alphabet,
-#     transition_function=transition_function,
-#     start_state=start_state,
-#     accept_state=accept_state,
-#     reject_state=reject_state,
-#     num_tapes=2
-# )
+tm = MultiTapeTuringMachine(
+    states=states,
+    input_alphabet=input_alphabet,
+    tape_alphabet=tape_alphabet,
+    transition_function=transition_function,
+    start_state=start_state,
+    accept_state=accept_state,
+    reject_state=reject_state,
+    num_tapes=2
+)
 
-# inputs = ['1101', '']
-# result = tm.run(inputs)
-# tm.visualize(['1101', ''],10)
+inputs = ['1101', '']
+result = tm.run(inputs)
+tm.visualize(['1101', ''],1)
 
 
 #####################################################################################
@@ -981,31 +981,31 @@ controller = TuringMachineController()
 
 
 
-#####################################################################
+# #####################################################################
 
-_0_pow_n_1_pow_n_TM = TuringMachine(
-            states={'q0', 'q1', 'q2', 'q3', 'q4', 'q5'},
-            input_alphabet={'0', '1'},
-            tape_symbols={'0', '1', 'X', 'Y', 'B'},
-            transitions={
-                ('q0', '0'): next('q1', 'X', 'R'),  # Step 1 change 0 to X
-                ('q0', 'Y'): next('q3', 'Y', 'R'),
-                ('q1', '0'): next('q1', '0', 'R'),
-                ('q1', '1'): next('q2', 'Y', 'L'),
-                ('q1', 'Y'): next('q1', 'Y', 'R'),
-                ('q2', '0'): next('q2', '0', 'L'),
-                ('q2', 'X'): next('q0', 'X', 'R'),
-                ('q2', 'Y'): next('q2', 'Y', 'L'),
-                ('q3', 'Y'): next('q3', 'Y', 'R'),
-                ('q3', 'B'): next('q4', 'B', 'L')
-            },
-            initial_state='q0',
-            accept_states={'q4'},
-            reject_states={'q5'}
-        )
+# _0_pow_n_1_pow_n_TM = TuringMachine(
+#             states={'q0', 'q1', 'q2', 'q3', 'q4', 'q5'},
+#             input_alphabet={'0', '1'},
+#             tape_symbols={'0', '1', 'X', 'Y', 'B'},
+#             transitions={
+#                 ('q0', '0'): next('q1', 'X', 'R'),  # Step 1 change 0 to X
+#                 ('q0', 'Y'): next('q3', 'Y', 'R'),
+#                 ('q1', '0'): next('q1', '0', 'R'),
+#                 ('q1', '1'): next('q2', 'Y', 'L'),
+#                 ('q1', 'Y'): next('q1', 'Y', 'R'),
+#                 ('q2', '0'): next('q2', '0', 'L'),
+#                 ('q2', 'X'): next('q0', 'X', 'R'),
+#                 ('q2', 'Y'): next('q2', 'Y', 'L'),
+#                 ('q3', 'Y'): next('q3', 'Y', 'R'),
+#                 ('q3', 'B'): next('q4', 'B', 'L')
+#             },
+#             initial_state='q0',
+#             accept_states={'q4'},
+#             reject_states={'q5'}
+#         )
 
-## after you build it you need to add it to the controller and give it the same name  that was given by the TA:
-controller.add_turing_machine('0n1n', _0_pow_n_1_pow_n_TM)
+# ## after you build it you need to add it to the controller and give it the same name  that was given by the TA:
+# controller.add_turing_machine('0n1n', _0_pow_n_1_pow_n_TM)
 
 
-controller.visualize_step_by_step('0n1n',"01")
+# controller.visualize_step_by_step('0n1n',"01")

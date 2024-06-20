@@ -5,9 +5,11 @@ import os
 import sys
 # Add the parent directory of mypackage to the Python path
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+from turing_machine_tutor.next import multi_next
+from turing_machine_tutor.call_turing_machine import call_turing_machine
 
 class MultiTapeTuringMachine:
-    def __init__(self, states, input_alphabet, tape_alphabet, transition_function, start_state, accept_state, reject_state, num_tapes=2):
+    def __init__(self, states, input_alphabet, tape_alphabet, transition_function, start_state, accept_state, reject_state, num_tapes):
         self.states = states
         self.input_alphabet = input_alphabet
         self.tape_alphabet = tape_alphabet
@@ -35,9 +37,9 @@ class MultiTapeTuringMachine:
         for state_symbols, transition in self.transition_function.items():
             current_state = state_symbols[0]
             current_symbols = state_symbols[1:]
-            new_state = transition[0]
-            new_symbols = transition[1:self.num_tapes+1]
-            directions = transition[self.num_tapes+1:]
+            new_state = transition.items[0]
+            new_symbols = transition.items[1:self.num_tapes+1]
+            directions = transition.items[self.num_tapes+1:]
 
             assert current_state in self.states, f"State {current_state} is not in the set of states"
             assert new_state in self.states, f"State {new_state} is not in the set of states"
@@ -52,35 +54,53 @@ class MultiTapeTuringMachine:
             self.tapes[i] = list(inputs[i]) + ['B']
             self.head_positions[i] = 0
 
-    def step(self):
+    def step(self, tms:dict = None):
+
         symbols = tuple(self.tapes[i][self.head_positions[i]] for i in range(self.num_tapes))
         state_symbols = (self.current_state,) + symbols
 
         if state_symbols in self.transition_function:
             transition = self.transition_function[state_symbols]
-            new_state = transition[0]
-            new_symbols = transition[1:self.num_tapes+1]
-            directions = transition[self.num_tapes+1:]
+            if(isinstance(transition, multi_next)):
+                new_state = transition.items[0]
+                new_symbols = transition.items[1:self.num_tapes+1]
+                directions = transition.items[self.num_tapes+1:]
 
-            self.current_state = new_state
+                self.current_state = new_state
 
-            for i in range(self.num_tapes):
-                self.tapes[i][self.head_positions[i]] = new_symbols[i]
-                if directions[i] == 'R':
-                    self.head_positions[i] += 1
-                elif directions[i] == 'L':
-                    self.head_positions[i] -= 1
-                if self.head_positions[i] < 0:
-                    self.tapes[i].insert(0, 'B')
-                    self.head_positions[i] = 0
-                if self.head_positions[i] >= len(self.tapes[i]):
-                    self.tapes[i].append('B')
+                for i in range(self.num_tapes):
+                    self.tapes[i][self.head_positions[i]] = new_symbols[i]
+                    if directions[i] == 'R':
+                        self.head_positions[i] += 1
+                    elif directions[i] == 'L':
+                        self.head_positions[i] -= 1
+                    if self.head_positions[i] < 0:
+                        self.tapes[i].insert(0, 'B')
+                        self.head_positions[i] = 0
+                    if self.head_positions[i] >= len(self.tapes[i]):
+                        self.tapes[i].append('B')
+            elif(isinstance(transition, call_turing_machine)): # edit here to add the feature
+                #TM_name,list_of_tapes_indexes,call_state,return_state
+                TM_name = transition.TM_name
+                get_tm = tms[TM_name] if TM_name in tms.keys() else None
+                if(get_tm == None):
+                    raise Exception(str(TM_name) + " TM with this name doesn't exist in the controller")
+                tapes = []
+                for i in transition.list_of_tapes_indexes:
+                    tapes.append(self.tapes[i])
+                get_tm.run(tapes)
+                index = 0
+                for i in transition.list_of_tapes_indexes:
+                    self.tapes[i] = get_tm.tapes[index]
+                    index += 1
+                ret_state = transition.return_state
+                self.current_state = ret_state
         
 
-    def run(self, inputs):
+    def run(self, inputs, tms=None):
         self.initialize_tapes(inputs)
         while self.current_state != self.accept_state and self.current_state != self.reject_state:
-            self.step()
+            self.step(tms)
         result = self.current_state == self.accept_state
         print(f"Result: {'Accepted' if result else 'Rejected'}")
         print("Final Tapes:")
