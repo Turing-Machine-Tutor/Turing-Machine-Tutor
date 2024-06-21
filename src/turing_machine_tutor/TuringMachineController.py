@@ -15,6 +15,7 @@ from turing_machine_tutor.CombinedTuringMachine import CombinedTuringMachine
 from turing_machine_tutor.IFTuringMachine import IFTuringMachine
 from turing_machine_tutor.TuringMachineVisualizer import TuringMachineVisualizer
 from turing_machine_tutor.Challenge import Challenge
+from turing_machine_tutor.Next import Next
 from IPython.display import display, clear_output
 import ast
 import inspect
