@@ -434,8 +434,8 @@ class TuringMachineController:
             print("Validation passed for all Turing machines.")
             return True
     
-    def convert_string_to_set(str):
-        clean_string = str.strip('{}')
+    def convert_string_to_set(self,given_string):
+        clean_string = given_string.strip('{}')
         clean_string = clean_string.replace('","', '", "')
         elements = clean_string.split(', ')
         clean_elements = [elem.strip('"') for elem in elements]
