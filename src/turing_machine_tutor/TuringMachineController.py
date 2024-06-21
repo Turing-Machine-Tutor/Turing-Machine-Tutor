@@ -508,9 +508,12 @@ class TuringMachineController:
     def validate_submissions(self):
          id_to_dicts,challenges=self.collect_machines_and_challenges()
          for id in id_to_dicts:
+             print("results for id:  ", id, " is :")
              for machine in id_to_dicts[id]:
                  ##appened to the new sheet these things: id + result of self.validate_results_and_append_to_sheet(id_to_dicts[id][machine], challenges[machine])
-                 print(self.validate_results_and_append_to_sheet(id_to_dicts[id][machine], challenges[machine]))
+                 result=self.validate_results_and_append_to_sheet(id_to_dicts[id][machine], challenges[machine])
+                 print("machine_name:  ", machine)
+                 print(result)
 
     def validate_results_and_append_to_sheet(self,machine, challenge):
         function_object = challenge.function
