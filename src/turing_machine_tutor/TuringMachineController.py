@@ -484,7 +484,6 @@ class TuringMachineController:
             function_name = self.extract_func_name(function_string)
             function_object = exec_globals[function_name]
             new_challenge = Challenge(name, input_alphabet, description, function_object, edge_cases,function_string)
-            print(type(new_challenge))
             new_challenge.MustPass(must_pass)
             new_challenge.MustFail(must_fail)
             challenges[name]=new_challenge
@@ -495,9 +494,13 @@ class TuringMachineController:
         rows = worksheet.get_all_values()
         current_name_index = 2
         id_to_dicts = dict()
+        index=0
         for row in rows[1:]:
+            print("machine number in  row : ",index)
+            index=index+1
             machines_dict = dict()
             while current_name_index < len(row):
+                print("wokring...")
                 if row[current_name_index] != '':
                     machine_string = row[current_name_index + 1]
                     machine_obj = eval(machine_string)

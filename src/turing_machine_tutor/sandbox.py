@@ -774,6 +774,7 @@ function_object = globals()[function_name]
 
 print(is_wDw("ab$ab"))
 ok=Challenge("d",{"d"},"d",function_object,{'a'},function_string)
+
 print(69)
 
 # ifTm = TuringMachine(  # condition if input legth is less than 4 accept else reject
