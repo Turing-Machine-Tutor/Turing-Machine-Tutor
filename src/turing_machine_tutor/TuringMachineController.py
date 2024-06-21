@@ -491,21 +491,14 @@ class TuringMachineController:
         rows = worksheet.get_all_values()
         current_name_index = 2
         id_to_dicts = dict()
-        index=0
         for row in rows[1:]:
             if not (isinstance(row[0], str) and row[0].isdigit() and len(row[0]) == 9):
                 continue
-            print("machine number in  row : ",index)
-            index=index+1
             machines_dict = dict()
             while current_name_index < len(row):
-                print("wokring...")
                 if row[current_name_index] != '':
                     machine_string = row[current_name_index + 1]
-                    print("i am here")
-                    print(machine_string)
                     machine_obj = eval(machine_string)
-                    print("i am here")
                     machines_dict[row[current_name_index]] = machine_obj
                 current_name_index = current_name_index + 3
             current_name_index = 2
