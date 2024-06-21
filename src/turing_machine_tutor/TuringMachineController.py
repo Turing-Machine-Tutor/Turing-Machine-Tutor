@@ -6,7 +6,7 @@ import sys
 
 import gspread
 import pandas as pd
-from google.colab import auth
+# from google.colab import auth
 from google.auth import default
 # Add the parent directory of mypackage to the Python path
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
@@ -506,7 +506,10 @@ class TuringMachineController:
                 print("wokring...")
                 if row[current_name_index] != '':
                     machine_string = row[current_name_index + 1]
+                    print("i am here")
+                    print(machine_string)
                     machine_obj = eval(machine_string)
+                    print("i am here")
                     machines_dict[row[current_name_index]] = machine_obj
                 current_name_index = current_name_index + 3
             current_name_index = 2

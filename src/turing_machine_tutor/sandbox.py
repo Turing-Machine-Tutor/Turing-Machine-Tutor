@@ -767,6 +767,7 @@ tm_string = '''TuringMachine(
 )'''
 
 tm_object = eval(tm_string)
+ok=tm_object.run("ab$ab")
 exec(function_string)
 
 function_name = controller.extract_func_name(function_string)
