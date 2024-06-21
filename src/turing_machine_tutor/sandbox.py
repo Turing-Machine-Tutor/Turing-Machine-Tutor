@@ -705,7 +705,7 @@ dick='''def is_wDw(txt):
 tm_string = '''TuringMachine(
     states={'q3', 'q8', 'q10', 'q5', 'q7', 'q9', 'q0', 'q2', 'q11', 'q6', 'q1', 'q4'},
     input_alphabet={'a', '$', 'b'},
-    tape_alphabet={'$', 'b', 'B', 'a', 'E'},
+    tape_symbols={'$', 'b', 'B', 'a', 'E'},
     transitions={
         ('q0', 'a'): next('q3', 'E', 'R'),
         ('q0', 'b'): next('q4', 'E', 'R'),
@@ -768,8 +768,10 @@ tm_object = eval(tm_string)
 
 print("shit")
 exec(dick)
+funcname=controller.extract_func_name(dick)
+function_object = globals()[funcname]
 print(is_wDw("ab$ab"))
-ok=Challenge("d",{"d"},"d",is_wDw,{'a'},dick)
+ok=Challenge("d",{"d"},"d",function_object,{'a'},dick)
 print(69)
 
 # ifTm = TuringMachine(  # condition if input legth is less than 4 accept else reject
