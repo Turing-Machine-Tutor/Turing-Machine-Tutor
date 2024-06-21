@@ -2,7 +2,7 @@ import ast
 import inspect
 
 class Challenge:
-    def __init__(self, name, input_alphabet ,turing_machine_description, function_that_accepts_the_language_of_tm, edge_cases_list):
+    def __init__(self, name, input_alphabet ,turing_machine_description, function_that_accepts_the_language_of_tm, edge_cases_list,function_string=None):
         is_all_strings_of_len1 = lambda my_list: all(isinstance(item, str) and len(item) == 1 for item in my_list)
 
         if(name == None or name == ""):
@@ -22,7 +22,10 @@ class Challenge:
         try:
             if(not isinstance(function_that_accepts_the_language_of_tm(""),bool)):
                 raise Exception()
-            str_msg = self.validateFuncReturnOnlyBool(function_that_accepts_the_language_of_tm)
+            if function_string!=None:
+                str_msg=self.validateFuncReturnOnlyBool_string_input(function_string)
+            else:
+                str_msg = self.validateFuncReturnOnlyBool(function_that_accepts_the_language_of_tm)
             if(len(str_msg) > 0):
                 raise Exception("found error in func at line value: "+str_msg+" , func should return only True/False")
         except Exception as e:
@@ -79,6 +82,25 @@ class Challenge:
         # Get the source code of the function
         source_lines, _ = inspect.getsourcelines(func)
         source_code = ''.join(source_lines)
+
+        # Parse the source code into an AST (Abstract Syntax Tree)
+        tree = ast.parse(source_code)
+
+        # Extract return statements from the AST
+        for node in ast.walk(tree):
+            if isinstance(node, ast.Return):
+                # Get the value of the return statement if it exists
+                if node.value is not None:
+                    return_stmt = ast.unparse(node).strip()
+                    if return_stmt not in ["return True", "return False"]:
+                        return return_stmt
+                else:
+                    return "return"  # Empty return statement
+
+        return ""  # All return statements are valid
+
+    def validateFuncReturnOnlyBool_string_input(self, function_string):
+        source_code = ''.join(function_string)
 
         # Parse the source code into an AST (Abstract Syntax Tree)
         tree = ast.parse(source_code)

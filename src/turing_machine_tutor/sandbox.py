@@ -1,6 +1,9 @@
+import inspect
 import os
 import sys
 # Add the parent directory of mypackage to the Python path
+from turing_machine_tutor.Challenge import Challenge
+
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
 from turing_machine_tutor.CombinedTuringMachine import CombinedTuringMachine
@@ -11,6 +14,7 @@ from turing_machine_tutor.IFTuringMachine import IFTuringMachine
 from turing_machine_tutor.WhileTuringMachine import WhileTuringMachine
 from turing_machine_tutor.ConcatenateTM import ConcatenateTM
 from turing_machine_tutor.MultiTapeTuringMachine import MultiTapeTuringMachine
+
 
 
 
@@ -100,23 +104,24 @@ from turing_machine_tutor.MultiTapeTuringMachine import MultiTapeTuringMachine
 # # # print(anbn_turing_machine.given_state_is_in_acceptance(mrs.state))
 
 
-# def is_0n1n(input_str):
-#     stack = []
+def is_0n1n(input_str):
+    stack = []
 
-#     for symbol in input_str:
-#         if symbol == '0':
-#             stack.append('0')
-#         elif symbol == '1':
-#             if not stack:
-#                 return False  # There are more '1's than '0's
-#             stack.pop()
-#         else:
-#             return False  # Invalid symbol
+    for symbol in input_str:
+        if symbol == '0':
+            stack.append('0')
+        elif symbol == '1':
+            if not stack:
+                return False  # There are more '1's than '0's
+            stack.pop()
+        else:
+            return False  # Invalid symbol
 
-#     return True
+    return True
+
 # #
-
-# controller.add_challenge("0n1n","turing machine that accepts 0n1n",is_0n1n,{"0011","01"});
+controller = TuringMachineController()
+controller.add_challenge("0n1n",{'a'},"turing machine that accepts 0n1n",is_0n1n,{"0011","01"});
 # controller.add_challenge("random_shit","turing machine that accepts 0n1n",is_0n1n,{"0011","01"});
 # controller.add_challenge("random_shit_2","turing machine that accepts 0n1n",is_0n1n,{"0011","01"});
 # controller.get_challenges()
@@ -676,7 +681,30 @@ from turing_machine_tutor.MultiTapeTuringMachine import MultiTapeTuringMachine
 
 ##########################################################################
 
-controller = TuringMachineController()
+
+
+
+dick='''def is_wDw(txt):
+  l = len(txt)
+  if l%2 == 0:
+      return False
+  h = l//2
+  for i in range(l):
+      if i == h:
+          if txt[i] != '$':
+            return  False
+      elif txt[i] != 'a' and txt[i] != 'b':
+            return False
+  left=txt[:h]
+  right=txt[h+1:]
+  if left==right:
+    return True
+  else:
+    return False'''
+exec(dick)
+print(is_wDw("ab$ab"))
+ok=Challenge("d",{"d"},"d",is_wDw,{'a'},dick)
+print(69)
 
 # ifTm = TuringMachine(  # condition if input legth is less than 4 accept else reject
 #         states={'q0', 'q1', 'q2', 'q3', 'q4', 'q5', 'q6'},

@@ -3,6 +3,11 @@ import random
 import time
 import os
 import sys
+
+import gspread
+import pandas as pd
+from google.colab import auth
+from google.auth import default
 # Add the parent directory of mypackage to the Python path
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 from turing_machine_tutor.TuringMachine import TuringMachine
@@ -23,6 +28,10 @@ from turing_machine_tutor.ConcatenateTM import ConcatenateTM
 # from google.auth import default
 import requests
 import json
+
+
+
+
 
 class TuringMachineController:
     def __init__(self):
@@ -425,6 +434,68 @@ class TuringMachineController:
             print("Validation passed for all Turing machines.")
             return True
     
+    def convert_string_to_set(str):
+        clean_string = str.strip('{}')
+        clean_string = clean_string.replace('","', '", "')
+        elements = clean_string.split(', ')
+        clean_elements = [elem.strip('"') for elem in elements]
+        cleaner_elements = [elem.strip("'") for elem in clean_elements]
+        string_set = set(cleaner_elements)
+        return string_set
+
+    def extract_func_name(function_string):
+        def_index = function_string.find('def ')
+        function_name_start = def_index + len('def ')
+        function_name_end = function_string.find('(', function_name_start)
+        function_name = function_string[function_name_start:function_name_end].strip()
+
+        return function_name
+
+    def validate_submissions(self):
+        auth.authenticate_user()
+        creds, _ = default()
+        sheet_url = 'https://docs.google.com/spreadsheets/d/1FB0mj8TfmP93VShGwjy0OFyWgMzefmjBbg6LfgGmbDE/edit?gid=0#gid=0'
+        gc = gspread.authorize(creds)
+        sheet = gc.open_by_url(sheet_url)
+        worksheet = sheet.get_worksheet(0)  # Use index (0, 1, 2, ...) or title of your sheet
+
+        # Example: read data from sheet
+        rows = worksheet.get_all_values()
+
+        headers = rows[0]
+
+        # Initialize an empty list to store rows as dictionaries
+        rows_as_dicts = []
+
+        # Iterate over rows (excluding the header row)
+        for row_values in rows[1:]:
+            # Create a dictionary for the current row
+            row_dict = {}
+            for i, header in enumerate(headers):
+                row_dict[header] = row_values[i] if i < len(row_values) else ''
+            # Add the dictionary to the list
+            rows_as_dicts.append(row_dict)
+        challenges = dict()
+        # Now you can iterate over rows_as_dicts and access each row by header
+        for row in rows_as_dicts:
+            name = row["name"]
+            description = row["description"]
+            function_string = row["function"]
+            exec(function_string)
+            if row["edge_cases"] != "" or row["edge_cases"] != None:
+                edge_cases = self.convert_string_to_set(row["edge_cases"])
+            alphabet_string = row["input_alphabet"]
+            must_pass = self.convert_string_to_set(row["must_pass"])
+            must_fail = self.convert_string_to_set(row["must_fail"])
+            input_alphabet = self.convert_string_to_set(alphabet_string)
+            function_name = self.extract_func_name(function_string)
+            function_object = globals()[function_name]
+            print(function_object("abb$abb"))
+            new_challenge = Challenge(name, input_alphabet, description, function_object, edge_cases,function_string)
+            new_challenge.mustPass(must_pass)
+            new_challenge.mustFail(must_fail)
+            challenges[name]=new_challenge
+
 
     def add_challenge(self, turing_machine_name, input_alphabet, turing_machine_description, function_that_accepts_the_language_of_tm,
                       edge_cases_list):
