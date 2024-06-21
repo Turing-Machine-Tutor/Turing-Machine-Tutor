@@ -1,0 +1,5 @@
+matplotlib~=3.8.3
+ipython~=8.25.0
+requests~=2.32.3
+setuptools~=65.5.1
+jsonpickle~=3.2.2
