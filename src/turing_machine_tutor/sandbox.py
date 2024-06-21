@@ -701,6 +701,72 @@ dick='''def is_wDw(txt):
     return True
   else:
     return False'''
+# Given string representation of TuringMachine
+tm_string = '''TuringMachine(
+    states={'q3', 'q8', 'q10', 'q5', 'q7', 'q9', 'q0', 'q2', 'q11', 'q6', 'q1', 'q4'},
+    input_alphabet={'a', '$', 'b'},
+    tape_alphabet={'$', 'b', 'B', 'a', 'E'},
+    transitions={
+        ('q0', 'a'): next('q3', 'E', 'R'),
+        ('q0', 'b'): next('q4', 'E', 'R'),
+        ('q0', 'B'): next('q2', 'B', 'S'),
+        ('q0', '$'): next('q11', '$', 'R'),
+        ('q0', 'E'): next('q2', 'E', 'S'),
+        ('q3', 'a'): next('q3', 'a', 'R'),
+        ('q3', 'b'): next('q3', 'b', 'R'),
+        ('q3', 'B'): next('q2', 'B', 'S'),
+        ('q3', '$'): next('q5', '$', 'R'),
+        ('q3', 'E'): next('q2', 'E', 'R'),
+        ('q5', 'a'): next('q7', 'E', 'S'),
+        ('q5', 'b'): next('q2', 'b', 'S'),
+        ('q5', 'B'): next('q2', 'B', 'S'),
+        ('q5', '$'): next('q2', '$', 'R'),
+        ('q5', 'E'): next('q5', 'E', 'R'),
+        ('q7', 'a'): next('q2', 'b', 'S'),
+        ('q7', 'b'): next('q2', 'b', 'S'),
+        ('q7', 'B'): next('q2', 'B', 'S'),
+        ('q7', '$'): next('q9', '$', 'L'),
+        ('q7', 'E'): next('q7', 'E', 'L'),
+        ('q9', 'a'): next('q9', 'a', 'L'),
+        ('q9', 'b'): next('q9', 'b', 'L'),
+        ('q9', 'B'): next('q2', 'B', 'S'),
+        ('q9', '$'): next('q9', '$', 'L'),
+        ('q9', 'E'): next('q0', 'E', 'R'),
+        ('q11', 'a'): next('q2', 'b', 'S'),
+        ('q11', 'b'): next('q2', 'b', 'S'),
+        ('q11', 'B'): next('q1', 'B', 'S'),
+        ('q11', '$'): next('q2', '$', 'L'),
+        ('q11', 'E'): next('q11', 'E', 'R'),
+        ('q4', 'a'): next('q4', 'a', 'R'),
+        ('q4', 'b'): next('q4', 'b', 'R'),
+        ('q4', 'B'): next('q2', 'B', 'S'),
+        ('q4', '$'): next('q6', '$', 'R'),
+        ('q4', 'E'): next('q2', 'E', 'R'),
+        ('q6', 'a'): next('q2', 'a', 'S'),
+        ('q6', 'b'): next('q8', 'E', 'S'),
+        ('q6', 'B'): next('q2', 'B', 'S'),
+        ('q6', '$'): next('q2', '$', 'R'),
+        ('q6', 'E'): next('q6', 'E', 'R'),
+        ('q8', 'a'): next('q2', 'b', 'S'),
+        ('q8', 'b'): next('q2', 'b', 'S'),
+        ('q8', 'B'): next('q2', 'B', 'S'),
+        ('q8', '$'): next('q10', '$', 'L'),
+        ('q8', 'E'): next('q8', 'E', 'L'),
+        ('q10', 'a'): next('q10', 'a', 'L'),
+        ('q10', 'b'): next('q10', 'b', 'L'),
+        ('q10', 'B'): next('q2', 'B', 'S'),
+        ('q10', '$'): next('q10', '$', 'L'),
+        ('q10', 'E'): next('q0', 'E', 'R')
+    },
+    initial_state='q0',
+    accept_states={'q1'},
+    reject_states={'q2'}
+)'''
+
+tm_object = eval(tm_string)
+
+
+print("shit")
 exec(dick)
 print(is_wDw("ab$ab"))
 ok=Challenge("d",{"d"},"d",is_wDw,{'a'},dick)

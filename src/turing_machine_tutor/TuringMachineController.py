@@ -6,7 +6,7 @@ import sys
 
 import gspread
 import pandas as pd
-from google.colab import auth
+#from google.colab import auth
 from google.auth import default
 # Add the parent directory of mypackage to the Python path
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
@@ -454,9 +454,9 @@ class TuringMachineController:
     def validate_submissions(self):
         auth.authenticate_user()
         creds, _ = default()
-        sheet_url = 'https://docs.google.com/spreadsheets/d/1FB0mj8TfmP93VShGwjy0OFyWgMzefmjBbg6LfgGmbDE/edit?gid=0#gid=0'
+        challenges_url = 'https://docs.google.com/spreadsheets/d/1FB0mj8TfmP93VShGwjy0OFyWgMzefmjBbg6LfgGmbDE/edit?gid=0#gid=0'
         gc = gspread.authorize(creds)
-        sheet = gc.open_by_url(sheet_url)
+        sheet = gc.open_by_url(challenges_url)
         worksheet = sheet.get_worksheet(0)  # Use index (0, 1, 2, ...) or title of your sheet
 
         # Example: read data from sheet
@@ -495,6 +495,27 @@ class TuringMachineController:
             new_challenge.mustPass(must_pass)
             new_challenge.mustFail(must_fail)
             challenges[name]=new_challenge
+        machines_url = 'https://docs.google.com/spreadsheets/d/1eQYfMXWgzz8PyRBzIaUqlAvx1Vm7ASXujEaY9WDpG2s/edit?gid=0#gid=0'
+        gc = gspread.authorize(creds)
+        sheet = gc.open_by_url(challenges_url)
+        worksheet = sheet.get_worksheet(0)  # Use index (0, 1, 2, ...) or title of your sheet
+
+        # Example: read data from sheet
+        rows = worksheet.get_all_values()
+        current_name_index = 2
+        id_to_dicts = dict()
+        # Now you can iterate over rows_as_dicts and access each row by header
+        for row in rows[1:]:
+            machines_dict = dict()
+            while current_name_index < len(row):
+                if row[current_name_index] != '':
+                    machine_string = row[current_name_index + 1]
+                    machine_obj = eval(machine_string)
+                    machines_dict[row[current_name_index]] = machine_obj
+                current_name_index = current_name_index + 3
+            current_name_index = 2
+            id_to_dicts[row[0]] = machines_dict
+        
 
 
     def add_challenge(self, turing_machine_name, input_alphabet, turing_machine_description, function_that_accepts_the_language_of_tm,
