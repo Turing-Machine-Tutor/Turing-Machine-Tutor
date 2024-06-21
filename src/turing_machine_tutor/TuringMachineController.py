@@ -6,7 +6,7 @@ import sys
 
 import gspread
 import pandas as pd
-#from google.colab import auth
+from google.colab import auth
 from google.auth import default
 # Add the parent directory of mypackage to the Python path
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
@@ -452,7 +452,7 @@ class TuringMachineController:
         return function_name
 
     def collect_machines_and_challenges(self):
-        #auth.authenticate_user()
+        auth.authenticate_user()
         creds, _ = default()
         challenges_url = 'https://docs.google.com/spreadsheets/d/1FB0mj8TfmP93VShGwjy0OFyWgMzefmjBbg6LfgGmbDE/edit?gid=0#gid=0'
         gc = gspread.authorize(creds)
@@ -521,138 +521,118 @@ class TuringMachineController:
          id_to_dicts,challenges=self.collect_machines_and_challenges()
          for id in id_to_dicts:
              for machine in id_to_dicts[id]:
+                 ##appened to the new sheet these things: id + result of self.validate_results_and_append_to_sheet(id_to_dicts[id][machine], challenges[machine])
                  print(self.validate_results_and_append_to_sheet(id_to_dicts[id][machine], challenges[machine]))
 
     def validate_results_and_append_to_sheet(self,machine, challenge):
-         function_object = challenge.function
-         is_all_strings = lambda my_list: all(isinstance(item, str) and len(item) >= 1 for item in my_list)
-         extreme_cases = challenge.edge_cases
-         if (extreme_cases == None):
-             raise Exception("extreme_cases cannot be None")
-         if ((not isinstance(extreme_cases, (list, set))) or not is_all_strings(extreme_cases)):
-             raise Exception("extreme_cases cannot contain a non string object")
-         if (machine.get_input_alphabet() != challenge.get_input_alphabet()):
-             raise Exception(
-                 "TM " + str(machine.name) + " alphabet must be " + str(challenge.get_input_alphabet()))
-         # first test mustPass and mustFail#############################################################################################
-         if challenge.mustPass != None:
-             print("testing Must Pass cases:\n ")
-             for case in challenge.mustPass:  ##test must pass cases
-                 final_machine_state = None
-                 try:
-                     final_machine_state = machine.run(case)
-                 except Exception as e:
-                     print(e)
+        function_object = challenge.function
+        is_all_strings = lambda my_list: all(isinstance(item, str) and len(item) >= 1 for item in my_list)
+        extreme_cases = challenge.edge_cases
+        if (extreme_cases == None):
+            raise Exception("extreme_cases cannot be None")
+        if ((not isinstance(extreme_cases, (list, set))) or not is_all_strings(extreme_cases)):
+            raise Exception("extreme_cases cannot contain a non string object")
+        if (machine.get_input_alphabet() != challenge.get_input_alphabet()):
+            raise Exception("TM " + str(machine.name) + " alphabet must be " + str(challenge.get_input_alphabet()))
+        # first test mustPass and mustFail#############################################################################################
+        if challenge.mustPass != None:
+            for case in challenge.mustPass:  ##test must pass cases
+                final_machine_state = None
+                try:
+                    final_machine_state = machine.run(case)
+                except Exception as e:
+                    print(e)
 
-                 function_result = function_object(case)
-                 if (final_machine_state == None):
-                     if function_result == False:
-                         print(f"Validation passed for input: {case}")
-                     else:
-                         print(f"Validation failed for input: {case}")
-                         ##append to the sheet that validates the challenge and the machine
-                         return False
-                     continue
-                 is_in_acceptance_checker = machine.given_state_is_in_acceptance(final_machine_state.state)
-                 if function_result != is_in_acceptance_checker:
-                     print(f"Validation failed for input: {case}")
-                     ##append to the sheet that validates the challenge and the machine
-                     return False
-                 else:
-                     print(f"Validation passed for input: {case}")
+                function_result = function_object(case)
+                if (final_machine_state == None):
+                    if function_result == True:
+                        print(f"Validation failed for input: {case}")
+                        ##append to the sheet that validates the challenge and the machine
+                        return False
+                    continue
+                is_in_acceptance_checker = machine.given_state_is_in_acceptance(final_machine_state.state)
+                if function_result != is_in_acceptance_checker:
+                    print(f"Validation failed for input: {case}")
 
-         if challenge.mustFail != None:
-             print("testing Must Fail cases:\n ")
-             for case in challenge.mustFail:  ##test must Fail cases
-                 final_machine_state = None
-                 try:
-                     final_machine_state = machine.run(case)
-                 except Exception as e:
-                     print(e)
+                    return False
 
-                 function_result = function_object(case)
-                 if (final_machine_state == None):
-                     if function_result == False:
-                         print(f"Validation passed for input: {case}")
-                     else:
-                         print(f"Validation failed for input: {case}")
-                         ##append to the sheet that validates the challenge and the machine
-                         return False
-                     continue
-                 is_in_acceptance_checker = machine.given_state_is_in_acceptance(final_machine_state.state)
-                 if function_result != is_in_acceptance_checker:
-                     print(f"Validation failed for input: {case}")
-                     ##append to the sheet that validates the challenge and the machine
-                     return False
-                 else:
-                     print(f"Validation passed for input: {case}")
+        if challenge.mustFail != None:
+            for case in challenge.mustFail:  ##test must Fail cases
+                final_machine_state = None
+                try:
+                    final_machine_state = machine.run(case)
+                except Exception as e:
+                    print(e)
 
-         ###############################################################################################################################
-         # then run generated test
-         for _ in range(100):  ## generate random words and test them
-             for input_length in range(1, 20):
-                 alphabet = ''.join(challenge.get_input_alphabet())
-                 input_string = ''.join(random.choice(alphabet) for _ in range(input_length))
-                 print("testing on input: " + input_string)
-                 final_machine_state = None
-                 try:
-                     final_machine_state = machine.run(input_string)
-                 except Exception as e:
-                     print(e)
-                     final_machine_state = None
-                 function_result = function_object(input_string)  ## boolean function i guess
-                 if (final_machine_state == None):
-                     str_results = "func returned: " + str(function_result) + " TM returned: False"
-                     if function_result == False:
-                         print(f"Validation passed for input: {input_string}")
-                     else:
-                         print(f"Validation failed for input: {input_string}" + " , " + str_results)
-                         ##append to the sheet that validates the challenge and the machine
-                         return False
-                     continue
-                 if (isinstance(machine, TuringMachine)):
-                     ##it is normal turing machine
-                     is_in_acceptance_checker = machine.given_state_is_in_acceptance(
-                         final_machine_state.state)
-                 else:
-                     ##it is combined_turing_machine
-                     is_in_acceptance_checker = machine.turing_machines[-1].given_state_is_in_acceptance(
-                         final_machine_state.state)
-                 if function_result != is_in_acceptance_checker:
-                     str_results = "func returned: " + str(function_result) + " TM returned: " + str(
-                         is_in_acceptance_checker)
-                     print(f"Validation failed for input: {input_string}" + " , " + str_results)
-                     ##append to the sheet that validates the challenge and the machine
-                     return False
-                 else:
-                     print(f"Validation passed for input: {input_string}")
-         print("testing extreme cases:\n ")
-         for extreme_case in extreme_cases:  ##test extreme cases
-             final_machine_state = None
-             try:
-                 final_machine_state = machine.run(extreme_case)
-             except Exception as e:
-                 print(e)
+                function_result = function_object(case)
+                if (final_machine_state == None):
+                    if function_result == True:
+                        print(f"Validation failed for input: {case}")
 
-             function_result = function_object(extreme_case)
-             if (final_machine_state == None):
-                 if function_result == False:
-                     print(f"Validation passed for input: {extreme_case}")
-                 else:
-                     print(f"Validation failed for input: {extreme_case}")
-                     ##append to the sheet that validates the challenge and the machine
-                     return False
-                 continue
-             is_in_acceptance_checker = machine.given_state_is_in_acceptance(final_machine_state.state)
-             if function_result != is_in_acceptance_checker:
-                 print(f"Validation failed for input: {extreme_case}")
-                 ##append to the sheet that validates the challenge and the machine
-                 return False
-             else:
-                 print(f"Validation passed for input: {extreme_case}")
+                        return False
+                    continue
+                is_in_acceptance_checker = machine.given_state_is_in_acceptance(final_machine_state.state)
+                if function_result != is_in_acceptance_checker:
+                    print(f"Validation failed for input: {case}")
 
-         ##append to the sheet that validates the challenge and the machine
-         return True
+                    return False
+
+        ###############################################################################################################################
+        # then run generated test
+        for _ in range(100):  ## generate random words and test them
+            for input_length in range(1, 20):
+                alphabet = ''.join(challenge.get_input_alphabet())
+                input_string = ''.join(random.choice(alphabet) for _ in range(input_length))
+                final_machine_state = None
+                try:
+                    final_machine_state = machine.run(input_string)
+                except Exception as e:
+                    print(e)
+                    final_machine_state = None
+                function_result = function_object(input_string)  ## boolean function i guess
+                if (final_machine_state == None):
+                    str_results = "func returned: " + str(function_result) + " TM returned: False"
+                    if function_result != False:
+                        print(f"Validation failed for input: {input_string}" + " , " + str_results)
+
+                        return False
+                    continue
+                if (isinstance(machine, TuringMachine)):
+                    ##it is normal turing machine
+                    is_in_acceptance_checker = machine.given_state_is_in_acceptance(final_machine_state.state)
+                else:
+                    ##it is combined_turing_machine
+                    is_in_acceptance_checker = machine.turing_machines[-1].given_state_is_in_acceptance(
+                        final_machine_state.state)
+                if function_result != is_in_acceptance_checker:
+                    str_results = "func returned: " + str(function_result) + " TM returned: " + str(
+                        is_in_acceptance_checker)
+                    print(f"Validation failed for input: {input_string}" + " , " + str_results)
+
+                    return False
+        for extreme_case in extreme_cases:  ##test extreme cases
+            final_machine_state = None
+            try:
+                final_machine_state = machine.run(extreme_case)
+            except Exception as e:
+                print(e)
+
+            function_result = function_object(extreme_case)
+            if (final_machine_state == None):
+                if function_result != False:
+                    print(f"Validation failed for input: {extreme_case}")
+
+                    return False
+                continue
+            is_in_acceptance_checker = machine.given_state_is_in_acceptance(final_machine_state.state)
+            if function_result != is_in_acceptance_checker:
+                print(f"Validation failed for input: {extreme_case}")
+
+                return False
+
+
+
+        return True
 
     def add_challenge(self, turing_machine_name, input_alphabet, turing_machine_description, function_that_accepts_the_language_of_tm,
                       edge_cases_list):

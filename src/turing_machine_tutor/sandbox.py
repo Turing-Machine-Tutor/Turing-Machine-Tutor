@@ -122,6 +122,7 @@ def is_0n1n(input_str):
 # #
 controller = TuringMachineController()
 controller.add_challenge("0n1n",{'a'},"turing machine that accepts 0n1n",is_0n1n,{"0011","01"});
+controller.validate_submissions()
 # controller.add_challenge("random_shit","turing machine that accepts 0n1n",is_0n1n,{"0011","01"});
 # controller.add_challenge("random_shit_2","turing machine that accepts 0n1n",is_0n1n,{"0011","01"});
 # controller.get_challenges()
