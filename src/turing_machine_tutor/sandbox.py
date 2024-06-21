@@ -122,7 +122,7 @@ def is_0n1n(input_str):
 # #
 controller = TuringMachineController()
 controller.add_challenge("0n1n",{'a'},"turing machine that accepts 0n1n",is_0n1n,{"0011","01"});
-controller.validate_submissions()
+
 # controller.add_challenge("random_shit","turing machine that accepts 0n1n",is_0n1n,{"0011","01"});
 # controller.add_challenge("random_shit_2","turing machine that accepts 0n1n",is_0n1n,{"0011","01"});
 # controller.get_challenges()
@@ -685,7 +685,7 @@ controller.validate_submissions()
 
 
 
-dick='''def is_wDw(txt):
+function_string='''def is_wDw(txt):
   l = len(txt)
   if l%2 == 0:
       return False
@@ -765,14 +765,13 @@ tm_string = '''TuringMachine(
 )'''
 
 tm_object = eval(tm_string)
+exec(function_string)
 
+function_name = controller.extract_func_name(function_string)
+function_object = globals()[function_name]
 
-print("shit")
-exec(dick)
-funcname=controller.extract_func_name(dick)
-function_object = globals()[funcname]
 print(is_wDw("ab$ab"))
-ok=Challenge("d",{"d"},"d",function_object,{'a'},dick)
+ok=Challenge("d",{"d"},"d",function_object,{'a'},function_string)
 print(69)
 
 # ifTm = TuringMachine(  # condition if input legth is less than 4 accept else reject
