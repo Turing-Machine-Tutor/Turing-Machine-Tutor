@@ -12,7 +12,7 @@ from . import MultiTapeTuringMachine
 __all__ = [
     'Challenge',
     'CombinedTuringMachine',
-    'Next.py',
+    'Next',
     'IFTuringMachine',
     'machine_run_state',
     'TuringMachine',

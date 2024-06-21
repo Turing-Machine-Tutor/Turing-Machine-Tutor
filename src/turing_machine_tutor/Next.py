@@ -1,3 +1,4 @@
+
 class Next:
     def __init__(self, state, new_symbol,action):
         self.state = state  ## type is State
