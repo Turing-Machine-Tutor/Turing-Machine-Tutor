@@ -6,7 +6,7 @@ import sys
 
 import gspread
 import pandas as pd
-# from google.colab import auth
+from google.colab import auth
 from google.auth import default
 # Add the parent directory of mypackage to the Python path
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
@@ -22,10 +22,6 @@ from turing_machine_tutor.WhileTuringMachine import WhileTuringMachine
 from turing_machine_tutor.ConcatenateTM import ConcatenateTM
 
 #imports for submission
-# import gspread
-# from google.colab import auth
-# from oauth2client.client import GoogleCredentials
-# from google.auth import default
 import requests
 import json
 
