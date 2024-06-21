@@ -461,6 +461,7 @@ class TuringMachineController:
         rows = worksheet.get_all_values()
         headers = rows[0]
         rows_as_dicts = []
+        exec_globals = {}
         for row_values in rows[1:]:
             # Create a dictionary for the current row
             row_dict = {}
@@ -473,7 +474,7 @@ class TuringMachineController:
             name = row["name"]
             description = row["description"]
             function_string = row["function"]
-            exec(function_string)
+            exec(function_string, exec_globals)
             if row["edge_cases"] != "" or row["edge_cases"] != None:
                 edge_cases = self.convert_string_to_set(row["edge_cases"])
             alphabet_string = row["input_alphabet"]
@@ -482,8 +483,8 @@ class TuringMachineController:
             input_alphabet = self.convert_string_to_set(alphabet_string)
             function_name = self.extract_func_name(function_string)
             print("printing jeys if gkiabal:")
-            print(globals().keys())
-            function_object = globals()[function_name]
+            print(exec_globals().keys())
+            function_object = exec_globals[function_name]
             new_challenge = Challenge(name, input_alphabet, description, function_object, edge_cases,function_string)
             new_challenge.mustPass(must_pass)
             new_challenge.mustFail(must_fail)
