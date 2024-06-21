@@ -31,6 +31,8 @@ from turing_machine_tutor.MultiTapeTuringMachine import MultiTapeTuringMachine
 # # ok=next(1,2,3)
 # # print(ok.try_me(test_me))
 
+
+
 #
 # emptyString = TuringMachine(
 #     states={'q0', 'q1', 'rej', 'acc'},

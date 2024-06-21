@@ -482,12 +482,11 @@ class TuringMachineController:
             must_fail = self.convert_string_to_set(row["must_fail"])
             input_alphabet = self.convert_string_to_set(alphabet_string)
             function_name = self.extract_func_name(function_string)
-            print("printing jeys if gkiabal:")
-            print(exec_globals.keys())
             function_object = exec_globals[function_name]
             new_challenge = Challenge(name, input_alphabet, description, function_object, edge_cases,function_string)
-            new_challenge.mustPass(must_pass)
-            new_challenge.mustFail(must_fail)
+            print(type(new_challenge))
+            new_challenge.MustPass(must_pass)
+            new_challenge.MustFail(must_fail)
             challenges[name]=new_challenge
         machines_url = 'https://docs.google.com/spreadsheets/d/1eQYfMXWgzz8PyRBzIaUqlAvx1Vm7ASXujEaY9WDpG2s/edit?gid=0#gid=0'
         gc = gspread.authorize(creds)
