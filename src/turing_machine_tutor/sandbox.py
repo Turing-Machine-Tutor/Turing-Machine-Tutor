@@ -1,16 +1,20 @@
+import inspect
 import os
 import sys
 # Add the parent directory of mypackage to the Python path
+from turing_machine_tutor.Challenge import Challenge
+
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
 from turing_machine_tutor.CombinedTuringMachine import CombinedTuringMachine
 from turing_machine_tutor.TuringMachine import TuringMachine
 from turing_machine_tutor.TuringMachineController import TuringMachineController
-from turing_machine_tutor.next import next
+from turing_machine_tutor.Next import Next
 from turing_machine_tutor.IFTuringMachine import IFTuringMachine
 from turing_machine_tutor.WhileTuringMachine import WhileTuringMachine
 from turing_machine_tutor.ConcatenateTM import ConcatenateTM
 from turing_machine_tutor.MultiTapeTuringMachine import MultiTapeTuringMachine
+
 
 
 
@@ -24,8 +28,10 @@ from turing_machine_tutor.MultiTapeTuringMachine import MultiTapeTuringMachine
 # #     return
 
 
-# # ok=next(1,2,3)
+# # ok=Next(1,2,3)
 # # print(ok.try_me(test_me))
+
+
 
 #
 # emptyString = TuringMachine(
@@ -34,12 +40,12 @@ from turing_machine_tutor.MultiTapeTuringMachine import MultiTapeTuringMachine
 #     tape_symbols={'0', '1', '_'},
 #     blank = '_',
 #     transitions={
-#         ('q0', '0'): next('q1', '0', 'R'),
-#         ('q0', '1'): next('q1', '1', 'R'),
-#         ('q1', '0'): next('q0', '0', 'R'),
-#         ('q1', '1'): next('q0', '1', 'R'),
-#         ('q0', '_'): next('acc', '_', 'R'),
-#         ('q1', '_'): next('rej', '_', 'R'),
+#         ('q0', '0'): Next('q1', '0', 'R'),
+#         ('q0', '1'): Next('q1', '1', 'R'),
+#         ('q1', '0'): Next('q0', '0', 'R'),
+#         ('q1', '1'): Next('q0', '1', 'R'),
+#         ('q0', '_'): Next('acc', '_', 'R'),
+#         ('q1', '_'): Next('rej', '_', 'R'),
 #     },
 #     initial_state='q0',
 #     accept_states={'acc'},
@@ -53,12 +59,12 @@ from turing_machine_tutor.MultiTapeTuringMachine import MultiTapeTuringMachine
 #     input_alphabet={'0', '1'},
 #     tape_symbols={'0', '1', 'B'},
 #     transitions={
-#         ('q0', '0'): next('q1', '0', 'R'),
-#         ('q0', '1'): next('q1', '1', 'R'),
-#         ('q1', '0'): next('q0', '0', 'R'),
-#         ('q1', '1'): next('q0', '1', 'R'),
-#         ('q0', 'B'): next('q3', 'B', 'R'),
-#         ('q1', 'B'): next('q2', 'B', 'R'),
+#         ('q0', '0'): Next('q1', '0', 'R'),
+#         ('q0', '1'): Next('q1', '1', 'R'),
+#         ('q1', '0'): Next('q0', '0', 'R'),
+#         ('q1', '1'): Next('q0', '1', 'R'),
+#         ('q0', 'B'): Next('q3', 'B', 'R'),
+#         ('q1', 'B'): Next('q2', 'B', 'R'),
 #     },
 #     initial_state='q0',
 #     accept_states={'q3'},
@@ -70,17 +76,17 @@ from turing_machine_tutor.MultiTapeTuringMachine import MultiTapeTuringMachine
 #     input_alphabet={'0', '1'},
 #     tape_symbols={'0', '1', 'X', 'Y', 'B'},
 #     transitions={
-#         ('q0', '0'): next('q1', 'X', 'R'),  # Move right and replace 0 with X
-#         ('q1', '0'): next('q1', '0', 'R'),  # Continue moving right over 0
-#         ('q1', 'Y'): next('q1', 'Y', 'R'),  # Skip Y
-#         ('q1', '1'): next('q2', 'Y', 'L'),  # Move left and replace 1 with Y
-#         ('q2', 'Y'): next('q2', 'Y', 'L'),  # Continue moving left over Y
-#         ('q2', '0'): next('q2', '0', 'L'),  # Continue moving left over 0
-#         ('q2', 'X'): next('q0', 'X', 'R'),  # Move right to find the next 0 after 1s
-#         ('q0', 'Y'): next('q0', 'Y', 'R'),  # Skip Y in the process
-#         ('q0', 'B'): next('q4', 'B', 'R'),   # Accept if B is encountered after checking
-#         ('q0', '1'): next('q5', 'B', 'R'),
-#         ('q1', 'B'): next('q5', 'B', 'L')
+#         ('q0', '0'): Next('q1', 'X', 'R'),  # Move right and replace 0 with X
+#         ('q1', '0'): Next('q1', '0', 'R'),  # Continue moving right over 0
+#         ('q1', 'Y'): Next('q1', 'Y', 'R'),  # Skip Y
+#         ('q1', '1'): Next('q2', 'Y', 'L'),  # Move left and replace 1 with Y
+#         ('q2', 'Y'): Next('q2', 'Y', 'L'),  # Continue moving left over Y
+#         ('q2', '0'): Next('q2', '0', 'L'),  # Continue moving left over 0
+#         ('q2', 'X'): Next('q0', 'X', 'R'),  # Move right to find the Next 0 after 1s
+#         ('q0', 'Y'): Next('q0', 'Y', 'R'),  # Skip Y in the process
+#         ('q0', 'B'): Next('q4', 'B', 'R'),   # Accept if B is encountered after checking
+#         ('q0', '1'): Next('q5', 'B', 'R'),
+#         ('q1', 'B'): Next('q5', 'B', 'L')
 #     },
 #     initial_state='q0',
 #     accept_states={'q4'},
@@ -100,23 +106,25 @@ from turing_machine_tutor.MultiTapeTuringMachine import MultiTapeTuringMachine
 # # # print(anbn_turing_machine.given_state_is_in_acceptance(mrs.state))
 
 
-# def is_0n1n(input_str):
-#     stack = []
+def is_0n1n(input_str):
+    stack = []
 
-#     for symbol in input_str:
-#         if symbol == '0':
-#             stack.append('0')
-#         elif symbol == '1':
-#             if not stack:
-#                 return False  # There are more '1's than '0's
-#             stack.pop()
-#         else:
-#             return False  # Invalid symbol
+    for symbol in input_str:
+        if symbol == '0':
+            stack.append('0')
+        elif symbol == '1':
+            if not stack:
+                return False  # There are more '1's than '0's
+            stack.pop()
+        else:
+            return False  # Invalid symbol
 
-#     return True
+    return True
+
 # #
+controller = TuringMachineController()
+controller.add_challenge("0n1n",{'a'},"turing machine that accepts 0n1n",is_0n1n,{"0011","01"});
 
-# controller.add_challenge("0n1n","turing machine that accepts 0n1n",is_0n1n,{"0011","01"});
 # controller.add_challenge("random_shit","turing machine that accepts 0n1n",is_0n1n,{"0011","01"});
 # controller.add_challenge("random_shit_2","turing machine that accepts 0n1n",is_0n1n,{"0011","01"});
 # controller.get_challenges()
@@ -133,11 +141,11 @@ from turing_machine_tutor.MultiTapeTuringMachine import MultiTapeTuringMachine
 #     input_alphabet={'0', '1', 'X', 'Y', 'B'},
 #     tape_symbols={'0', '1', 'X', 'Y', 'B'},
 #     transitions={
-#         ('q0', '0'): next('q2', 'X', 'R'),  # Step 1 change 0 to X
-#         ('q0', '1'): next('q3', '1', 'S'),
-#         ('q0', 'X'): next('q3', 'X', 'S'),
-#         ('q0', 'Y'): next('q3', 'Y', 'S'),
-#         ('q0', 'B'): next('q3', 'B', 'S')
+#         ('q0', '0'): Next('q2', 'X', 'R'),  # Step 1 change 0 to X
+#         ('q0', '1'): Next('q3', '1', 'S'),
+#         ('q0', 'X'): Next('q3', 'X', 'S'),
+#         ('q0', 'Y'): Next('q3', 'Y', 'S'),
+#         ('q0', 'B'): Next('q3', 'B', 'S')
 #     },
 #     initial_state='q0',
 #     accept_states={'q2'},
@@ -149,11 +157,11 @@ from turing_machine_tutor.MultiTapeTuringMachine import MultiTapeTuringMachine
 #     input_alphabet={'0', '1', 'X', 'Y', 'B'},
 #     tape_symbols={'0', '1', 'X', 'Y', 'B'},
 #     transitions={
-#         ('q0', '0'): next('q0', '0', 'R'),  # Step 2 move right to the first 1
-#         ('q0', '1'): next('q2', '1', 'S'),  # if you do not find symbol 1, reject the language
-#         ('q0', 'X'): next('q0', 'X', 'R'),
-#         ('q0', 'Y'): next('q0', 'Y', 'R'),
-#         ('q0', 'B'): next('q3', 'B', 'S')
+#         ('q0', '0'): Next('q0', '0', 'R'),  # Step 2 move right to the first 1
+#         ('q0', '1'): Next('q2', '1', 'S'),  # if you do not find symbol 1, reject the language
+#         ('q0', 'X'): Next('q0', 'X', 'R'),
+#         ('q0', 'Y'): Next('q0', 'Y', 'R'),
+#         ('q0', 'B'): Next('q3', 'B', 'S')
 #     },
 #     initial_state='q0',
 #     accept_states={'q2'},
@@ -165,11 +173,11 @@ from turing_machine_tutor.MultiTapeTuringMachine import MultiTapeTuringMachine
 #     input_alphabet={'0', '1', 'X', 'Y', 'B'},
 #     tape_symbols={'0', '1', 'X', 'Y', 'B'},
 #     transitions={
-#         ('q0', '0'): next('q3', '0', 'S'),  # Step 3 change 1 to Y
-#         ('q0', '1'): next('q2', 'Y', 'L'),
-#         ('q0', 'X'): next('q3', 'X', 'S'),
-#         ('q0', 'Y'): next('q3', 'Y', 'S'),
-#         ('q0', 'B'): next('q3', 'B', 'S')
+#         ('q0', '0'): Next('q3', '0', 'S'),  # Step 3 change 1 to Y
+#         ('q0', '1'): Next('q2', 'Y', 'L'),
+#         ('q0', 'X'): Next('q3', 'X', 'S'),
+#         ('q0', 'Y'): Next('q3', 'Y', 'S'),
+#         ('q0', 'B'): Next('q3', 'B', 'S')
 #     },
 #     initial_state='q0',
 #     accept_states={'q2'},
@@ -181,11 +189,11 @@ from turing_machine_tutor.MultiTapeTuringMachine import MultiTapeTuringMachine
 #     input_alphabet={'0', '1', 'X', 'Y', 'B'},
 #     tape_symbols={'0', '1', 'X', 'Y', 'B'},
 #     transitions={
-#         ('q0', '0'): next('q0', '0', 'L'),  # Step 4 Move Left to Leftmost 0
-#         ('q0', '1'): next('q3', '1', 'S'),
-#         ('q0', 'X'): next('q2', 'X', 'R'),
-#         ('q0', 'Y'): next('q0', 'Y', 'L'),
-#         ('q0', 'B'): next('q3', 'B', 'R')
+#         ('q0', '0'): Next('q0', '0', 'L'),  # Step 4 Move Left to Leftmost 0
+#         ('q0', '1'): Next('q3', '1', 'S'),
+#         ('q0', 'X'): Next('q2', 'X', 'R'),
+#         ('q0', 'Y'): Next('q0', 'Y', 'L'),
+#         ('q0', 'B'): Next('q3', 'B', 'R')
 #     },
 #     initial_state='q0',
 #     accept_states={'q2'},
@@ -198,11 +206,11 @@ from turing_machine_tutor.MultiTapeTuringMachine import MultiTapeTuringMachine
 #     input_alphabet={'0', '1', 'X', 'Y', 'B'},
 #     tape_symbols={'0', '1', 'X', 'Y', 'B'},
 #     transitions={
-#         ('q0', '0'): next('q2', '0', 'S'),  # Step 6 check if all turing machine tape is X and Y ( there is no 1 and 0 left on the tape)
-#         ('q0', '1'): next('q2', '1', 'S'),
-#         ('q0', 'X'): next('q0', 'X', 'R'),
-#         ('q0', 'Y'): next('q0', 'Y', 'R'),
-#         ('q0', 'B'): next('q3', 'B', 'S')
+#         ('q0', '0'): Next('q2', '0', 'S'),  # Step 6 check if all turing machine tape is X and Y ( there is no 1 and 0 left on the tape)
+#         ('q0', '1'): Next('q2', '1', 'S'),
+#         ('q0', 'X'): Next('q0', 'X', 'R'),
+#         ('q0', 'Y'): Next('q0', 'Y', 'R'),
+#         ('q0', 'B'): Next('q3', 'B', 'S')
 #     },
 #     initial_state='q0',
 #     accept_states={'q2'},
@@ -213,11 +221,11 @@ from turing_machine_tutor.MultiTapeTuringMachine import MultiTapeTuringMachine
 #     input_alphabet={'0', '1', 'X', 'Y', 'B'},
 #     tape_symbols={'0', '1', 'X', 'Y', 'B'},
 #     transitions={
-#         ('q0', '0'): next('q3', '0', 'S'),  # Step 6 check if all turing machine tape is X and Y ( there is no 1 and 0 left on the tape)
-#         ('q0', '1'): next('q3', '1', 'S'),
-#         ('q0', 'X'): next('q0', 'X', 'R'),
-#         ('q0', 'Y'): next('q0', 'Y', 'R'),
-#         ('q0', 'B'): next('q2', 'B', 'S')
+#         ('q0', '0'): Next('q3', '0', 'S'),  # Step 6 check if all turing machine tape is X and Y ( there is no 1 and 0 left on the tape)
+#         ('q0', '1'): Next('q3', '1', 'S'),
+#         ('q0', 'X'): Next('q0', 'X', 'R'),
+#         ('q0', 'Y'): Next('q0', 'Y', 'R'),
+#         ('q0', 'B'): Next('q2', 'B', 'S')
 #     },
 #     initial_state='q0',
 #     accept_states={'q2'},
@@ -272,18 +280,18 @@ from turing_machine_tutor.MultiTapeTuringMachine import MultiTapeTuringMachine
 #     input_alphabet={'0', '1'},
 #     tape_symbols={'0', '1', 'B'},
 #     transitions={
-#         ('q0', '0'): next('q1', '0', 'R'),  
-#         ('q0', '1'): next('q1', '1', 'R'),
+#         ('q0', '0'): Next('q1', '0', 'R'),  
+#         ('q0', '1'): Next('q1', '1', 'R'),
 
-#         ('q1', '0'): next('q2', '0', 'R'),
-#         ('q1', '1'): next('q2', '1', 'R'),
+#         ('q1', '0'): Next('q2', '0', 'R'),
+#         ('q1', '1'): Next('q2', '1', 'R'),
 
-#         ('q2', '0'): next('q3', '0', 'R'),  
-#         ('q2', '1'): next('q3', '0', 'R'),
+#         ('q2', '0'): Next('q3', '0', 'R'),  
+#         ('q2', '1'): Next('q3', '0', 'R'),
         
-#         ('q3', '0'): next('q6', '0', 'R'),
-#         ('q3', '1'): next('q6', '1', 'R'),
-#         ('q3', 'B'): next('q5', 'B', 'S')
+#         ('q3', '0'): Next('q6', '0', 'R'),
+#         ('q3', '1'): Next('q6', '1', 'R'),
+#         ('q3', 'B'): Next('q5', 'B', 'S')
 #     },
 #     initial_state='q0',
 #     accept_states={'q5'},
@@ -303,9 +311,9 @@ from turing_machine_tutor.MultiTapeTuringMachine import MultiTapeTuringMachine
 #     input_alphabet={'0', '1'},
 #     tape_symbols={'0', '1', 'B'},
 #     transitions={
-#         ('q0', '0'): next('q0', '0', 'R'),  
-#         ('q0', '1'): next('q0', '0', 'R'),
-#         ('q0', 'B'): next('q1', 'B', 'R')
+#         ('q0', '0'): Next('q0', '0', 'R'),  
+#         ('q0', '1'): Next('q0', '0', 'R'),
+#         ('q0', 'B'): Next('q1', 'B', 'R')
 #     },
 #     initial_state='q0',
 #     accept_states={'q1'},
@@ -317,9 +325,9 @@ from turing_machine_tutor.MultiTapeTuringMachine import MultiTapeTuringMachine
 #     input_alphabet={'0', '1'},
 #     tape_symbols={'0', '1', 'B'},
 #     transitions={
-#         ('q0', '0'): next('q0', '1', 'R'),  
-#         ('q0', '1'): next('q0', '1', 'R'),
-#         ('q0', 'B'): next('q1', 'B', 'R')
+#         ('q0', '0'): Next('q0', '1', 'R'),  
+#         ('q0', '1'): Next('q0', '1', 'R'),
+#         ('q0', 'B'): Next('q1', 'B', 'R')
 #     },
 #     initial_state='q0',
 #     accept_states={'q1'},
@@ -344,12 +352,12 @@ from turing_machine_tutor.MultiTapeTuringMachine import MultiTapeTuringMachine
 #     input_alphabet={'0', '1'},
 #     tape_symbols={'0', '1', 'B'},
 #     transitions={
-#         ('q0', '0'): next('q1', '1', 'R'),  # if encountered 0 put 1 and move right
-#         ('q0', '1'): next('q0', '1', 'R'),  # if encountered 1 just move right
-#         ('q0', 'B'): next('q1', 'B', 'S'),  # if encountered 1 just move right
-#         ('q1', '0'): next('q1', '0', 'S'),  # after reaching q1 don't do anything
-#         ('q1', '1'): next('q1', '1', 'S'),  # after reaching q1 don't do anything
-#         ('q1', 'B'): next('q1', 'B', 'S'),  # after reaching q1 don't do anything
+#         ('q0', '0'): Next('q1', '1', 'R'),  # if encountered 0 put 1 and move right
+#         ('q0', '1'): Next('q0', '1', 'R'),  # if encountered 1 just move right
+#         ('q0', 'B'): Next('q1', 'B', 'S'),  # if encountered 1 just move right
+#         ('q1', '0'): Next('q1', '0', 'S'),  # after reaching q1 don't do anything
+#         ('q1', '1'): Next('q1', '1', 'S'),  # after reaching q1 don't do anything
+#         ('q1', 'B'): Next('q1', 'B', 'S'),  # after reaching q1 don't do anything
 
 #     },
 #     initial_state='q0',
@@ -363,12 +371,12 @@ from turing_machine_tutor.MultiTapeTuringMachine import MultiTapeTuringMachine
 #     input_alphabet={'0', '1'},
 #     tape_symbols={'0', '1', 'B'},
 #     transitions={
-#         ('q0', '0'): next('q0', '0', 'R'),  # if encountered 0 put 1 and move right
-#         ('q0', '1'): next('q1', '0', 'R'),  # if encountered 1 just move right
-#         ('q0', 'B'): next('q1', 'B', 'S'),  # if encountered 1 just move right
-#         ('q1', '0'): next('q1', '0', 'S'),  # after reaching q1 don't do anything
-#         ('q1', '1'): next('q1', '1', 'S'),  # after reaching q1 don't do anything
-#         ('q1', 'B'): next('q1', 'B', 'S'),  # after reaching q1 don't do anything
+#         ('q0', '0'): Next('q0', '0', 'R'),  # if encountered 0 put 1 and move right
+#         ('q0', '1'): Next('q1', '0', 'R'),  # if encountered 1 just move right
+#         ('q0', 'B'): Next('q1', 'B', 'S'),  # if encountered 1 just move right
+#         ('q1', '0'): Next('q1', '0', 'S'),  # after reaching q1 don't do anything
+#         ('q1', '1'): Next('q1', '1', 'S'),  # after reaching q1 don't do anything
+#         ('q1', 'B'): Next('q1', 'B', 'S'),  # after reaching q1 don't do anything
 
 #     },
 #     initial_state='q0',
@@ -382,9 +390,9 @@ from turing_machine_tutor.MultiTapeTuringMachine import MultiTapeTuringMachine
 #     input_alphabet={'0', '1'},
 #     tape_symbols={'0', '1', 'B'},
 #     transitions={
-#         ('q0', '0'): next('q0', '0', 'R'),  # if encountered 0 put 1 and move right
-#         ('q0', '1'): next('q0', '1', 'R'),  # if encountered 1 just move right
-#         ('q0', 'B'): next('q1', 'B', 'S'),  # if encountered 1 just move right
+#         ('q0', '0'): Next('q0', '0', 'R'),  # if encountered 0 put 1 and move right
+#         ('q0', '1'): Next('q0', '1', 'R'),  # if encountered 1 just move right
+#         ('q0', 'B'): Next('q1', 'B', 'S'),  # if encountered 1 just move right
 #     },
 #     initial_state='q0',
 #     accept_states={'q1'},
@@ -397,9 +405,9 @@ from turing_machine_tutor.MultiTapeTuringMachine import MultiTapeTuringMachine
 #     input_alphabet={'0', '1'},
 #     tape_symbols={'0', '1', 'B'},
 #     transitions={
-#         ('q0', '0'): next('q2', '0', 'S'),
-#         ('q0', '1'): next('q1', '1', 'R'),
-#         ('q0', 'B'): next('q2', 'B', 'S'),
+#         ('q0', '0'): Next('q2', '0', 'S'),
+#         ('q0', '1'): Next('q1', '1', 'R'),
+#         ('q0', 'B'): Next('q2', 'B', 'S'),
 
 #     },
 #     initial_state='q0',
@@ -435,16 +443,16 @@ from turing_machine_tutor.MultiTapeTuringMachine import MultiTapeTuringMachine
 #             input_alphabet={'0', '1'},
 #             tape_symbols={'0', '1', 'X', 'Y', 'B'},
 #             transitions={
-#                 ('q0', '0'): next('q1', 'X', 'R'),  # Step 1 change 0 to X
-#                 ('q0', 'Y'): next('q3', 'Y', 'R'),
-#                 ('q1', '0'): next('q1', '0', 'R'),
-#                 ('q1', '1'): next('q2', 'Y', 'L'),
-#                 ('q1', 'Y'): next('q1', 'Y', 'R'),
-#                 ('q2', '0'): next('q2', '0', 'L'),
-#                 ('q2', 'X'): next('q0', 'X', 'R'),
-#                 ('q2', 'Y'): next('q2', 'Y', 'L'),
-#                 ('q3', 'Y'): next('q3', 'Y', 'R'),
-#                 ('q3', 'B'): next('q4', 'B', 'L')
+#                 ('q0', '0'): Next('q1', 'X', 'R'),  # Step 1 change 0 to X
+#                 ('q0', 'Y'): Next('q3', 'Y', 'R'),
+#                 ('q1', '0'): Next('q1', '0', 'R'),
+#                 ('q1', '1'): Next('q2', 'Y', 'L'),
+#                 ('q1', 'Y'): Next('q1', 'Y', 'R'),
+#                 ('q2', '0'): Next('q2', '0', 'L'),
+#                 ('q2', 'X'): Next('q0', 'X', 'R'),
+#                 ('q2', 'Y'): Next('q2', 'Y', 'L'),
+#                 ('q3', 'Y'): Next('q3', 'Y', 'R'),
+#                 ('q3', 'B'): Next('q4', 'B', 'L')
 #             },
 #             initial_state='q0',
 #             accept_states={'q4'},
@@ -494,11 +502,11 @@ from turing_machine_tutor.MultiTapeTuringMachine import MultiTapeTuringMachine
 #         input_alphabet={'0', '1', 'X', 'Y', 'B'},
 #         tape_symbols={'0', '1', 'X', 'Y', 'B'},
 #         transitions={
-#             ('q0', '0'): next('q2', 'X', 'R'),  # Step 1 change 0 to X
-#             ('q0', '1'): next('q3', '1', 'S'),
-#             ('q0', 'X'): next('q3', 'X', 'S'),
-#             ('q0', 'Y'): next('q3', 'Y', 'S'),
-#             ('q0', 'B'): next('q3', 'B', 'S')
+#             ('q0', '0'): Next('q2', 'X', 'R'),  # Step 1 change 0 to X
+#             ('q0', '1'): Next('q3', '1', 'S'),
+#             ('q0', 'X'): Next('q3', 'X', 'S'),
+#             ('q0', 'Y'): Next('q3', 'Y', 'S'),
+#             ('q0', 'B'): Next('q3', 'B', 'S')
 #         },
 #         initial_state='q0',
 #         accept_states={'q2'},
@@ -509,11 +517,11 @@ from turing_machine_tutor.MultiTapeTuringMachine import MultiTapeTuringMachine
 #     input_alphabet={'0', '1', 'X', 'Y', 'B'},
 #     tape_symbols={'0', '1', 'X', 'Y', 'B'},
 #     transitions={
-#         ('q0', '0'): next('q0', '0', 'R'),  # Step 2 move right to the first 1
-#         ('q0', '1'): next('q2', '1', 'S'),  # if you do not find symbol 1, reject the language
-#         ('q0', 'X'): next('q0', 'X', 'R'),
-#         ('q0', 'Y'): next('q0', 'Y', 'R'),
-#         ('q0', 'B'): next('q3', 'B', 'S')
+#         ('q0', '0'): Next('q0', '0', 'R'),  # Step 2 move right to the first 1
+#         ('q0', '1'): Next('q2', '1', 'S'),  # if you do not find symbol 1, reject the language
+#         ('q0', 'X'): Next('q0', 'X', 'R'),
+#         ('q0', 'Y'): Next('q0', 'Y', 'R'),
+#         ('q0', 'B'): Next('q3', 'B', 'S')
 #     },
 #     initial_state='q0',
 #     accept_states={'q2'},
@@ -525,11 +533,11 @@ from turing_machine_tutor.MultiTapeTuringMachine import MultiTapeTuringMachine
 #         input_alphabet={'0', '1', 'X', 'Y', 'B'},
 #         tape_symbols={'0', '1', 'X', 'Y', 'B'},
 #         transitions={
-#             ('q0', '0'): next('q3', '0', 'S'),  # Step 3 change 1 to Y
-#             ('q0', '1'): next('q2', 'Y', 'L'),
-#             ('q0', 'X'): next('q3', 'X', 'S'),
-#             ('q0', 'Y'): next('q3', 'Y', 'S'),
-#             ('q0', 'B'): next('q3', 'B', 'S')
+#             ('q0', '0'): Next('q3', '0', 'S'),  # Step 3 change 1 to Y
+#             ('q0', '1'): Next('q2', 'Y', 'L'),
+#             ('q0', 'X'): Next('q3', 'X', 'S'),
+#             ('q0', 'Y'): Next('q3', 'Y', 'S'),
+#             ('q0', 'B'): Next('q3', 'B', 'S')
 #         },
 #         initial_state='q0',
 #         accept_states={'q2'},
@@ -541,11 +549,11 @@ from turing_machine_tutor.MultiTapeTuringMachine import MultiTapeTuringMachine
 #         input_alphabet={'0', '1', 'X', 'Y', 'B'},
 #         tape_symbols={'0', '1', 'X', 'Y', 'B'},
 #         transitions={
-#             ('q0', '0'): next('q0', '0', 'L'),  # Step 4 Move Left to Leftmost 0
-#             ('q0', '1'): next('q3', '1', 'S'),
-#             ('q0', 'X'): next('q2', 'X', 'R'),
-#             ('q0', 'Y'): next('q0', 'Y', 'L'),
-#             ('q0', 'B'): next('q3', 'B', 'R')
+#             ('q0', '0'): Next('q0', '0', 'L'),  # Step 4 Move Left to Leftmost 0
+#             ('q0', '1'): Next('q3', '1', 'S'),
+#             ('q0', 'X'): Next('q2', 'X', 'R'),
+#             ('q0', 'Y'): Next('q0', 'Y', 'L'),
+#             ('q0', 'B'): Next('q3', 'B', 'R')
 #         },
 #         initial_state='q0',
 #         accept_states={'q2'},
@@ -558,11 +566,11 @@ from turing_machine_tutor.MultiTapeTuringMachine import MultiTapeTuringMachine
 #         input_alphabet={'0', '1', 'X', 'Y', 'B'},
 #         tape_symbols={'0', '1', 'X', 'Y', 'B'},
 #         transitions={
-#             ('q0', '0'): next('q2', '0', 'S'),  # Step 6 check if all turing machine tape is X and Y ( there is no 1 and 0 left on the tape)
-#             ('q0', '1'): next('q2', '1', 'S'),
-#             ('q0', 'X'): next('q0', 'X', 'R'),
-#             ('q0', 'Y'): next('q0', 'Y', 'R'),
-#             ('q0', 'B'): next('q3', 'B', 'S')
+#             ('q0', '0'): Next('q2', '0', 'S'),  # Step 6 check if all turing machine tape is X and Y ( there is no 1 and 0 left on the tape)
+#             ('q0', '1'): Next('q2', '1', 'S'),
+#             ('q0', 'X'): Next('q0', 'X', 'R'),
+#             ('q0', 'Y'): Next('q0', 'Y', 'R'),
+#             ('q0', 'B'): Next('q3', 'B', 'S')
 #         },
 #         initial_state='q0',
 #         accept_states={'q2'},
@@ -573,11 +581,11 @@ from turing_machine_tutor.MultiTapeTuringMachine import MultiTapeTuringMachine
 #         input_alphabet={'0', '1', 'X', 'Y', 'B'},
 #         tape_symbols={'0', '1', 'X', 'Y', 'B'},
 #         transitions={
-#             ('q0', '0'): next('q3', '0', 'S'),  # Step 6 check if all turing machine tape is X and Y ( there is no 1 and 0 left on the tape)
-#             ('q0', '1'): next('q3', '1', 'S'),
-#             ('q0', 'X'): next('q0', 'X', 'R'),
-#             ('q0', 'Y'): next('q0', 'Y', 'R'),
-#             ('q0', 'B'): next('q2', 'B', 'S')
+#             ('q0', '0'): Next('q3', '0', 'S'),  # Step 6 check if all turing machine tape is X and Y ( there is no 1 and 0 left on the tape)
+#             ('q0', '1'): Next('q3', '1', 'S'),
+#             ('q0', 'X'): Next('q0', 'X', 'R'),
+#             ('q0', 'Y'): Next('q0', 'Y', 'R'),
+#             ('q0', 'B'): Next('q2', 'B', 'S')
 #         },
 #         initial_state='q0',
 #         accept_states={'q2'},
@@ -618,18 +626,18 @@ from turing_machine_tutor.MultiTapeTuringMachine import MultiTapeTuringMachine
 #             input_alphabet={'0', '1', '2', 'X', 'Y', 'B','Z'},
 #             tape_symbols={'0', '1', '2', 'X', 'Y', 'B','Z'},
 #             transitions={
-#                 ('q0', '0'): next('q1', 'X', 'R'),  # Step 1 change 0 to X
-#                 ('q0', 'Y'): next('q3', 'Y', 'R'),
-#                 ('q1', '0'): next('q1', '0', 'R'),
-#                 ('q1', '1'): next('q2', 'Y', 'L'),
-#                 ('q1', 'Y'): next('q1', 'Y', 'R'),
-#                 ('q2', '0'): next('q2', '0', 'L'),
-#                 ('q2', 'X'): next('q0', 'X', 'R'),
-#                 ('q2', 'Y'): next('q2', 'Y', 'L'),
-#                 ('q3', 'Y'): next('q3', 'Y', 'R'),
-#                 ('q3', 'B'): next('q4', 'B', 'S'),
+#                 ('q0', '0'): Next('q1', 'X', 'R'),  # Step 1 change 0 to X
+#                 ('q0', 'Y'): Next('q3', 'Y', 'R'),
+#                 ('q1', '0'): Next('q1', '0', 'R'),
+#                 ('q1', '1'): Next('q2', 'Y', 'L'),
+#                 ('q1', 'Y'): Next('q1', 'Y', 'R'),
+#                 ('q2', '0'): Next('q2', '0', 'L'),
+#                 ('q2', 'X'): Next('q0', 'X', 'R'),
+#                 ('q2', 'Y'): Next('q2', 'Y', 'L'),
+#                 ('q3', 'Y'): Next('q3', 'Y', 'R'),
+#                 ('q3', 'B'): Next('q4', 'B', 'S'),
 
-#                 ('q3', '2'): next('q4', '2', 'S')
+#                 ('q3', '2'): Next('q4', '2', 'S')
 #             },
 #             initial_state='q0',
 #             accept_states={'q4'},
@@ -640,10 +648,10 @@ from turing_machine_tutor.MultiTapeTuringMachine import MultiTapeTuringMachine
 #             input_alphabet={'0', '1','2' , 'X', 'Y', 'B','Z'},
 #             tape_symbols={'0', '1','2', 'X', 'Y', 'B','Z'},
 #             transitions={
-#                 ('q0', 'X'): next('q0', 'X', 'R'),
-#                 ('q0', 'Y'): next('q0', 'Y', 'R'),
-#                 ('q0', '2'): next('q2', 'Z', 'R'),
-#                 ('q0', 'Z'): next('q0', 'Z', 'R')
+#                 ('q0', 'X'): Next('q0', 'X', 'R'),
+#                 ('q0', 'Y'): Next('q0', 'Y', 'R'),
+#                 ('q0', '2'): Next('q2', 'Z', 'R'),
+#                 ('q0', 'Z'): Next('q0', 'Z', 'R')
 #             },
 #             initial_state='q0',
 #             accept_states={'q2'},
@@ -676,18 +684,110 @@ from turing_machine_tutor.MultiTapeTuringMachine import MultiTapeTuringMachine
 
 ##########################################################################
 
-controller = TuringMachineController()
+
+
+
+function_string='''def is_wDw(txt):
+  l = len(txt)
+  if l%2 == 0:
+      return False
+  h = l//2
+  for i in range(l):
+      if i == h:
+          if txt[i] != '$':
+            return  False
+      elif txt[i] != 'a' and txt[i] != 'b':
+            return False
+  left=txt[:h]
+  right=txt[h+1:]
+  if left==right:
+    return True
+  else:
+    return False'''
+# Given string representation of TuringMachine
+tm_string = '''TuringMachine(
+    states={'q3', 'q8', 'q10', 'q5', 'q7', 'q9', 'q0', 'q2', 'q11', 'q6', 'q1', 'q4'},
+    input_alphabet={'a', '$', 'b'},
+    tape_symbols={'$', 'b', 'B', 'a', 'E'},
+    transitions={
+        ('q0', 'a'): Next('q3', 'E', 'R'),
+        ('q0', 'b'): Next('q4', 'E', 'R'),
+        ('q0', 'B'): Next('q2', 'B', 'S'),
+        ('q0', '$'): Next('q11', '$', 'R'),
+        ('q0', 'E'): Next('q2', 'E', 'S'),
+        ('q3', 'a'): Next('q3', 'a', 'R'),
+        ('q3', 'b'): Next('q3', 'b', 'R'),
+        ('q3', 'B'): Next('q2', 'B', 'S'),
+        ('q3', '$'): Next('q5', '$', 'R'),
+        ('q3', 'E'): Next('q2', 'E', 'R'),
+        ('q5', 'a'): Next('q7', 'E', 'S'),
+        ('q5', 'b'): Next('q2', 'b', 'S'),
+        ('q5', 'B'): Next('q2', 'B', 'S'),
+        ('q5', '$'): Next('q2', '$', 'R'),
+        ('q5', 'E'): Next('q5', 'E', 'R'),
+        ('q7', 'a'): Next('q2', 'b', 'S'),
+        ('q7', 'b'): Next('q2', 'b', 'S'),
+        ('q7', 'B'): Next('q2', 'B', 'S'),
+        ('q7', '$'): Next('q9', '$', 'L'),
+        ('q7', 'E'): Next('q7', 'E', 'L'),
+        ('q9', 'a'): Next('q9', 'a', 'L'),
+        ('q9', 'b'): Next('q9', 'b', 'L'),
+        ('q9', 'B'): Next('q2', 'B', 'S'),
+        ('q9', '$'): Next('q9', '$', 'L'),
+        ('q9', 'E'): Next('q0', 'E', 'R'),
+        ('q11', 'a'): Next('q2', 'b', 'S'),
+        ('q11', 'b'): Next('q2', 'b', 'S'),
+        ('q11', 'B'): Next('q1', 'B', 'S'),
+        ('q11', '$'): Next('q2', '$', 'L'),
+        ('q11', 'E'): Next('q11', 'E', 'R'),
+        ('q4', 'a'): Next('q4', 'a', 'R'),
+        ('q4', 'b'): Next('q4', 'b', 'R'),
+        ('q4', 'B'): Next('q2', 'B', 'S'),
+        ('q4', '$'): Next('q6', '$', 'R'),
+        ('q4', 'E'): Next('q2', 'E', 'R'),
+        ('q6', 'a'): Next('q2', 'a', 'S'),
+        ('q6', 'b'): Next('q8', 'E', 'S'),
+        ('q6', 'B'): Next('q2', 'B', 'S'),
+        ('q6', '$'): Next('q2', '$', 'R'),
+        ('q6', 'E'): Next('q6', 'E', 'R'),
+        ('q8', 'a'): Next('q2', 'b', 'S'),
+        ('q8', 'b'): Next('q2', 'b', 'S'),
+        ('q8', 'B'): Next('q2', 'B', 'S'),
+        ('q8', '$'): Next('q10', '$', 'L'),
+        ('q8', 'E'): Next('q8', 'E', 'L'),
+        ('q10', 'a'): Next('q10', 'a', 'L'),
+        ('q10', 'b'): Next('q10', 'b', 'L'),
+        ('q10', 'B'): Next('q2', 'B', 'S'),
+        ('q10', '$'): Next('q10', '$', 'L'),
+        ('q10', 'E'): Next('q0', 'E', 'R')
+    },
+    initial_state='q0',
+    accept_states={'q1'},
+    reject_states={'q2'}
+)'''
+
+tm_object = eval(tm_string)
+ok=tm_object.run("ab$ab")
+exec(function_string)
+
+function_name = controller.extract_func_name(function_string)
+function_object = globals()[function_name]
+
+print(is_wDw("ab$ab"))
+ok=Challenge("d",{"d"},"d",function_object,{'a'},function_string)
+
+print(69)
 
 # ifTm = TuringMachine(  # condition if input legth is less than 4 accept else reject
 #         states={'q0', 'q1', 'q2', 'q3', 'q4', 'q5', 'q6'},
 #         input_alphabet={'0', '1'},
 #         tape_symbols={'0', '1', 'B'},
 #         transitions={
-#             ('q0', '0'): next('q1', '0', 'R'),
-#             ('q1', '1'): next('q3', '1', 'R'),
-#             ('q3', 'B'): next('q3', 'B', 'L'),
-#             ('q3', '1'): next('q3', '1', 'L'),
-#             ('q3', '0'): next('q3', '0', 'L'),
+#             ('q0', '0'): Next('q1', '0', 'R'),
+#             ('q1', '1'): Next('q3', '1', 'R'),
+#             ('q3', 'B'): Next('q3', 'B', 'L'),
+#             ('q3', '1'): Next('q3', '1', 'L'),
+#             ('q3', '0'): Next('q3', '0', 'L'),
 #         },
 #         initial_state='q0',
 #         accept_states={'q5'},
@@ -731,18 +831,18 @@ controller = TuringMachineController()
 #             input_alphabet={'0', '1', '2', 'X', 'Y', 'B','Z'},
 #             tape_symbols={'0', '1', '2', 'X', 'Y', 'B','Z'},
 #             transitions={
-#                 ('q0', '0'): next('q1', 'X', 'R'),  # Step 1 change 0 to X
-#                 ('q0', 'Y'): next('q3', 'Y', 'R'),
-#                 ('q1', '0'): next('q1', '0', 'R'),
-#                 ('q1', '1'): next('q2', 'Y', 'L'),
-#                 ('q1', 'Y'): next('q1', 'Y', 'R'),
-#                 ('q2', '0'): next('q2', '0', 'L'),
-#                 ('q2', 'X'): next('q0', 'X', 'R'),
-#                 ('q2', 'Y'): next('q2', 'Y', 'L'),
-#                 ('q3', 'Y'): next('q3', 'Y', 'R'),
-#                 ('q3', 'B'): next('q4', 'B', 'S'),
+#                 ('q0', '0'): Next('q1', 'X', 'R'),  # Step 1 change 0 to X
+#                 ('q0', 'Y'): Next('q3', 'Y', 'R'),
+#                 ('q1', '0'): Next('q1', '0', 'R'),
+#                 ('q1', '1'): Next('q2', 'Y', 'L'),
+#                 ('q1', 'Y'): Next('q1', 'Y', 'R'),
+#                 ('q2', '0'): Next('q2', '0', 'L'),
+#                 ('q2', 'X'): Next('q0', 'X', 'R'),
+#                 ('q2', 'Y'): Next('q2', 'Y', 'L'),
+#                 ('q3', 'Y'): Next('q3', 'Y', 'R'),
+#                 ('q3', 'B'): Next('q4', 'B', 'S'),
 
-#                 ('q3', '2'): next('q4', '2', 'S')
+#                 ('q3', '2'): Next('q4', '2', 'S')
 #             },
 #             initial_state='q0',
 #             accept_states={'q4'},
@@ -753,10 +853,10 @@ controller = TuringMachineController()
 #             input_alphabet={'0', '1','2' , 'X', 'Y', 'B','Z'},
 #             tape_symbols={'0', '1','2', 'X', 'Y', 'B','Z'},
 #             transitions={
-#                 ('q0', 'X'): next('q0', 'X', 'R'),
-#                 ('q0', 'Y'): next('q0', 'Y', 'R'),
-#                 ('q0', '2'): next('q2', 'Z', 'R'),
-#                 ('q0', 'Z'): next('q0', 'Z', 'R')
+#                 ('q0', 'X'): Next('q0', 'X', 'R'),
+#                 ('q0', 'Y'): Next('q0', 'Y', 'R'),
+#                 ('q0', '2'): Next('q2', 'Z', 'R'),
+#                 ('q0', 'Z'): Next('q0', 'Z', 'R')
 #             },
 #             initial_state='q0',
 #             accept_states={'q2'},
@@ -802,27 +902,27 @@ controller = TuringMachineController()
 #             input_alphabet={'a', 'b'},
 #             tape_symbols={'a', 'b', 'X', 'Y', 'B'},
 #             transitions={
-#                 ('q0', 'a'): next('q1', 'B', 'R'),  
-#                 ('q0', 'b'): next('q2', 'B', 'R'),
-#                 ('q0', 'B'): next('q8', 'B', 'S'),
-#                 ('q1', 'a'): next('q3', 'a', 'R'),
-#                 ('q1', 'b'): next('q3', 'b', 'R'),
-#                 ('q1', 'B'): next('q8', 'B', 'S'),
-#                 ('q2', 'a'): next('q4', 'a', 'R'),
-#                 ('q2', 'b'): next('q4', 'b', 'R'),
-#                 ('q2', 'B'): next('q8', 'B', 'S'),
-#                 ('q3', 'a'): next('q3', 'a', 'R'),
-#                 ('q3', 'b'): next('q3', 'b', 'R'),
-#                 ('q3', 'B'): next('q5', 'B', 'L'),
-#                 ('q4', 'a'): next('q4', 'a', 'R'),
-#                 ('q4', 'b'): next('q4', 'b', 'R'),
-#                 ('q4', 'B'): next('q6', 'B', 'L'),
-#                 ('q5', 'b'): next('q7', 'B', 'L'),
+#                 ('q0', 'a'): Next('q1', 'B', 'R'),  
+#                 ('q0', 'b'): Next('q2', 'B', 'R'),
+#                 ('q0', 'B'): Next('q8', 'B', 'S'),
+#                 ('q1', 'a'): Next('q3', 'a', 'R'),
+#                 ('q1', 'b'): Next('q3', 'b', 'R'),
+#                 ('q1', 'B'): Next('q8', 'B', 'S'),
+#                 ('q2', 'a'): Next('q4', 'a', 'R'),
+#                 ('q2', 'b'): Next('q4', 'b', 'R'),
+#                 ('q2', 'B'): Next('q8', 'B', 'S'),
+#                 ('q3', 'a'): Next('q3', 'a', 'R'),
+#                 ('q3', 'b'): Next('q3', 'b', 'R'),
+#                 ('q3', 'B'): Next('q5', 'B', 'L'),
+#                 ('q4', 'a'): Next('q4', 'a', 'R'),
+#                 ('q4', 'b'): Next('q4', 'b', 'R'),
+#                 ('q4', 'B'): Next('q6', 'B', 'L'),
+#                 ('q5', 'b'): Next('q7', 'B', 'L'),
                 
-#                 ('q6', 'b'): next('q7', 'B', 'L'),
-#                 ('q7', 'a'): next('q7', 'a', 'L'),
-#                 ('q7', 'b'): next('q7', 'b', 'L'),
-#                 ('q7', 'B'): next('q0', 'B', 'R')
+#                 ('q6', 'b'): Next('q7', 'B', 'L'),
+#                 ('q7', 'a'): Next('q7', 'a', 'L'),
+#                 ('q7', 'b'): Next('q7', 'b', 'L'),
+#                 ('q7', 'B'): Next('q0', 'B', 'R')
 
 #             },
 #             initial_state='q0',
@@ -847,18 +947,18 @@ controller = TuringMachineController()
 #             input_alphabet={'0', '1', '2', 'X', 'Y', 'B','Z'},
 #             tape_symbols={'0', '1', '2', 'X', 'Y', 'B','Z'},
 #             transitions={
-#                 ('q0', '0'): next('q1', 'X', 'R'),  # Step 1 change 0 to X
-#                 ('q0', 'Y'): next('q3', 'Y', 'R'),
-#                 ('q1', '0'): next('q1', '0', 'R'),
-#                 ('q1', '1'): next('q2', 'Y', 'L'),
-#                 ('q1', 'Y'): next('q1', 'Y', 'R'),
-#                 ('q2', '0'): next('q2', '0', 'L'),
-#                 ('q2', 'X'): next('q0', 'X', 'R'),
-#                 ('q2', 'Y'): next('q2', 'Y', 'L'),
-#                 ('q3', 'Y'): next('q3', 'Y', 'R'),
-#                 ('q3', 'B'): next('q4', 'B', 'S'),
+#                 ('q0', '0'): Next('q1', 'X', 'R'),  # Step 1 change 0 to X
+#                 ('q0', 'Y'): Next('q3', 'Y', 'R'),
+#                 ('q1', '0'): Next('q1', '0', 'R'),
+#                 ('q1', '1'): Next('q2', 'Y', 'L'),
+#                 ('q1', 'Y'): Next('q1', 'Y', 'R'),
+#                 ('q2', '0'): Next('q2', '0', 'L'),
+#                 ('q2', 'X'): Next('q0', 'X', 'R'),
+#                 ('q2', 'Y'): Next('q2', 'Y', 'L'),
+#                 ('q3', 'Y'): Next('q3', 'Y', 'R'),
+#                 ('q3', 'B'): Next('q4', 'B', 'S'),
 
-#                 ('q3', '2'): next('q4', '2', 'S')
+#                 ('q3', '2'): Next('q4', '2', 'S')
 #             },
 #             initial_state='q0',
 #             accept_states={'q4'},
@@ -869,10 +969,10 @@ controller = TuringMachineController()
 #             input_alphabet={'0', '1','2' , 'X', 'Y', 'B','Z'},
 #             tape_symbols={'0', '1','2', 'X', 'Y', 'B','Z'},
 #             transitions={
-#                 ('q0', 'X'): next('q0', 'X', 'R'),
-#                 ('q0', 'Y'): next('q0', 'Y', 'R'),
-#                 ('q0', '2'): next('q2', 'Z', 'R'),
-#                 ('q0', 'Z'): next('q0', 'Z', 'R')
+#                 ('q0', 'X'): Next('q0', 'X', 'R'),
+#                 ('q0', 'Y'): Next('q0', 'Y', 'R'),
+#                 ('q0', '2'): Next('q2', 'Z', 'R'),
+#                 ('q0', 'Z'): Next('q0', 'Z', 'R')
 #             },
 #             initial_state='q0',
 #             accept_states={'q2'},
@@ -936,12 +1036,12 @@ controller = TuringMachineController()
 #             input_alphabet={'0', '1','2'},
 #             tape_symbols={'0', '1', 'B','2'},
 #             transitions={
-#                 ('q0', '0'): next('q1', '1', 'R'),  # if encountered 0 put 1 and move right
-#                 ('q0', '1'): next('q0', '1', 'R'),  # if encountered 1 just move right
-#                 ('q0', 'B'): next('q1', 'B', 'S'),  # if encountered 1 just move right
-#                 ('q1', '0'): next('q1', '0', 'S'),  # after reaching q1 don't do anything
-#                 ('q1', '1'): next('q1', '1', 'S'),  # after reaching q1 don't do anything
-#                 ('q1', 'B'): next('q1', 'B', 'S'),  # after reaching q1 don't do anything
+#                 ('q0', '0'): Next('q1', '1', 'R'),  # if encountered 0 put 1 and move right
+#                 ('q0', '1'): Next('q0', '1', 'R'),  # if encountered 1 just move right
+#                 ('q0', 'B'): Next('q1', 'B', 'S'),  # if encountered 1 just move right
+#                 ('q1', '0'): Next('q1', '0', 'S'),  # after reaching q1 don't do anything
+#                 ('q1', '1'): Next('q1', '1', 'S'),  # after reaching q1 don't do anything
+#                 ('q1', 'B'): Next('q1', 'B', 'S'),  # after reaching q1 don't do anything
 #             },
 #             initial_state='q0',
 #             accept_states={'q1'},
@@ -952,12 +1052,12 @@ controller = TuringMachineController()
 #             input_alphabet={'0', '1'},
 #             tape_symbols={'0', '1', 'B'},
 #             transitions={
-#                 ('q0', '0'): next('q0', '0', 'R'),  # if encountered 0 just move right
-#                 ('q0', '1'): next('q1', '0', 'R'),  # if encountered 1 put 0 and move right
-#                 ('q0', 'B'): next('q1', 'B', 'S'),
-#                 ('q1', '0'): next('q1', '0', 'S'),  # after reaching q1 don't do anything
-#                 ('q1', '1'): next('q1', '1', 'S'),  # after reaching q1 don't do anything
-#                 ('q1', 'B'): next('q1', 'B', 'S'),  # after reaching q1 don't do anything
+#                 ('q0', '0'): Next('q0', '0', 'R'),  # if encountered 0 just move right
+#                 ('q0', '1'): Next('q1', '0', 'R'),  # if encountered 1 put 0 and move right
+#                 ('q0', 'B'): Next('q1', 'B', 'S'),
+#                 ('q1', '0'): Next('q1', '0', 'S'),  # after reaching q1 don't do anything
+#                 ('q1', '1'): Next('q1', '1', 'S'),  # after reaching q1 don't do anything
+#                 ('q1', 'B'): Next('q1', 'B', 'S'),  # after reaching q1 don't do anything
 
 #             },
 #             initial_state='q0',
@@ -988,16 +1088,16 @@ _0_pow_n_1_pow_n_TM = TuringMachine(
             input_alphabet={'0', '1'},
             tape_symbols={'0', '1', 'X', 'Y', 'B'},
             transitions={
-                ('q0', '0'): next('q1', 'X', 'R'),  # Step 1 change 0 to X
-                ('q0', 'Y'): next('q3', 'Y', 'R'),
-                ('q1', '0'): next('q1', '0', 'R'),
-                ('q1', '1'): next('q2', 'Y', 'L'),
-                ('q1', 'Y'): next('q1', 'Y', 'R'),
-                ('q2', '0'): next('q2', '0', 'L'),
-                ('q2', 'X'): next('q0', 'X', 'R'),
-                ('q2', 'Y'): next('q2', 'Y', 'L'),
-                ('q3', 'Y'): next('q3', 'Y', 'R'),
-                ('q3', 'B'): next('q4', 'B', 'L')
+                ('q0', '0'): Next('q1', 'X', 'R'),  # Step 1 change 0 to X
+                ('q0', 'Y'): Next('q3', 'Y', 'R'),
+                ('q1', '0'): Next('q1', '0', 'R'),
+                ('q1', '1'): Next('q2', 'Y', 'L'),
+                ('q1', 'Y'): Next('q1', 'Y', 'R'),
+                ('q2', '0'): Next('q2', '0', 'L'),
+                ('q2', 'X'): Next('q0', 'X', 'R'),
+                ('q2', 'Y'): Next('q2', 'Y', 'L'),
+                ('q3', 'Y'): Next('q3', 'Y', 'R'),
+                ('q3', 'B'): Next('q4', 'B', 'L')
             },
             initial_state='q0',
             accept_states={'q4'},

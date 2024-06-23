@@ -1,6 +1,6 @@
 from . import Challenge
 from . import CombinedTuringMachine
-from . import next
+from . import Next
 from . import IFTuringMachine
 from . import machine_run_state
 from . import TuringMachine
@@ -12,7 +12,7 @@ from . import MultiTapeTuringMachine
 __all__ = [
     'Challenge',
     'CombinedTuringMachine',
-    'next',
+    'Next',
     'IFTuringMachine',
     'machine_run_state',
     'TuringMachine',
