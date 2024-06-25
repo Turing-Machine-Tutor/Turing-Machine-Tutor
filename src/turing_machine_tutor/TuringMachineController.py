@@ -694,6 +694,7 @@ class TuringMachineController:
         print(data)
         print(json.dumps(data))
         response = requests.post(self.challenge_summary_url, data=json.dumps(data), headers=headers)
+        print("response is:  ",response.text)
         return response.text
     def submit(self):
         # if spreadsheet_url == None:
