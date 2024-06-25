@@ -23,7 +23,7 @@ class MultiTapeTuringMachine:
         self.tapes = [['B']] * num_tapes
         self.head_positions = [0] * num_tapes
         self.current_state = start_state
-
+        self.name = ""
         self.validate()
         
 
@@ -172,6 +172,7 @@ class MultiTapeTuringMachine:
         while condTransitionKeyFound and self.current_state not in self.accept_state and self.current_state not in self.reject_state:
             condTransitionKeyFound = self.step()[0]
         result = self.current_state in self.accept_state
+        print(f"TM: {self.name}")
         print(f"Result: {'Accepted' if result else 'Rejected'}")
         print("Final Tapes:")
         for i in range(self.num_tapes):
