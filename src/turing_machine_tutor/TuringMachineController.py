@@ -506,25 +506,37 @@ class TuringMachineController:
         return id_to_dicts,challenges
 
     def validate_submissions(self):
-         id_to_dicts,challenges=self.collect_machines_and_challenges()
-         for id in id_to_dicts:
-             print("results for id:  ", id, " is :")
-             for machine in id_to_dicts[id]:
-                 ##appened to the new sheet these things: id + result of self.validate_results_and_append_to_sheet(id_to_dicts[id][machine], challenges[machine])
-                 result=self.validate_results_and_append_to_sheet(id_to_dicts[id][machine], challenges[machine])
-                 print("machine_name:  ", machine)
-                 print(result)
+         password = input("Please enter password: ")
+         headers = {'Content-Type': 'application/json'}
+         data = {"password": password}
+         response = requests.post(self.authorizer_url, data=json.dumps(data), headers=headers)
+         if response.text=='access granted':
+             submit_row=[]
+             id_to_dicts,challenges=self.collect_machines_and_challenges()
+             for id in id_to_dicts:
+                submit_row += [id]
+                for machine in id_to_dicts[id]:
+                    result=self.validate_results(id_to_dicts[id][machine], challenges[machine])
+                    if result:
+                        submit_row += [machine,"Passed"]
+                    else:
+                        submit_row += [machine,"Failed"]
+                self.append_or_update_row_challenge_summary(submit_row)
+                submit_row=[]
+             print("DONE!, please preview the sheets.")
+         else :
+             print(response.text)
 
-    def validate_results_and_append_to_sheet(self,machine, challenge):
+    def validate_results(self, machine, challenge):
         function_object = challenge.function
         is_all_strings = lambda my_list: all(isinstance(item, str) and len(item) >= 1 for item in my_list)
         extreme_cases = challenge.edge_cases
         if (extreme_cases == None):
-            raise Exception("extreme_cases cannot be None")
+            return
         if ((not isinstance(extreme_cases, (list, set))) or not is_all_strings(extreme_cases)):
-            raise Exception("extreme_cases cannot contain a non string object")
+            return
         if (machine.get_input_alphabet() != challenge.get_input_alphabet()):
-            raise Exception("TM " + str(machine.name) + " alphabet must be " + str(challenge.get_input_alphabet()))
+            return
         # first test mustPass and mustFail#############################################################################################
         if challenge.mustPass != None:
             for case in challenge.mustPass:  ##test must pass cases
@@ -537,14 +549,11 @@ class TuringMachineController:
                 function_result = function_object(case)
                 if (final_machine_state == None):
                     if function_result == True:
-                        print(f"Validation failed for input: {case}")
                         ##append to the sheet that validates the challenge and the machine
                         return False
                     continue
                 is_in_acceptance_checker = machine.given_state_is_in_acceptance(final_machine_state.state)
                 if function_result != is_in_acceptance_checker:
-                    print(f"Validation failed for input: {case}")
-
                     return False
 
         if challenge.mustFail != None:
@@ -558,14 +567,10 @@ class TuringMachineController:
                 function_result = function_object(case)
                 if (final_machine_state == None):
                     if function_result == True:
-                        print(f"Validation failed for input: {case}")
-
                         return False
                     continue
                 is_in_acceptance_checker = machine.given_state_is_in_acceptance(final_machine_state.state)
                 if function_result != is_in_acceptance_checker:
-                    print(f"Validation failed for input: {case}")
-
                     return False
 
         ###############################################################################################################################
@@ -584,8 +589,6 @@ class TuringMachineController:
                 if (final_machine_state == None):
                     str_results = "func returned: " + str(function_result) + " TM returned: False"
                     if function_result != False:
-                        print(f"Validation failed for input: {input_string}" + " , " + str_results)
-
                         return False
                     continue
                 if (isinstance(machine, TuringMachine)):
@@ -598,8 +601,6 @@ class TuringMachineController:
                 if function_result != is_in_acceptance_checker:
                     str_results = "func returned: " + str(function_result) + " TM returned: " + str(
                         is_in_acceptance_checker)
-                    print(f"Validation failed for input: {input_string}" + " , " + str_results)
-
                     return False
         for extreme_case in extreme_cases:  ##test extreme cases
             final_machine_state = None
@@ -611,18 +612,11 @@ class TuringMachineController:
             function_result = function_object(extreme_case)
             if (final_machine_state == None):
                 if function_result != False:
-                    print(f"Validation failed for input: {extreme_case}")
-
                     return False
                 continue
             is_in_acceptance_checker = machine.given_state_is_in_acceptance(final_machine_state.state)
             if function_result != is_in_acceptance_checker:
-                print(f"Validation failed for input: {extreme_case}")
-
                 return False
-
-
-
         return True
 
     def add_challenge(self, turing_machine_name, input_alphabet, turing_machine_description, function_that_accepts_the_language_of_tm,
@@ -666,12 +660,16 @@ class TuringMachineController:
 
     # URL of your Google Apps Script web app
     web_app_url = 'https://script.google.com/macros/s/AKfycbw5fZTPDVxk1IGrMGQWA3F5ENLAsXI2QyOkht7drz6riJz1uKdbU0XLqUuW5S_My3n09g/exec'
-
-
+    authorizer_url='https://script.google.com/macros/s/AKfycbwN_-E2WO6zo-yqrQdT7CcssmtDK5hv2b2cs7nRL2iimrqUDU88G1mij13lXguZm0xo/exec'
+    challenge_summary_url='https://script.google.com/macros/s/AKfycbzHa83lNIFXtczQr5vw3gSUy9QwjfpfvcyLjoRRMLi0eB6NZLppzabaXHWIxJRri2b3/exec'
 
     def append_or_update_row(self, data):
         headers = {'Content-Type': 'application/json'}
         response = requests.post(self.web_app_url, data=json.dumps(data), headers=headers)
+        return response.text
+    def append_or_update_row_challenge_summary(self, data):
+        headers = {'Content-Type': 'application/json'}
+        response = requests.post(self.challenge_summary_url, data=json.dumps(data), headers=headers)
         return response.text
     def submit(self):
         # if spreadsheet_url == None:
