@@ -87,8 +87,8 @@ class MultiTapeTuringMachine:
             
 
     def initialize_tapes(self, inputs):
-        if(isinstance(item, str)):
-            for char in item:
+        if(isinstance(inputs, str)):
+            for char in inputs:
                 assert char in self.input_alphabet, f"Character '{char}' in string '{item}' is not in the input alphabet"
         else:
             assert isinstance(inputs, list), "Inputs is not a list"
