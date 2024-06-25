@@ -506,14 +506,29 @@ class TuringMachineController:
         return id_to_dicts,challenges
 
     def validate_submissions(self):
-         id_to_dicts,challenges=self.collect_machines_and_challenges()
-         for id in id_to_dicts:
-             print("results for id:  ", id, " is :")
-             for machine in id_to_dicts[id]:
-                 ##appened to the new sheet these things: id + result of self.validate_results_and_append_to_sheet(id_to_dicts[id][machine], challenges[machine])
-                 result=self.validate_results_and_append_to_sheet(id_to_dicts[id][machine], challenges[machine])
-                 print("machine_name:  ", machine)
-                 print(result)
+         password = input("Please enter password: ")
+         headers = {'Content-Type': 'application/json'}
+         response = requests.post(self.validate_submissions_url, data=password, headers=headers)
+         if response.text=='access granted':
+             result_dict={}
+             id_to_dicts,challenges=self.collect_machines_and_challenges()
+             for id in id_to_dicts:
+                result_dict['id']=id
+                print("results for id:  ", id, " is :")
+                for machine in id_to_dicts[id]:
+                    #append_or_update_row_challenge_summary
+                    ##appened to the new sheet these things: id + result of self.validate_results_and_append_to_sheet(id_to_dicts[id][machine], challenges[machine])
+                    result=self.validate_results_and_append_to_sheet(id_to_dicts[id][machine], challenges[machine])
+                    if result:
+                        result_dict[machine]="Passed"
+                    else:
+                        result_dict[machine] = "Failed"
+                    print("machine_name:  ", machine)
+                    print(result)
+                self.append_or_update_row_challenge_summary(result_dict)
+                result_dict={}
+         else :
+             print(response.text)
 
     def validate_results_and_append_to_sheet(self,machine, challenge):
         function_object = challenge.function
@@ -621,8 +636,6 @@ class TuringMachineController:
 
                 return False
 
-
-
         return True
 
     def add_challenge(self, turing_machine_name, input_alphabet, turing_machine_description, function_that_accepts_the_language_of_tm,
@@ -666,12 +679,16 @@ class TuringMachineController:
 
     # URL of your Google Apps Script web app
     web_app_url = 'https://script.google.com/macros/s/AKfycbw5fZTPDVxk1IGrMGQWA3F5ENLAsXI2QyOkht7drz6riJz1uKdbU0XLqUuW5S_My3n09g/exec'
-
-
+    validate_submissions_url='https://script.google.com/a/macros/post.bgu.ac.il/s/AKfycbzgnsBQdzgSQ_iH3-srnAeYzmSo4UNljFsx5LY1WPva_rdlF8f3xDVmb_au7CBK1huW/exec'
+    challenge_summary_url='https://script.google.com/a/macros/post.bgu.ac.il/s/AKfycbxDwJWswyAO6ySNzs8qOjP7Bd-qV49JrZBWSCvl09HOhBCwuQIeTq0K8S3sEjAChXw2/exec'
 
     def append_or_update_row(self, data):
         headers = {'Content-Type': 'application/json'}
         response = requests.post(self.web_app_url, data=json.dumps(data), headers=headers)
+        return response.text
+    def append_or_update_row_challenge_summary(self, data):
+        headers = {'Content-Type': 'application/json'}
+        response = requests.post(self.challenge_summary_url, data=json.dumps(data), headers=headers)
         return response.text
     def submit(self):
         # if spreadsheet_url == None:
