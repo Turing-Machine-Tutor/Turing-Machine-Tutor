@@ -515,25 +515,19 @@ class TuringMachineController:
              id_to_dicts,challenges=self.collect_machines_and_challenges()
              for id in id_to_dicts:
                 submit_row += [id]
-                print("results for id:  ", id, " is :")
                 for machine in id_to_dicts[id]:
-                    #append_or_update_row_challenge_summary
-                    ##appened to the new sheet these things: id + result of self.validate_results_and_append_to_sheet(id_to_dicts[id][machine], challenges[machine])
-                    result=self.validate_results_and_append_to_sheet(id_to_dicts[id][machine], challenges[machine])
+                    result=self.validate_results(id_to_dicts[id][machine], challenges[machine])
                     if result:
                         submit_row += [machine,"Passed"]
                     else:
                         submit_row += [machine,"Failed"]
-                    print("machine_name:  ", machine)
-                    print(result)
-
                 self.append_or_update_row_challenge_summary(submit_row)
-                return
                 submit_row=[]
+             print("DONE!, please preview the sheets.")
          else :
              print(response.text)
 
-    def validate_results_and_append_to_sheet(self,machine, challenge):
+    def validate_results(self, machine, challenge):
         function_object = challenge.function
         is_all_strings = lambda my_list: all(isinstance(item, str) and len(item) >= 1 for item in my_list)
         extreme_cases = challenge.edge_cases
@@ -691,10 +685,7 @@ class TuringMachineController:
         return response.text
     def append_or_update_row_challenge_summary(self, data):
         headers = {'Content-Type': 'application/json'}
-        print(data)
-        print(json.dumps(data))
         response = requests.post(self.challenge_summary_url, data=json.dumps(data), headers=headers)
-        print("response is:  ",response.text)
         return response.text
     def submit(self):
         # if spreadsheet_url == None:
