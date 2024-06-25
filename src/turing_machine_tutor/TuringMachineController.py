@@ -521,15 +521,15 @@ class TuringMachineController:
                     ##appened to the new sheet these things: id + result of self.validate_results_and_append_to_sheet(id_to_dicts[id][machine], challenges[machine])
                     result=self.validate_results_and_append_to_sheet(id_to_dicts[id][machine], challenges[machine])
                     if result:
-                        rsubmit_row += [machine,"Passed"]
+                        submit_row += [machine,"Passed"]
                     else:
-                        rsubmit_row += [machine,"Failed"]
+                        submit_row += [machine,"Failed"]
                     print("machine_name:  ", machine)
                     print(result)
 
-                self.append_or_update_row_challenge_summary(result_dict)
+                self.append_or_update_row_challenge_summary(submit_row)
                 return
-                result_dict={}
+                submit_row=[]
          else :
              print(response.text)
 
