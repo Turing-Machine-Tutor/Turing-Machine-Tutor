@@ -508,7 +508,8 @@ class TuringMachineController:
     def validate_submissions(self):
          password = input("Please enter password: ")
          headers = {'Content-Type': 'application/json'}
-         response = requests.post(self.validate_submissions_url, data=password, headers=headers)
+         data = {"password": password}
+         response = requests.post(self.validate_submissions_url, data=json.dumps(data), headers=headers)
          if response.text=='access granted':
              result_dict={}
              id_to_dicts,challenges=self.collect_machines_and_challenges()
