@@ -67,7 +67,7 @@ class Challenge:
         if((not isinstance(pass_list, (list,set))) or not is_all_strings(pass_list)):
             raise Exception("pass_list cannot contain a non string object")
         for l in pass_list:
-            if(self.function(l[0]) == l[1]):
+            if(self.function(l[0]) != l[1]):
                 raise Exception("the word: "+str(l)+", returned:"+ str(self.function(l[0]))+" instead of: "+ str(l[1]) +" with the challege's fucntion.")
         self.mustPass = pass_list
 
@@ -78,7 +78,7 @@ class Challenge:
         if((not isinstance(fail_list, (list,set))) or not is_all_strings(fail_list)):
             raise Exception("fail_list cannot contain a non string object")
         for l in fail_list:
-            if(self.function(l[0]) == l[1]):
+            if(self.function(l[0]) != l[1]):
                 raise Exception("the word: "+str(l)+", returned:"+ str(self.function(l[0]))+" instead of: "+ str(l[1]) +" with the challege's fucntion.")
         self.mustFail = fail_list
 
