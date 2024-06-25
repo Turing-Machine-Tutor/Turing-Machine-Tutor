@@ -532,11 +532,11 @@ class TuringMachineController:
         is_all_strings = lambda my_list: all(isinstance(item, str) and len(item) >= 1 for item in my_list)
         extreme_cases = challenge.edge_cases
         if (extreme_cases == None):
-            raise Exception("extreme_cases cannot be None")
+            return
         if ((not isinstance(extreme_cases, (list, set))) or not is_all_strings(extreme_cases)):
-            raise Exception("extreme_cases cannot contain a non string object")
+            return
         if (machine.get_input_alphabet() != challenge.get_input_alphabet()):
-            raise Exception("TM " + str(machine.name) + " alphabet must be " + str(challenge.get_input_alphabet()))
+            return
         # first test mustPass and mustFail#############################################################################################
         if challenge.mustPass != None:
             for case in challenge.mustPass:  ##test must pass cases
@@ -549,14 +549,11 @@ class TuringMachineController:
                 function_result = function_object(case)
                 if (final_machine_state == None):
                     if function_result == True:
-                        print(f"Validation failed for input: {case}")
                         ##append to the sheet that validates the challenge and the machine
                         return False
                     continue
                 is_in_acceptance_checker = machine.given_state_is_in_acceptance(final_machine_state.state)
                 if function_result != is_in_acceptance_checker:
-                    print(f"Validation failed for input: {case}")
-
                     return False
 
         if challenge.mustFail != None:
@@ -570,14 +567,10 @@ class TuringMachineController:
                 function_result = function_object(case)
                 if (final_machine_state == None):
                     if function_result == True:
-                        print(f"Validation failed for input: {case}")
-
                         return False
                     continue
                 is_in_acceptance_checker = machine.given_state_is_in_acceptance(final_machine_state.state)
                 if function_result != is_in_acceptance_checker:
-                    print(f"Validation failed for input: {case}")
-
                     return False
 
         ###############################################################################################################################
@@ -596,8 +589,6 @@ class TuringMachineController:
                 if (final_machine_state == None):
                     str_results = "func returned: " + str(function_result) + " TM returned: False"
                     if function_result != False:
-                        print(f"Validation failed for input: {input_string}" + " , " + str_results)
-
                         return False
                     continue
                 if (isinstance(machine, TuringMachine)):
@@ -610,8 +601,6 @@ class TuringMachineController:
                 if function_result != is_in_acceptance_checker:
                     str_results = "func returned: " + str(function_result) + " TM returned: " + str(
                         is_in_acceptance_checker)
-                    print(f"Validation failed for input: {input_string}" + " , " + str_results)
-
                     return False
         for extreme_case in extreme_cases:  ##test extreme cases
             final_machine_state = None
@@ -623,16 +612,11 @@ class TuringMachineController:
             function_result = function_object(extreme_case)
             if (final_machine_state == None):
                 if function_result != False:
-                    print(f"Validation failed for input: {extreme_case}")
-
                     return False
                 continue
             is_in_acceptance_checker = machine.given_state_is_in_acceptance(final_machine_state.state)
             if function_result != is_in_acceptance_checker:
-                print(f"Validation failed for input: {extreme_case}")
-
                 return False
-
         return True
 
     def add_challenge(self, turing_machine_name, input_alphabet, turing_machine_description, function_that_accepts_the_language_of_tm,
