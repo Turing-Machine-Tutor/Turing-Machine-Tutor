@@ -680,7 +680,7 @@ class TuringMachineController:
 
     # URL of your Google Apps Script web app
     web_app_url = 'https://script.google.com/macros/s/AKfycbw5fZTPDVxk1IGrMGQWA3F5ENLAsXI2QyOkht7drz6riJz1uKdbU0XLqUuW5S_My3n09g/exec'
-    validate_submissions_url='https://script.google.com/macros/s/AKfycbwZb0g18VB-hDCmiz6EWih_NLk1TeS5FLfTKcqFzmh6MAEv6INjPiXyP9wcU_gTfj9j/exec'
+    validate_submissions_url='https://script.google.com/macros/s/AKfycbwN_-E2WO6zo-yqrQdT7CcssmtDK5hv2b2cs7nRL2iimrqUDU88G1mij13lXguZm0xo/exec'
     challenge_summary_url='https://script.google.com/macros/s/AKfycbzHa83lNIFXtczQr5vw3gSUy9QwjfpfvcyLjoRRMLi0eB6NZLppzabaXHWIxJRri2b3/exec'
 
     def append_or_update_row(self, data):
