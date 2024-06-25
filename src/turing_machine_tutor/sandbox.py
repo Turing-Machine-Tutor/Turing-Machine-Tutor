@@ -1088,7 +1088,7 @@ controller.add_turing_machine("multi", tm3)
 #controller.run_turing_machine("multi", inputs)
 #controller.run_turing_machine("multi", inputs)
 #tm2.visualize(['1101', ''],1)
-controller.visualize("multi", inputs)
+controller.visualize_step_by_step("multi", inputs)
 
 
 # def binReplaceFunc(bin_str):

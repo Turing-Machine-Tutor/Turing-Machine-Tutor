@@ -143,7 +143,7 @@ class TuringMachineController:
 
         while user_input.lower() !="stop":
             clear_output(wait=True)
-            step_counter=self.display_step_at_index(steps,index,step_counter,0)
+            step_counter=self.display_step_at_index(steps,index,step_counter)
             if(step_counter==-1):
                 return
             user_input = input("Press Enter to continue or type 'stop' to end: ")
@@ -153,19 +153,19 @@ class TuringMachineController:
 
 
 
-    def display_step_at_index(self, steps,index,step_counter,delay=1):
+    def display_step_at_index(self, steps,index,step_counter):
         if (isinstance(steps[index], str)):
             if index<len(steps)-1:
+                clear_output(wait=True)
                 print(steps[index])
                 time.sleep(1)
-                clear_output(wait=True)
                 return step_counter + 1
             else:
+                clear_output(wait=True)
                 print(steps[index])
                 time.sleep(1)
-                clear_output(wait=True)
                 return -1
-        self.print_step(steps[index], step_counter, delay)
+        self.print_step(steps[index], step_counter)
         #clear_output(wait=True)
         return step_counter + 1
 
