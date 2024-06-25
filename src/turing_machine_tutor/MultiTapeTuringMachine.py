@@ -111,10 +111,10 @@ class MultiTapeTuringMachine:
                 for char in item:
                     assert char in self.input_alphabet, f"Character '{char}' in string '{item}' is not in the input alphabet"
                 
-            self.current_state = self.start_state
-            for i in range(self.num_tapes):
-                self.tapes[i] = list(inputs[i]) + ['B']
-                self.head_positions[i] = 0
+        self.current_state = self.start_state
+        for i in range(self.num_tapes):
+            self.tapes[i] = list(inputs[i]) + ['B']
+            self.head_positions[i] = 0
 
     def step(self):
         symbols = tuple(self.tapes[i][self.head_positions[i]] for i in range(self.num_tapes))
