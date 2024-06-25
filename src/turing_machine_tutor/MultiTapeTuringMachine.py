@@ -81,6 +81,7 @@ class MultiTapeTuringMachine:
                 # assert call_state in self.states, "Call state must be in the set of states"
                 return_state = transition.return_state
                 assert return_state in self.states, "return state must be in the set of states"
+                tm.name = TM_name
                 self.tms_dic[TM_name] = tm
             else:
                 raise Exception("All Transition values should be MultiNext/Call_Turing_Machine objects")
