@@ -526,7 +526,9 @@ class TuringMachineController:
                         result_dict[machine] = "Failed"
                     print("machine_name:  ", machine)
                     print(result)
+
                 self.append_or_update_row_challenge_summary(result_dict)
+                return
                 result_dict={}
          else :
              print(response.text)
@@ -689,6 +691,8 @@ class TuringMachineController:
         return response.text
     def append_or_update_row_challenge_summary(self, data):
         headers = {'Content-Type': 'application/json'}
+        print(data)
+        print(json.dumps(data))
         response = requests.post(self.challenge_summary_url, data=json.dumps(data), headers=headers)
         return response.text
     def submit(self):
