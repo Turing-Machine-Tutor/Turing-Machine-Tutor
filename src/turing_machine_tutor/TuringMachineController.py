@@ -679,8 +679,8 @@ class TuringMachineController:
 
     # URL of your Google Apps Script web app
     web_app_url = 'https://script.google.com/macros/s/AKfycbw5fZTPDVxk1IGrMGQWA3F5ENLAsXI2QyOkht7drz6riJz1uKdbU0XLqUuW5S_My3n09g/exec'
-    validate_submissions_url='https://script.google.com/a/macros/post.bgu.ac.il/s/AKfycbweE8tYTMvCQEg93vMnsjmbgQSlIAJz8ANf4lN7uQ_jkg8kDqGMpHlxJA7MSmYpNRU/exec'
-    challenge_summary_url='https://script.google.com/a/macros/post.bgu.ac.il/s/AKfycbxDwJWswyAO6ySNzs8qOjP7Bd-qV49JrZBWSCvl09HOhBCwuQIeTq0K8S3sEjAChXw2/exec'
+    validate_submissions_url='https://script.google.com/macros/s/AKfycbyyjFCXbhrOPLFJ7Zvq97qLTEuF241tRXK7qQi7rZYEz0Gawimwwgs1yzmn5-1KhfTn/exec'
+    challenge_summary_url='https://script.google.com/macros/s/AKfycbxUDnzH2Asr1JlwQknDAjLoccM0YhGx101Ffz3ngcCh2MRFlHr-78iOODwD0NhNiyDS/exec'
 
     def append_or_update_row(self, data):
         headers = {'Content-Type': 'application/json'}
