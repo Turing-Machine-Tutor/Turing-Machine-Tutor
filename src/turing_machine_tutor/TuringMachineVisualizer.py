@@ -205,4 +205,5 @@ class TuringMachineVisualizer:
             
         steps = display(steps)
         steps += ["Turing Machine Halted"]
+        clear_output(wait=True)
         return steps
