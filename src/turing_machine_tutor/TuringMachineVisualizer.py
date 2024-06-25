@@ -22,7 +22,8 @@ class TuringMachineVisualizer:
             raise Exception("TM cannot be Not (TuringMachine / IFTuringMachine / CombinedTuringMachine / ConcatenateTM / WhileTuringMachine / MultiTapeTuringMachine) Object")
         self.tm = turing_machine
         self.steps = [] ##type is Machine_Run_State
-
+        self.originTM = None
+        self.editedIndexes = None
 
     def run_and_visualize(self, input_string, max_steps=10,head_position=0):
         if(isinstance(self.tm, MultiTapeTuringMachine)):
@@ -178,11 +179,26 @@ class TuringMachineVisualizer:
         steps = []
         def display(steps):
             st = ""
-            for i in range(self.tm.num_tapes):
-                tape = ''.join(self.tm.tapes[i])
-                head_position = self.tm.head_positions[i]
-                st += f"Tape {i+1}: {tape}\n " + " " * (head_position + 7) + "^\n"
-                # st += f"head_position = {head_position}\n" # used for fixing a bug
+            if self.originTM == None:
+                for i in range(self.tm.num_tapes):
+                    tape = ''.join(self.tm.tapes[i])
+                    head_position = self.tm.head_positions[i]
+                    st += f"Tape {i+1}: {tape}\n " + " " * (head_position + 7) + "^\n"
+                    # st += f"head_position = {head_position}\n" # used for fixing a bug
+            else:
+                index = 0
+                for i in range(self.originTM.num_tapes):
+                    if i in self.editedIndexes:
+                        tape = ''.join(self.tm.tapes[index])
+                        head_position = self.tm.head_positions[index]
+                        st += f"Tape {i+1}: {tape}\n " + " " * (head_position + 7) + "^\n"
+                        # st += f"head_position = {head_position}\n" # used for fixing a bug 
+                        index += 1
+                    else:
+                        tape = ''.join(self.originTM.tapes[i])
+                        head_position = self.originTM.head_positions[i]
+                        st += f"Tape {i+1}: {tape}\n " + " " * (head_position + 7) + "^\n"
+             
             st += f"Current State: {self.tm.current_state}\n"
             st += "\n" + "-"*50 + "\n"
             steps += [str(st)]
@@ -200,12 +216,16 @@ class TuringMachineVisualizer:
                 steps += ["switching to TM: "+condTransitionKeyFound[1]+"\nPassing the tapes number: "+s]
                 visualizer1 =TuringMachineVisualizer(condTransitionKeyFound[2])
                 visualizer1.tm.flag = True
+                visualizer1.originTM = self.tm
+                visualizer1.editedIndexes = condTransitionKeyFound[4][:]
                 index = 0
                 for i in condTransitionKeyFound[4]:
                     visualizer1.tm.head_positions[index] = condTransitionKeyFound[5][index]
                     index += 1
                 steps1 = visualizer1.run_and_visualize(condTransitionKeyFound[3],5000)
                 visualizer1.tm.flag = None
+                visualizer1.originTM = None
+                visualizer1.editedIndexes = None
                 steps += steps1
                 steps += ["returning to TM: "+self.tm.name+"\nUpdating the tapes number: "+s]
             condTransitionKeyFound = condTransitionKeyFound[0]
