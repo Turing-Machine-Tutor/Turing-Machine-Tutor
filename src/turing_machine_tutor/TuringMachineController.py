@@ -509,7 +509,7 @@ class TuringMachineController:
          password = input("Please enter password: ")
          headers = {'Content-Type': 'application/json'}
          data = {"password": password}
-         response = requests.post(self.validate_submissions_url, data=json.dumps(data), headers=headers)
+         response = requests.post(self.authorizer_url, data=json.dumps(data), headers=headers)
          if response.text=='access granted':
              submit_row=[]
              id_to_dicts,challenges=self.collect_machines_and_challenges()
@@ -676,7 +676,7 @@ class TuringMachineController:
 
     # URL of your Google Apps Script web app
     web_app_url = 'https://script.google.com/macros/s/AKfycbw5fZTPDVxk1IGrMGQWA3F5ENLAsXI2QyOkht7drz6riJz1uKdbU0XLqUuW5S_My3n09g/exec'
-    validate_submissions_url='https://script.google.com/macros/s/AKfycbwN_-E2WO6zo-yqrQdT7CcssmtDK5hv2b2cs7nRL2iimrqUDU88G1mij13lXguZm0xo/exec'
+    authorizer_url='https://script.google.com/macros/s/AKfycbwN_-E2WO6zo-yqrQdT7CcssmtDK5hv2b2cs7nRL2iimrqUDU88G1mij13lXguZm0xo/exec'
     challenge_summary_url='https://script.google.com/macros/s/AKfycbzHa83lNIFXtczQr5vw3gSUy9QwjfpfvcyLjoRRMLi0eB6NZLppzabaXHWIxJRri2b3/exec'
 
     def append_or_update_row(self, data):
