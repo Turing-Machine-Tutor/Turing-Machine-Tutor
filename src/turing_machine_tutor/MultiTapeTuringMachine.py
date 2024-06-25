@@ -138,7 +138,7 @@ class MultiTapeTuringMachine:
                     elif directions[i] == 'L':
                         self.head_positions[i] -= 1
                     if self.head_positions[i] < 0:
-                        self.tapes[i].insert(0, 'B')
+                        #self.tapes[i].insert(0, 'B') # turing machine is infinte only on the right side
                         self.head_positions[i] = 0
                     if self.head_positions[i] >= len(self.tapes[i]):
                         self.tapes[i].append('B')
