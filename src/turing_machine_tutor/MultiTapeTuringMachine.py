@@ -87,20 +87,24 @@ class MultiTapeTuringMachine:
             
 
     def initialize_tapes(self, inputs):
-        assert isinstance(inputs, list), "Input is not a list"
-        # Check if the list has a minimum length of 1
-        assert len(inputs) >= 1, "List length is less than 1"
-        assert len(inputs) <= self.num_tapes, "inputs number should be smaller or equal to num_tapes"
-        # Check if all elements in the list are strings
-        assert all(isinstance(item, str) for item in inputs), "Not all elements in the list are strings"
-        for item in inputs:
+        if(isinstance(item, str)):
             for char in item:
                 assert char in self.input_alphabet, f"Character '{char}' in string '{item}' is not in the input alphabet"
-            
-        self.current_state = self.start_state
-        for i in range(self.num_tapes):
-            self.tapes[i] = list(inputs[i]) + ['B']
-            self.head_positions[i] = 0
+        else:
+            assert isinstance(inputs, list), "Inputs is not a list"
+            # Check if the list has a minimum length of 1
+            assert len(inputs) >= 1, "List length is less than 1"
+            assert len(inputs) <= self.num_tapes, "inputs number should be smaller or equal to num_tapes"
+            # Check if all elements in the list are strings
+            assert all(isinstance(item, str) or item == '' for item in inputs), "Not all elements in the list are strings"
+            for item in inputs:
+                for char in item:
+                    assert char in self.input_alphabet, f"Character '{char}' in string '{item}' is not in the input alphabet"
+                
+            self.current_state = self.start_state
+            for i in range(self.num_tapes):
+                self.tapes[i] = list(inputs[i]) + ['B']
+                self.head_positions[i] = 0
 
     def step(self):
         symbols = tuple(self.tapes[i][self.head_positions[i]] for i in range(self.num_tapes))
