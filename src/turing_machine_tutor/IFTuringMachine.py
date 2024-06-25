@@ -11,7 +11,10 @@ class IFTuringMachine:
         #self.ifName = ""
         self.setThenTM(ThenTM, thenName)
         #self.thenName = ""
-        self.setElseTM(elseTM, elsename)
+        try:
+            self.setElseTM(elseTM, elsename)
+        except:
+            pass
         #self.elseName = ""
         self.resultTM = None
 
@@ -61,6 +64,7 @@ class IFTuringMachine:
         if(self.thenTm == None or (not isinstance(self.thenTm, TuringMachine))):
             raise Exception("Cannot run, Missing Then TM. Please Use SetThentm to set the turing machine")
         # first run ifTm
+        self.resultTM = self.thenTm
         machine_run_state = self.ifTm.run(input_str)
         if (machine_run_state.state in self.ifTm.accept_states):
             # then run thenTm
