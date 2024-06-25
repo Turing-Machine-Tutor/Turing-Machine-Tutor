@@ -511,19 +511,19 @@ class TuringMachineController:
          data = {"password": password}
          response = requests.post(self.validate_submissions_url, data=json.dumps(data), headers=headers)
          if response.text=='access granted':
-             result_dict={}
+             submit_row=[]
              id_to_dicts,challenges=self.collect_machines_and_challenges()
              for id in id_to_dicts:
-                result_dict['id']=id
+                submit_row += [id]
                 print("results for id:  ", id, " is :")
                 for machine in id_to_dicts[id]:
                     #append_or_update_row_challenge_summary
                     ##appened to the new sheet these things: id + result of self.validate_results_and_append_to_sheet(id_to_dicts[id][machine], challenges[machine])
                     result=self.validate_results_and_append_to_sheet(id_to_dicts[id][machine], challenges[machine])
                     if result:
-                        result_dict[machine]="Passed"
+                        rsubmit_row += [machine,"Passed"]
                     else:
-                        result_dict[machine] = "Failed"
+                        rsubmit_row += [machine,"Failed"]
                     print("machine_name:  ", machine)
                     print(result)
 
