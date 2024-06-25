@@ -1063,8 +1063,8 @@ tm2 = MultiTapeTuringMachine(
 inputs = ['1101', '']
 #result = tm.run(inputs)
 controller.add_turing_machine("multi", tm2)
+#controller.run_turing_machine("multi", inputs)
 controller.run_turing_machine("multi", inputs)
-
 #tm2.visualize(['1101', ''],1)
 # controller.visualize("multi", inputs)
 
@@ -1204,37 +1204,37 @@ controller.run_turing_machine("multi", inputs)
 
 
 
-cond = TuringMachine( # 1 occurences in tape is more than 2
-            states={'q0', 'q1', 'qa', 'qr'},
-            input_alphabet={'0', '1'},
-            tape_symbols={'0', '1', 'B'},
-            transitions={
-                ('q0', '0'): Next('q0', '0', 'R'),
-                ('q0', '1'): Next('q1', '1', 'R'),
-                ('q0', 'B'): Next('qr', 'B', 'S'),
-                ('q1', '0'): Next('q0', '0', 'R'),
-                ('q1', '1'): Next('qa', '1', 'R'),
-                ('q1', 'B'): Next('qr', 'B', 'S'),
-            },
-            initial_state='q0',
-            accept_states={'qa'},
-            reject_states={'qr'}
-        )
-do = TuringMachine( # replace the first 1 to 0
-            states={'q0', 'q1', 'qa', 'qr'},
-            input_alphabet={'0', '1'},
-            tape_symbols={'0', '1', 'B'},
-            transitions={
-                ('q0', '0'): Next('q0', '0', 'R'),
-                ('q0', '1'): Next('qa', '0', 'R'),
-                ('q0', 'B'): Next('qr', 'B', 'S') 
-            },
-            initial_state='q0',
-            accept_states={'qa'},
-            reject_states={'qr'}
-        )
+# cond = TuringMachine( # 1 occurences in tape is more than 2
+#             states={'q0', 'q1', 'qa', 'qr'},
+#             input_alphabet={'0', '1'},
+#             tape_symbols={'0', '1', 'B'},
+#             transitions={
+#                 ('q0', '0'): Next('q0', '0', 'R'),
+#                 ('q0', '1'): Next('q1', '1', 'R'),
+#                 ('q0', 'B'): Next('qr', 'B', 'S'),
+#                 ('q1', '0'): Next('q0', '0', 'R'),
+#                 ('q1', '1'): Next('qa', '1', 'R'),
+#                 ('q1', 'B'): Next('qr', 'B', 'S'),
+#             },
+#             initial_state='q0',
+#             accept_states={'qa'},
+#             reject_states={'qr'}
+#         )
+# do = TuringMachine( # replace the first 1 to 0
+#             states={'q0', 'q1', 'qa', 'qr'},
+#             input_alphabet={'0', '1'},
+#             tape_symbols={'0', '1', 'B'},
+#             transitions={
+#                 ('q0', '0'): Next('q0', '0', 'R'),
+#                 ('q0', '1'): Next('qa', '0', 'R'),
+#                 ('q0', 'B'): Next('qr', 'B', 'S') 
+#             },
+#             initial_state='q0',
+#             accept_states={'qa'},
+#             reject_states={'qr'}
+#         )
 
-whileTM = WhileTuringMachine("1 occurences in tape is more than 2", cond, "replace 1 to 0", do)
-controller.add_turing_machine("whileTM", whileTM)
+# whileTM = WhileTuringMachine("1 occurences in tape is more than 2", cond, "replace 1 to 0", do)
+# controller.add_turing_machine("whileTM", whileTM)
 
-controller.run_turing_machine('whileTM', "1011001")
+# controller.run_turing_machine('whileTM', "1011001")

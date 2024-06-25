@@ -87,16 +87,25 @@ class MultiTapeTuringMachine:
             
 
     def initialize_tapes(self, inputs):
+
         if(isinstance(inputs, str)):
             for char in inputs:
                 assert char in self.input_alphabet, f"Character '{char}' in string '{item}' is not in the input alphabet"
         else:
             assert isinstance(inputs, list), "Inputs is not a list"
+            if(isinstance(inputs[0], list)):
+                new_inputs = []
+                for x in inputs:
+                    st = ""
+                    for y in x:
+                        st += y
+                    new_inputs.append(st)
+                inputs = new_inputs
             # Check if the list has a minimum length of 1
             assert len(inputs) >= 1, "List length is less than 1"
             assert len(inputs) <= self.num_tapes, "inputs number should be smaller or equal to num_tapes"
             # Check if all elements in the list are strings
-            assert all(isinstance(item, str) or item == '' for item in inputs), "Not all elements in the list are strings"
+            assert all(isinstance(item, str) for item in inputs), "Not all elements in the list are strings"
             for item in inputs:
                 for char in item:
                     assert char in self.input_alphabet, f"Character '{char}' in string '{item}' is not in the input alphabet"
