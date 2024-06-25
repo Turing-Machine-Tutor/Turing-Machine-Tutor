@@ -142,7 +142,7 @@ class TuringMachineController:
                     steps.remove(s)
 
         while user_input.lower() !="stop":
-            clear_output(wait=True)
+            
             step_counter=self.display_step_at_index(steps,index,step_counter)
             if(step_counter==-1):
                 return
