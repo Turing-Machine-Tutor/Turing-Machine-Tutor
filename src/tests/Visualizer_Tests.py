@@ -118,7 +118,6 @@ class TuringMachineVisualizer_Tests(unittest.TestCase):
         self.assertEquals(1,1)
 
     def test_run_and_visualize_if_condition_enters_then(self):
-        if_machine = IFTuringMachine()  # if first letter is 1 then convert first 0 to 1 else convert first 1 to 0
         ifcond_machine = TuringMachine(  ## if first letter is 1
             states={'q0', 'q1', 'q2'},
             input_alphabet={'0', '1'},
@@ -166,9 +165,10 @@ class TuringMachineVisualizer_Tests(unittest.TestCase):
             accept_states={'q1'},
             reject_states={'q2'}
         )
-        if_machine.setIfTM(ifcond_machine, "ifcond")
-        if_machine.setThenTM(simple_turing_machine_1, "convert_0_to_1")
-        if_machine.setElseTM(simple_turing_machine_2, "convert_1_to_0")
+        if_machine = IFTuringMachine("idcond", ifcond_machine, "convert_0_to_1", simple_turing_machine_1, "convert_1_to_0", simple_turing_machine_2)  # if first letter is 1 then convert first 0 to 1 else convert first 1 to 0
+        # if_machine.setIfTM(ifcond_machine, "ifcond")
+        # if_machine.setThenTM(simple_turing_machine_1, "convert_0_to_1")
+        # if_machine.setElseTM(simple_turing_machine_2, "convert_1_to_0")
         visualizer = TuringMachineVisualizer(if_machine)
         steps = visualizer.run_and_visualize("01", 5000)
         print(steps)

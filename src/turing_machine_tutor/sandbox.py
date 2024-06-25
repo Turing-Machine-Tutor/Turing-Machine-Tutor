@@ -2,18 +2,19 @@ import inspect
 import os
 import sys
 # Add the parent directory of mypackage to the Python path
-from turing_machine_tutor.Challenge import Challenge
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
-
+from turing_machine_tutor.Challenge import Challenge
 from turing_machine_tutor.CombinedTuringMachine import CombinedTuringMachine
 from turing_machine_tutor.TuringMachine import TuringMachine
 from turing_machine_tutor.TuringMachineController import TuringMachineController
 from turing_machine_tutor.Next import Next
+from turing_machine_tutor.MultiNext import MultiNext
 from turing_machine_tutor.IFTuringMachine import IFTuringMachine
 from turing_machine_tutor.WhileTuringMachine import WhileTuringMachine
 from turing_machine_tutor.ConcatenateTM import ConcatenateTM
 from turing_machine_tutor.MultiTapeTuringMachine import MultiTapeTuringMachine
+from turing_machine_tutor.Call_Turing_Machine import Call_Turing_Machine
 
 
 
@@ -106,19 +107,24 @@ from turing_machine_tutor.MultiTapeTuringMachine import MultiTapeTuringMachine
 # # # print(anbn_turing_machine.given_state_is_in_acceptance(mrs.state))
 
 
-def is_0n1n(input_str):
-    stack = []
-
-    for symbol in input_str:
-        if symbol == '0':
-            stack.append('0')
-        elif symbol == '1':
-            if not stack:
-                return False  # There are more '1's than '0's
-            stack.pop()
-        else:
-            return False  # Invalid symbol
-
+def is_0n1n(s):
+    if(len(s) < 2):
+        return False
+    elif(len(s) == 2 and s != "01"):
+        return False
+    elif(len(s) == 2 and s == "01"):
+        return True
+    st = s.split('01')
+    if(len(st) != 2):
+        return False
+    if(len(st[0]) != len(st[1])):
+        return False
+    for i in st[0]:
+        if i != '0':
+            return False
+    for i in st[1]:
+        if i != '1':
+            return False
     return True
 
 # #
@@ -766,17 +772,17 @@ tm_string = '''TuringMachine(
     reject_states={'q2'}
 )'''
 
-tm_object = eval(tm_string)
-ok=tm_object.run("ab$ab")
-exec(function_string)
+# tm_object = eval(tm_string)
+# ok=tm_object.run("ab$ab")
+# exec(function_string)
 
-function_name = controller.extract_func_name(function_string)
-function_object = globals()[function_name]
+# function_name = controller.extract_func_name(function_string)
+# function_object = globals()[function_name]
 
-print(is_wDw("ab$ab"))
-ok=Challenge("d",{"d"},"d",function_object,{'a'},function_string)
+# print(is_wDw("ab$ab"))
+# ok=Challenge("d",{"d"},"d",function_object,{'a'},function_string)
 
-print(69)
+# print(69)
 
 # ifTm = TuringMachine(  # condition if input legth is less than 4 accept else reject
 #         states={'q0', 'q1', 'q2', 'q3', 'q4', 'q5', 'q6'},
@@ -1001,32 +1007,111 @@ print(69)
 # tape_alphabet = {'0', '1', 'B'}
 # transition_function = {
 #     # (current_state, tape1_symbol, tape2_symbol): (new_state, tape1_new_symbol, tape2_new_symbol, direction1, direction2)
-#     ('q0', '0', 'B'): ('q1', '0', '0', 'R', 'R'),
-#     ('q0', '1', 'B'): ('q1', '1', '1', 'R', 'R'),
-#     ('q0', 'B', 'B'): ('qa', 'B', 'B', 'S', 'S'),
+#     ('q0', '0', 'B'): MultiNext('q1', '0', '0', 'R', 'R'),
+#     ('q0', '1', 'B'): MultiNext('q1', '1', '1', 'R', 'R'),
+#     ('q0', 'B', 'B'): MultiNext('qa', 'B', 'B', 'S', 'S'),
 
-#     ('q1', '0', 'B'): ('q1', '0', '0', 'R', 'R'),
-#     ('q1', '1', 'B'): ('q1', '1', '1', 'R', 'R'),
-#     ('q1', 'B', 'B'): ('qa', 'B', 'B', 'S', 'S'),
+#     ('q1', '0', 'B'): MultiNext('q1', '0', '0', 'R', 'R'),
+#     ('q1', '1', 'B'): MultiNext('q1', '1', '1', 'R', 'R'),
+#     ('q1', 'B', 'B'): MultiNext('qa', 'B', 'B', 'S', 'S'),
 # }
 # start_state = 'q0'
-# accept_state = 'qa'
-# reject_state = 'qr'
+# accept_state = {'qa'}
+# reject_state = {'qr'}
 
-# tm = MultiTapeTuringMachine(
-#     states=states,
-#     input_alphabet=input_alphabet,
-#     tape_alphabet=tape_alphabet,
-#     transition_function=transition_function,
-#     start_state=start_state,
-#     accept_state=accept_state,
-#     reject_state=reject_state,
+
+
+
+# tm1 = MultiTapeTuringMachine(
+#     states={'q0', 'q1', 'q2', 'qa', 'qr'},
+#     input_alphabet={'0', '1'},
+#     tape_alphabet={'0', '1', 'B'},
+#     transition_function= {
+#     # (current_state, tape1_symbol, tape2_symbol): (new_state, tape1_new_symbol, tape2_new_symbol, direction1, direction2)
+#     ('q0', '0'): MultiNext('q0', '1', 'R'),
+#     ('q0', '1'): MultiNext('q0',  '0', 'R'),
+#     ('q0', 'B'): MultiNext('qa',  'B', 'S')
+# },
+#     start_state='q0',
+#     accept_state={'qa'},
+#     reject_state={'qr'},
+#     num_tapes=1
+# )
+
+# tm2 = MultiTapeTuringMachine(
+#     states={'q0', 'q1', 'q2', 'qa', 'qr'},
+#     input_alphabet={'0', '1'},
+#     tape_alphabet={'0', '1', 'B'},
+#     transition_function= {
+#     # (current_state, tape1_symbol, tape2_symbol): (new_state, tape1_new_symbol, tape2_new_symbol, direction1, direction2)
+#     ('q0', '0', 'B'): MultiNext('q1', '0', '0', 'R', 'R'),
+#     ('q0', '1', 'B'): MultiNext('q1', '1', '1', 'R', 'R'),
+#     ('q0', 'B', 'B'): MultiNext('qa', 'B', 'B', 'S', 'S'),
+
+#     ('q1', '0', 'B'): MultiNext('q1', '0', '0', 'R', 'R'),
+#     ('q1', '1', 'B'): MultiNext('q1', '1', '1', 'R', 'R'),
+#     ('q1', 'B', 'B'): MultiNext('q2', 'B', 'B', 'S', 'S'),
+#     ('q2', 'B', 'B') : Call_Turing_Machine("replace 0 and 1", tm1, [1], 'qa')
+# },
+#     start_state='q0',
+#     accept_state={'qa'},
+#     reject_state={'qr'},
 #     num_tapes=2
 # )
 
+
 # inputs = ['1101', '']
-# result = tm.run(inputs)
-# tm.visualize(['1101', ''],10)
+# #result = tm.run(inputs)
+# controller.add_turing_machine("multi", tm2)
+# controller.run_turing_machine("multi", inputs)
+
+# #tm2.visualize(['1101', ''],1)
+# controller.visualize("multi", inputs)
+
+
+# def binReplaceFunc(bin_str):
+#     res = ""
+#     if(bin_str == ""):
+#         return ""
+#     for x in bin_str:
+#         if x == "1":
+#             res += '0'
+#         elif x == "0":
+#             res += '1'
+#     return res
+
+
+# controller.add_challenge('addbin', {'0','1'}, "bin add", binReplaceFunc, {"111"})
+
+
+
+# tm3 = MultiTapeTuringMachine(
+#     states={'q0', 'q1', 'qa', 'qr'},
+#     input_alphabet={'0', '1'},
+#     tape_alphabet={'0', '1', 'B'},
+#     transition_function= {
+#     # (current_state, tape1_symbol, tape2_symbol): (new_state, tape1_new_symbol, tape2_new_symbol, direction1, direction2)
+#     ('q0', '0'): MultiNext('q0', '1', 'R'),
+#     ('q0', '1'): MultiNext('q0',  '0', 'R'),
+#     ('q0', 'B'): MultiNext('qa',  'B', 'L')
+# },
+#     start_state='q0',
+#     accept_state={'qa'},
+#     reject_state={'qr'},
+#     num_tapes=1
+# )
+
+
+# # turing machine increments number 1
+
+# controller.add_turing_machine("addbin", tm3, "tape")
+
+# #controller.run_turing_machine("addbin", ["1"])
+
+# #controller.visualize("addbin", ["1"])
+
+# controller.validate_turing_machineTA("addbin")
+
 
 
 #####################################################################################
@@ -1083,29 +1168,34 @@ print(69)
 
 #####################################################################
 
-_0_pow_n_1_pow_n_TM = TuringMachine(
-            states={'q0', 'q1', 'q2', 'q3', 'q4', 'q5'},
-            input_alphabet={'0', '1'},
-            tape_symbols={'0', '1', 'X', 'Y', 'B'},
-            transitions={
-                ('q0', '0'): Next('q1', 'X', 'R'),  # Step 1 change 0 to X
-                ('q0', 'Y'): Next('q3', 'Y', 'R'),
-                ('q1', '0'): Next('q1', '0', 'R'),
-                ('q1', '1'): Next('q2', 'Y', 'L'),
-                ('q1', 'Y'): Next('q1', 'Y', 'R'),
-                ('q2', '0'): Next('q2', '0', 'L'),
-                ('q2', 'X'): Next('q0', 'X', 'R'),
-                ('q2', 'Y'): Next('q2', 'Y', 'L'),
-                ('q3', 'Y'): Next('q3', 'Y', 'R'),
-                ('q3', 'B'): Next('q4', 'B', 'L')
-            },
-            initial_state='q0',
-            accept_states={'q4'},
-            reject_states={'q5'}
-        )
+# _0_pow_n_1_pow_n_TM = TuringMachine(
+#             states={'q0', 'q1', 'q2', 'q3', 'q4', 'q5'},
+#             input_alphabet={'0', '1'},
+#             tape_symbols={'0', '1', 'X', 'Y', 'B'},
+#             transitions={
+#                 ('q0', '0'): Next('q1', 'X', 'R'),  # Step 1 change 0 to X
+#                 ('q0', 'Y'): Next('q3', 'Y', 'R'),
+#                 ('q1', '0'): Next('q1', '0', 'R'),
+#                 ('q1', '1'): Next('q2', 'Y', 'L'),
+#                 ('q1', 'Y'): Next('q1', 'Y', 'R'),
+#                 ('q2', '0'): Next('q2', '0', 'L'),
+#                 ('q2', 'X'): Next('q0', 'X', 'R'),
+#                 ('q2', 'Y'): Next('q2', 'Y', 'L'),
+#                 ('q3', 'Y'): Next('q3', 'Y', 'R'),
+#                 ('q3', 'B'): Next('q4', 'B', 'L')
+#             },
+#             initial_state='q0',
+#             accept_states={'q4'},
+#             reject_states={'q5'}
+#         )
 
-## after you build it you need to add it to the controller and give it the same name  that was given by the TA:
-controller.add_turing_machine('0n1n', _0_pow_n_1_pow_n_TM)
+# ## after you build it you need to add it to the controller and give it the same name  that was given by the TA:
+# controller.add_turing_machine('0n1n', _0_pow_n_1_pow_n_TM, "bool")
 
 
-controller.visualize_step_by_step('0n1n',"01")
+# #controller.visualize_step_by_step('0n1n',"01")
+
+# controller.validate_turing_machine('0n1n',is_0n1n)
+
+
+
