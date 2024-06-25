@@ -25,6 +25,7 @@ class MultiTapeTuringMachine:
         self.current_state = start_state
         self.name = ""
         self.validate()
+        self.flag = None
         
 
     def validate(self):
@@ -79,15 +80,17 @@ class MultiTapeTuringMachine:
 
                 # call_state = transition[2]
                 # assert call_state in self.states, "Call state must be in the set of states"
-                return_state = transition.return_state
-                assert return_state in self.states, "return state must be in the set of states"
+                return_state = transition.return_state_acc
+                assert return_state in self.states, "accepted return state must be in the set of states"
+                return_state = transition.return_state_rej
+                assert return_state in self.states, "rejected return state must be in the set of states"
                 tm.name = TM_name
                 self.tms_dic[TM_name] = tm
             else:
                 raise Exception("All Transition values should be MultiNext/Call_Turing_Machine objects")
             
 
-    def initialize_tapes(self, inputs):
+    def initialize_tapes(self, inputs, flag=None):
 
         if(isinstance(inputs, str)):
             for char in inputs:
@@ -110,11 +113,12 @@ class MultiTapeTuringMachine:
             for item in inputs:
                 for char in item:
                     assert char in self.input_alphabet, f"Character '{char}' in string '{item}' is not in the input alphabet"
-                
+
         self.current_state = self.start_state
         for i in range(self.num_tapes):
             self.tapes[i] = list(inputs[i]) + ['B']
-            self.head_positions[i] = 0
+            if flag == None:
+                self.head_positions[i] = 0
 
     def step(self):
         symbols = tuple(self.tapes[i][self.head_positions[i]] for i in range(self.num_tapes))
@@ -134,7 +138,7 @@ class MultiTapeTuringMachine:
                     elif directions[i] == 'L':
                         self.head_positions[i] -= 1
                     if self.head_positions[i] < 0:
-                        #self.tapes[i].insert(0, 'B')
+                        self.tapes[i].insert(0, 'B')
                         self.head_positions[i] = 0
                     if self.head_positions[i] >= len(self.tapes[i]):
                         self.tapes[i].append('B')
@@ -142,8 +146,16 @@ class MultiTapeTuringMachine:
                 tm = self.tms_dic[transition.TM_name]
                 assert isinstance(tm,MultiTapeTuringMachine), "all tms in transition should be MultiTapeTurinMachines"
                 tapes_edit = []
+                index = 0
                 for i in transition.list_of_tapes_indexes:
-                    tapes_edit.append(self.tapes[i])
+                    num_b_before_index = 0
+                    for x in self.tapes[i]:
+                        if(x != 'B'):
+                            break
+                        num_b_before_index += 1
+                    tapes_edit.append(self.tapes[i][num_b_before_index:])
+                    tm.head_positions[index] = self.head_positions[i] - num_b_before_index
+                    index += 1
                 def remove_B_from_list(char_list2):
                     res = []
                     for char_list in char_list2:
@@ -151,13 +163,29 @@ class MultiTapeTuringMachine:
                         res.append(s)
                     return res
                 tapes_edit2 = remove_B_from_list(tapes_edit)
-                tm.run(tapes_edit2)
+
+                savedHeadPos = tm.head_positions[:]
+
+                tm.run(tapes_edit2,True)
                 index = 0
                 for i in transition.list_of_tapes_indexes:
+                    num_b_before_index = 0
+                    for x in tm.tapes[index]:
+                        if(x != 'B'):
+                            break
+                        num_b_before_index += 1
+                    
+                    tm.tapes[index] = tm.tapes[index][num_b_before_index:]
+                    tm.head_positions[index] = tm.head_positions[index] - num_b_before_index
+
                     self.tapes[i] = tm.tapes[index]
+                    self.head_positions[i] = tm.head_positions[index]
                     index += 1
-                self.current_state = transition.return_state
-                return True, transition.TM_name , tm , tapes_edit2, transition.list_of_tapes_indexes
+                if tm.given_state_is_in_acceptance(tm.current_state):
+                    self.current_state = transition.return_state_acc
+                else:
+                    self.current_state = transition.return_state_rej
+                return True, transition.TM_name , tm , tapes_edit2, transition.list_of_tapes_indexes, savedHeadPos
         else:
             if(state_symbols[0] in self.accept_state):
                 return True , 0,0,0,0
@@ -166,8 +194,8 @@ class MultiTapeTuringMachine:
         return True,0,0,0,0
                 
 
-    def run(self, inputs):
-        self.initialize_tapes(inputs)
+    def run(self, inputs,flag=None):
+        self.initialize_tapes(inputs,flag)
         self.current_state = self.start_state
         condTransitionKeyFound = True
         while condTransitionKeyFound and self.current_state not in self.accept_state and self.current_state not in self.reject_state:
@@ -179,6 +207,9 @@ class MultiTapeTuringMachine:
         for i in range(self.num_tapes):
             print(f"Tape {i+1}: {''.join(self.tapes[i])}")
         print("state: "+str(self.current_state))
+
+        # remove B from tape and update head positions
+
         final_machine_run_state=Machine_Run_State(self.tapes[-1],self.head_positions[-1],self.current_state)
         print("----------------------------")
         return final_machine_run_state

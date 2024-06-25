@@ -1028,9 +1028,12 @@ tm1 = MultiTapeTuringMachine(
     tape_alphabet={'0', '1', 'B'},
     transition_function= {
     # (current_state, tape1_symbol, tape2_symbol): (new_state, tape1_new_symbol, tape2_new_symbol, direction1, direction2)
-    ('q0', '0'): MultiNext('q0', '1', 'R'),
-    ('q0', '1'): MultiNext('q0',  '0', 'R'),
-    ('q0', 'B'): MultiNext('qa',  'B', 'S')
+    ('q0', '0'): MultiNext('q1', '0', 'L'),
+    ('q0', '1'): MultiNext('q1',  '1', 'L'),
+    ('q0', 'B'): MultiNext('q1',  'B', 'L'),
+    ('q1', '0'): MultiNext('q1', '0', 'L'),
+    ('q1', '1'): MultiNext('q1',  '1', 'L'),
+    ('q1', 'B'): MultiNext('qa',  'B', 'R')
 },
     start_state='q0',
     accept_state={'qa'},
@@ -1044,6 +1047,22 @@ tm2 = MultiTapeTuringMachine(
     tape_alphabet={'0', '1', 'B'},
     transition_function= {
     # (current_state, tape1_symbol, tape2_symbol): (new_state, tape1_new_symbol, tape2_new_symbol, direction1, direction2)
+    ('q0', '0'): MultiNext('q0', '1', 'R'),
+    ('q0', '1'): MultiNext('q0',  '0', 'R'),
+    ('q0', 'B'): MultiNext('qa',  'B', 'S')
+},
+    start_state='q0',
+    accept_state={'qa'},
+    reject_state={'qr'},
+    num_tapes=1
+)
+
+tm3 = MultiTapeTuringMachine(
+    states={'q0', 'q1', 'q2', 'q3', 'qa', 'qr'},
+    input_alphabet={'0', '1'},
+    tape_alphabet={'0', '1', 'B'},
+    transition_function= {
+    # (current_state, tape1_symbol, tape2_symbol): (new_state, tape1_new_symbol, tape2_new_symbol, direction1, direction2)
     ('q0', '0', 'B'): MultiNext('q1', '0', '0', 'R', 'R'),
     ('q0', '1', 'B'): MultiNext('q1', '1', '1', 'R', 'R'),
     ('q0', 'B', 'B'): MultiNext('qa', 'B', 'B', 'S', 'S'),
@@ -1051,7 +1070,10 @@ tm2 = MultiTapeTuringMachine(
     ('q1', '0', 'B'): MultiNext('q1', '0', '0', 'R', 'R'),
     ('q1', '1', 'B'): MultiNext('q1', '1', '1', 'R', 'R'),
     ('q1', 'B', 'B'): MultiNext('q2', 'B', 'B', 'S', 'S'),
-    ('q2', 'B', 'B') : Call_Turing_Machine("replace 0 and 1", tm1, [1], 'qa')
+    ('q2', 'B', 'B') : Call_Turing_Machine("move left on tape 2", tm1, [1], 'q3', 'qr'),
+
+    ('q3', 'B', '0') : Call_Turing_Machine("replace 0 and 1", tm2, [1], 'qa', 'qr'),
+    ('q3', 'B', '1') : Call_Turing_Machine("replace 0 and 1", tm2, [1], 'qa', 'qr')
 },
     start_state='q0',
     accept_state={'qa'},
@@ -1062,55 +1084,55 @@ tm2 = MultiTapeTuringMachine(
 
 inputs = ['1101', '']
 #result = tm.run(inputs)
-controller.add_turing_machine("multi", tm2)
+controller.add_turing_machine("multi", tm3)
 #controller.run_turing_machine("multi", inputs)
-controller.run_turing_machine("multi", inputs)
+#controller.run_turing_machine("multi", inputs)
 #tm2.visualize(['1101', ''],1)
-# controller.visualize("multi", inputs)
+controller.visualize("multi", inputs)
 
 
-def binReplaceFunc(bin_str):
-    res = ""
-    if(bin_str == ""):
-        return ""
-    for x in bin_str:
-        if x == "1":
-            res += '0'
-        elif x == "0":
-            res += '1'
-    return res
+# def binReplaceFunc(bin_str):
+#     res = ""
+#     if(bin_str == ""):
+#         return ""
+#     for x in bin_str:
+#         if x == "1":
+#             res += '0'
+#         elif x == "0":
+#             res += '1'
+#     return res
 
 
-controller.add_challenge('addbin', {'0','1'}, "bin add", binReplaceFunc, {"111"})
+# controller.add_challenge('addbin', {'0','1'}, "bin add", binReplaceFunc, {"111"})
 
 
 
-tm3 = MultiTapeTuringMachine(
-    states={'q0', 'q1', 'qa', 'qr'},
-    input_alphabet={'0', '1'},
-    tape_alphabet={'0', '1', 'B'},
-    transition_function= {
-    # (current_state, tape1_symbol, tape2_symbol): (new_state, tape1_new_symbol, tape2_new_symbol, direction1, direction2)
-    ('q0', '0'): MultiNext('q0', '1', 'R'),
-    ('q0', '1'): MultiNext('q0',  '0', 'R'),
-    ('q0', 'B'): MultiNext('qa',  'B', 'L')
-},
-    start_state='q0',
-    accept_state={'qa'},
-    reject_state={'qr'},
-    num_tapes=1
-)
+# tm3 = MultiTapeTuringMachine(
+#     states={'q0', 'q1', 'qa', 'qr'},
+#     input_alphabet={'0', '1'},
+#     tape_alphabet={'0', '1', 'B'},
+#     transition_function= {
+#     # (current_state, tape1_symbol, tape2_symbol): (new_state, tape1_new_symbol, tape2_new_symbol, direction1, direction2)
+#     ('q0', '0'): MultiNext('q0', '1', 'R'),
+#     ('q0', '1'): MultiNext('q0',  '0', 'R'),
+#     ('q0', 'B'): MultiNext('qa',  'B', 'L')
+# },
+#     start_state='q0',
+#     accept_state={'qa'},
+#     reject_state={'qr'},
+#     num_tapes=1
+# )
 
 
-# # turing machine increments number 1
+# # # turing machine increments number 1
 
-# controller.add_turing_machine("addbin", tm3, "tape")
+# # controller.add_turing_machine("addbin", tm3, "tape")
 
-# #controller.run_turing_machine("addbin", ["1"])
+# # #controller.run_turing_machine("addbin", ["1"])
 
-# #controller.visualize("addbin", ["1"])
+# controller.visualize("addbin", ["1"])
 
-# controller.validate_turing_machineTA("addbin")
+# # controller.validate_turing_machineTA("addbin")
 
 
 

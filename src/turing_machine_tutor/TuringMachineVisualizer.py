@@ -26,7 +26,7 @@ class TuringMachineVisualizer:
 
     def run_and_visualize(self, input_string, max_steps=10,head_position=0):
         if(isinstance(self.tm, MultiTapeTuringMachine)):
-            return self.run_and_visualize_multi_tape_turing_machine(input_string)
+            return self.run_and_visualize_multi_tape_turing_machine(input_string, self.tm.flag)
         if(isinstance(self.tm,IFTuringMachine)):
             return self.run_and_visualize_if_turing_machine(input_string)
         elif(isinstance(self.tm,CombinedTuringMachine) or isinstance(self.tm,WhileTuringMachine) or isinstance(self.tm,ConcatenateTM)):
@@ -172,8 +172,8 @@ class TuringMachineVisualizer:
             else_visualizer.run_and_visualize(input_string, 5000)
             return ["starting with turing machine with the name: "+self.tm.ifTm.name] + if_visualizer.steps  + ["proceeding to next turing machine with the name: "+self.tm.elseTm.name] + else_visualizer.steps
 
-    def run_and_visualize_multi_tape_turing_machine(self, inputs):
-        self.tm.initialize_tapes(inputs)
+    def run_and_visualize_multi_tape_turing_machine(self, inputs, flag=None):
+        self.tm.initialize_tapes(inputs,flag)
         self.tm.current_state = self.tm.start_state
         steps = []
         def display(steps):
@@ -182,6 +182,7 @@ class TuringMachineVisualizer:
                 tape = ''.join(self.tm.tapes[i])
                 head_position = self.tm.head_positions[i]
                 st += f"Tape {i+1}: {tape}\n " + " " * (head_position + 7) + "^\n"
+                # st += f"head_position = {head_position}\n" # used for fixing a bug
             st += f"Current State: {self.tm.current_state}\n"
             st += "\n" + "-"*50 + "\n"
             steps += [str(st)]
@@ -198,7 +199,13 @@ class TuringMachineVisualizer:
                 s = s[2:]
                 steps += ["switching to TM: "+condTransitionKeyFound[1]+"\nPassing the tapes number: "+s]
                 visualizer1 =TuringMachineVisualizer(condTransitionKeyFound[2])
+                visualizer1.tm.flag = True
+                index = 0
+                for i in condTransitionKeyFound[4]:
+                    visualizer1.tm.head_positions[index] = condTransitionKeyFound[5][index]
+                    index += 1
                 steps1 = visualizer1.run_and_visualize(condTransitionKeyFound[3],5000)
+                visualizer1.tm.flag = None
                 steps += steps1
                 steps += ["returning to TM: "+self.tm.name+"\nUpdating the tapes number: "+s]
             condTransitionKeyFound = condTransitionKeyFound[0]
