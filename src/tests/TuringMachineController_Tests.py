@@ -24,7 +24,7 @@ class TestTuringMachineController(unittest.TestCase):
                 if n_v == None:
                     self.assertEqual("TM cannot be None", str(e))
                 else:
-                    self.assertEqual("TM cannot be Not (TuringMachine / IFTuringMachine / CombinedTuringMachine) Object", str(e))
+                    self.assertEqual("TM cannot be Not (TuringMachine / IFTuringMachine / CombinedTuringMachine / WhileTuringMachine / ConcatenateTM / MultiTapeTuringMachine) Object", str(e))
     ###############################################################################################################
     # test TM Controller add_turing_machine function
     def test_TuringMachineController_Add_WithNotValid2TM(self):
@@ -346,10 +346,10 @@ class TestTuringMachineController(unittest.TestCase):
 
         try:
             res = TuringMachineController()
-            result = IFTuringMachine()
-            result.setIfTM(ifTm, "myIf")
-            result.setThenTM(thenTm,"mythen")
-            result.setElseTM(elseTm,"myelse")
+            result = IFTuringMachine("myIf", ifTm, "mythen", thenTm, "myelse", elseTm)
+            # result.setIfTM(ifTm, "myIf")
+            # result.setThenTM(thenTm,"mythen")
+            # result.setElseTM(elseTm,"myelse")
             res.add_turing_machine("myIFTM", result)
             self.assertEqual(''.join((res.run_turing_machine("myIFTM","001").tape)).replace('B',''),"000")
             self.assertEqual(''.join((res.run_turing_machine("myIFTM","001011").tape)).replace('B',''),"111111")
@@ -713,7 +713,7 @@ class TestTuringMachineController(unittest.TestCase):
         not_valid_list = [None, 5, [5], {5}, ["55", "5"], "test"]
         for n_v in not_valid_list:
             try:
-                result = result.validate_turing_machine("myCombined", n_v)
+                result.validate_turing_machine("myCombined", n_v)
             except Exception as e:
                 if n_v == None:
                     self.assertEqual("func cannot be None",str(e))
@@ -723,9 +723,9 @@ class TestTuringMachineController(unittest.TestCase):
         not_valid_list = [func11, func2, func3]
         for n_v in not_valid_list:
             try:
-                result = result.validate_turing_machine("myCombined", n_v)
+                result.validate_turing_machine("myCombined", n_v)
             except Exception as e:
-                self.assertEqual("func cannot be function object that doesnt get string input and output True/False (boolean)",str(e))
+                self.assertEqual("func cannot be function object that doesnt get string input and output True/False (boolean) or string",str(e))
     ###############################################################################################################
     # test TuringMachineController validate function with not valid func input
     def test_TuringMachineController_Validate_NotValid3TMInput(self):

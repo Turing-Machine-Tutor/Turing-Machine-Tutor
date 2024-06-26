@@ -5,13 +5,16 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 from turing_machine_tutor.TuringMachine import TuringMachine
 
 class IFTuringMachine:
-    def __init__(self, ifTM, ThenTM, elseTM):
+    def __init__(self, ifname,ifTM,thenName, ThenTM, elsename, elseTM):
         self.name = ""
-        self.ifTm = self.setIfTM(ifTM, "IfTM")
+        self.setIfTM(ifTM, ifname)
         #self.ifName = ""
-        self.thenTm = self.setThenTM(ThenTM, "thenTM")
+        self.setThenTM(ThenTM, thenName)
         #self.thenName = ""
-        self.elseTm = self.setElseTM(elseTM, "ElseTM")
+        try:
+            self.setElseTM(elseTM, elsename)
+        except:
+            pass
         #self.elseName = ""
         self.resultTM = None
 
@@ -61,6 +64,7 @@ class IFTuringMachine:
         if(self.thenTm == None or (not isinstance(self.thenTm, TuringMachine))):
             raise Exception("Cannot run, Missing Then TM. Please Use SetThentm to set the turing machine")
         # first run ifTm
+        self.resultTM = self.thenTm
         machine_run_state = self.ifTm.run(input_str)
         if (machine_run_state.state in self.ifTm.accept_states):
             # then run thenTm
