@@ -40,3 +40,8 @@ class WhileTuringMachine(IFTuringMachine):
                 print("TM Cond rejected the input: "+input_str)
                 break
         return machine_run_state
+    
+
+    def __str__(self):
+            st = f"WhileTuringMachine('{self.ifTm.name}', {self.ifTm}, '{self.thenTm.name}', {self.thenTm})"
+            return st

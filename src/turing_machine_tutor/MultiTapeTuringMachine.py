@@ -266,3 +266,24 @@ class MultiTapeTuringMachine:
     
     def get_input_alphabet(self):
         return self.input_alphabet
+    
+
+    def __str__(self):
+            #__init__(self, states, input_alphabet, tape_alphabet, transition_function, start_state, accept_state, reject_state, num_tapes=2):
+            
+            transitions_str = ",\n        ".join(
+                f"({key}): {str(config)}"
+                for (key), config in self.transition_function.items()
+            )
+
+
+            return (f"MultiTapeTuringMachine(\n"
+                    f"    states={self.states},\n"
+                    f"    input_alphabet={self.input_alphabet},\n"
+                    f"    tape_alphabet={self.tape_alphabet},\n"
+                    f"    transition_function={{\n        {transitions_str}\n    }},\n"
+                    f"    start_state='{self.start_state}',\n"
+                    f"    accept_state={self.accept_state},\n"
+                    f"    reject_state={self.reject_state},\n"
+                    f"    num_tapes={str(self.num_tapes)}\n"
+                    f")")
