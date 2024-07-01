@@ -6,3 +6,6 @@ class Call_Turing_Machine:
         #self.call_state=call_state ## Action is string - one char L,R,S
         self.return_state_acc = return_state_acc
         self.return_state_rej = return_state_rej
+
+    def __str__(self):
+        return f"Call_Turing_Machine('{self.TM_name}', {self.tm}, {self.list_of_tapes_indexes}, '{self.return_state_acc}', '{self.return_state_rej}')"
